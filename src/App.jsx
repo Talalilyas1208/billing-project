@@ -13,6 +13,8 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import "./index.css";
 import "./App.css";
+import "./App.css"
+import "./index.css"
 
 export default function App() {
   const [user, setUser] = useState(null);
