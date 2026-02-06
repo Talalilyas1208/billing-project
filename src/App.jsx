@@ -20,20 +20,20 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState(""); // Extra field
-  const [phoneNumber, setPhoneNumber] = useState(""); // Extra field
-  const [extraData, setExtraData] = useState(null);    // From Firestore
+  const [displayName, setDisplayName] = useState(""); 
+  const [phoneNumber, setPhoneNumber] = useState(""); 
+  const [extraData, setExtraData] = useState(null);  
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Listen for Auth Changes
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       console.log(currentUser)
       if (currentUser) {
-        // Fetch phone number from Firestore when user logs in
+       
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
