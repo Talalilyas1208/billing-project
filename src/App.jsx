@@ -7,7 +7,7 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
+  updateProfile, sendEmailVerification 
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
@@ -42,6 +42,10 @@ export default function App() {
       } else {
         setExtraData(null);
       }
+      setUser({
+          ...result.user,
+          displayName: displayName
+        });
     });
     return () => unsubscribe();
   }, []);
@@ -74,14 +78,11 @@ export default function App() {
     return lastDate.toLocaleDateString();
   };
 
-  // MASTER AUTH FUNCTION
   const performAuth = async (authFunction, isSignUp = false) => {
     setError("");
     setLoading(true);
     try {
       const result = await authFunction();
-      
-      // If signing up, save the extra profile info
       if (isSignUp && result.user) {
         await updateProfile(result.user, { displayName: displayName });
         await setDoc(doc(db, "users", result.user.uid), {
@@ -104,6 +105,7 @@ export default function App() {
   const handleLogin = () => {
     if (!validateInputs()) return;
     performAuth(() => signInWithEmailAndPassword(auth, email, password));
+    
   };
 
   const handleSignUp = () => {
@@ -197,7 +199,7 @@ export default function App() {
           </div>
         ) : (
           <div className="text-center">
-            {/* Displaying user info from both Auth and Firestore */}
+            
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
                 Hi, {user.displayName || "User"}!
