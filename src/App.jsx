@@ -15,7 +15,6 @@ import "./index.css";
 import "./App.css";
 import "./App.css"
 import "./index.css"
-
 export default function App() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
@@ -88,8 +87,8 @@ export default function App() {
         await setDoc(doc(db, "users", result.user.uid), {
           phoneNumber: phoneNumber,
           displayName: displayName,
-          email: email,
-        });
+          uid: user.uid
+      }, { merge: true });
       }
     } catch (err) {
       if (err.code === "auth/invalid-credential") {
@@ -136,8 +135,6 @@ export default function App() {
                 {error}
               </div>
             )}
-
-            {/* Registration specific fields */}
             <input
               type="text"
               placeholder="Full Name"
