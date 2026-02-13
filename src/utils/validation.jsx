@@ -2,8 +2,8 @@ export const validation = (formData, isLoginMode) => {
   const { email, password, displayName } = formData;
 
 
-  if (!email && !password) {
-    return "Email and password are required.";
+  if (!email && !password &&!displayName) {
+    return "Email and password required.";
   }
 
 
@@ -16,7 +16,10 @@ export const validation = (formData, isLoginMode) => {
     return "Please enter your password.";
   }
 
-
+//   if(!displayName ){
+//     return "please enter the display name"
+//   }
+ 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return "This doesn't look like a valid email.";

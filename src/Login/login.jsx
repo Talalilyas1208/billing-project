@@ -1,40 +1,30 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
-import { validation} from "../utils/validation";
-import { loginWithEmail ,registerWithEmail,loginWithSocial,} from "../services/auth";
+import { validation } from "../utils/validation";
+import { loginWithEmail, loginWithSocial } from "../services/auth";
 
-export default function Authenticate() {
+export default function Login() {
   const navigate = useNavigate();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
-
-  const [isLoginMode, setIsLoginMode] = useState(true);
-  const [formData, setFormData] = useState({ email: "", password: "", displayName: "" ,phonenumber:""});
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [verificationSent, setVerificationSent] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleAuth = async () => {
-    const Error = validation(formData, isLoginMode);
-    if (Error) {
-      setError(Error);
-      return; 
-    }
+  const handleLogin = async () => {
+    const valError = validation(formData, true); 
+    if (valError) return setError(valError);
+
     setError("");
     setLoading(true);
     try {
-      if (isLoginMode) {
-        const user = await loginWithEmail(formData.email, formData.password);
-        setActiveUser(user);
-        navigate("/dashboard");
-      } else {
-        await registerWithEmail(formData.email, formData.password, formData.displayName);
-        setVerificationSent(true);
-      }
+      const user = await loginWithEmail(formData.email, formData.password);
+      setActiveUser(user);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,37 +42,35 @@ export default function Authenticate() {
     }
   };
 
-  if (verificationSent) return (
-    <div className="p-8 text-center">
-      <h2>Verify your email!</h2>
-      <button onClick={() => setVerificationSent(false)}>Back to Login</button>
-    </div>
-  );
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-12 rounded-xl shadow-lg w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold text-center">{isLoginMode ? "Login" : "Register"}</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 font-sans text-gray-800">
+      <div className="bg-white p-12 rounded-xl shadow-lg w-full max-w-md space-y-4 border border-gray-200">
+        <h1 className="text-2xl font-bold text-center text-gray-900">Welcome Back</h1>
         
-        {error && <p className="text-red-500 text-xs text-center">{error}</p>}
+        {error && <p className="text-red-500 text-xs text-center bg-red-50 p-2 rounded border border-red-100">{error}</p>}
 
-        {!isLoginMode && (
-          <input name="displayName" placeholder="Name" className="w-full p-3 border rounded" onChange={handleChange} />
-        )}
-        <input name="email" placeholder="Email" className="w-full p-3 border rounded" onChange={handleChange} />
-        <input name="password" type="password" placeholder="Password" className="w-full p-3 border rounded" onChange={handleChange} />
+        <input name="email" placeholder="Email" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" onChange={handleChange} />
+        <input name="password" type="password" placeholder="Password" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" onChange={handleChange} />
 
-        <button onClick={handleAuth} disabled={loading} className="w-full bg-blue-600 text-white p-3 rounded font-bold">
-          {loading ? "Please wait..." : isLoginMode ? "Sign In" : "Sign Up"}
+        <button onClick={handleLogin} disabled={loading} className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition active:scale-95 disabled:opacity-50">
+          {loading ? "Signing in..." : "Login"}
         </button>
 
-        <button onClick={() => setIsLoginMode(!isLoginMode)} className="w-full text-sm underline">
-          {isLoginMode ? "Need an account?" : "Have an account?"}
-        </button>
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account? <Link to="/register" className="font-bold text-blue-600 hover:underline">Sign Up</Link>
+          </p>
+        </div>
 
-        <div className="flex gap-2">
-          <button onClick={() => handleSocial("google")} className="flex-1 border p-2 rounded">Google</button>
-          <button onClick={() => handleSocial("facebook")} className="flex-1 border p-2 rounded">Facebook</button>
+        <div className="relative flex py-3 items-center">
+          <div className="flex-grow border-t border-gray-200"></div>
+          <span className="flex-shrink mx-4 text-gray-400 text-xs uppercase tracking-widest">or</span>
+          <div className="flex-grow border-t border-gray-200"></div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <button onClick={() => handleSocial("google")} className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition">Google</button>
+          <button onClick={() => handleSocial("facebook")} className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition">Facebook</button>
         </div>
       </div>
     </div>

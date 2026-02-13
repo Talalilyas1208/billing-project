@@ -31,8 +31,11 @@ export const registerWithEmail = async (email, password, displayName) => {
 
 export const loginWithSocial = async (type) => {
   const provider = type === "google" ? new GoogleAuthProvider() : new FacebookAuthProvider();
+
   const res = await signInWithPopup(auth, provider);
-  return formatUser(res.user);
+  
+
+  return User(res.user); 
 };
 
 export const logoutUser = async () => {
