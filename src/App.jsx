@@ -1,224 +1,309 @@
 import { useState, useEffect } from "react";
 import {
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signOut,
   signInWithPopup,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile, sendEmailVerification 
+  updateProfile,
+  FacebookAuthProvider,
+  sendEmailVerification,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { auth, db } from "./firebase";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { auth } from "./firebase";
 import "./index.css";
+import { useRef } from "react";
 import "./App.css";
-import "./App.css"
-import "./index.css"
+
+const db = getFirestore();
+
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savingUser = localStorage.getItem("activeUser");
+    return savingUser ? JSON.parse(savingUser) : null;
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState(""); 
-  const [phoneNumber, setPhoneNumber] = useState(""); 
-  const [extraData, setExtraData] = useState(null);  
-
+  const [displayName, setDisplayName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [verificationSent, setVerificationSent] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      console.log(currentUser)
-      if (currentUser) {
-       
-        const docRef = doc(db, "users", currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setExtraData(docSnap.data());
+      console.log(currentUser);
+      currentUser.reload;
+
+      if (currentUser && currentUser.emailVerified) {
+        const checkuid = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(checkuid);
+        let previousLogin = null;
+        if (userDoc.exists()) {
+          previousLogin = userDoc.data().lastLogin || null;
         }
+        await setDoc(
+          checkuid,
+          {
+            lastLogin: new Date().toISOString(),
+          },
+          { merge: true },
+        );
+
+        const userData = {
+          uid: currentUser.uid,
+          email: currentUser.email,
+          displayName: currentUser.displayName || "User",
+          lastSeen: previousLogin,
+        };
+
+        setUser(userData);
+        localStorage.setItem("activeUser", JSON.stringify(userData));
       } else {
-        setExtraData(null);
+        setUser(null);
+        localStorage.removeItem("activeUser");
       }
-      setUser({
-          ...result.user,
-          displayName: displayName
-        });
     });
     return () => unsubscribe();
   }, []);
 
-  const validateInputs = (isSignUp = false) => {
-    if (!email.trim() || !password.trim()) {
-      setError("Please fill in email and password.");
+  const validate = () => {
+    if (!email || !password) {
+      setError("Email and Password are required.");
       return false;
     }
-    if (isSignUp && (!displayName.trim() || !phoneNumber.trim())) {
-      setError("Please provide Name and Phone Number for registration.");
-      return false;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+     const isValidEmail = email.includes('@') && email.split('@')[1].includes('.');
+
+  if (!isValidEmail) {
+    setError("Please enter a valid email address.");
+    return false;
+  }
+
+    if (!isLoginMode && (!displayName || !phoneNumber)) {
+      setError("Please fill in all fields to register.");
       return false;
     }
     return true;
   };
 
-  const getTimeLabel = (lastSignIn) => {
-    if (!lastSignIn) return "Never";
-    const lastDate = new Date(lastSignIn);
-    const now = new Date();
-    const diffInMs = now - lastDate;
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    if (diffInDays === 0) return "Today";
-    if (diffInDays === 1) return "Yesterday";
-    if (diffInDays < 7) return "This Week";
-    return lastDate.toLocaleDateString();
-  };
-
-  const performAuth = async (authFunction, isSignUp = false) => {
+  const handleAuth = async () => {
+    if (!validate()) return;
     setError("");
     setLoading(true);
+
     try {
-      const result = await authFunction();
-      if (isSignUp && result.user) {
-        await updateProfile(result.user, { displayName: displayName });
-        await setDoc(doc(db, "users", result.user.uid), {
-          phoneNumber: phoneNumber,
-          displayName: displayName,
-          uid: user.uid
-      }, { merge: true });
+      if (isLoginMode) {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        if (!userCredential.user.emailVerified) {
+          setError("Please verify your email before logging in.");
+          await signOut(auth);
+        }
+      } else {
+        const data = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+          displayName
+        );
+        await updateProfile(data.user, { displayName });
+        await sendEmailVerification(data.user);
+
+        await setDoc(doc(db, "users", data.user.uid), {
+          displayName,
+          phoneNumber,
+          email,
+          uid: data.user.uid,
+        });
+
+        setVerificationSent(true);
       }
     } catch (err) {
-      if (err.code === "auth/invalid-credential") {
-        setError("Invalid email or password.");
-      } else {
-        setError(err.message);
-      }
+     setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+  function getSimpleDate(lastLogin) {
+    if (!lastLogin) return "First time logging in!";
 
-  const handleLogin = () => {
-    if (!validateInputs()) return;
-    performAuth(() => signInWithEmailAndPassword(auth, email, password));
-    
+    const now = new Date();
+    const loginDate = new Date(lastLogin);
+
+    const diffInMs = now - loginDate;
+
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInDays === 0) return "Today";
+    if (diffInDays === 1) return "Yesterday";
+    if (diffInDays > 1 && diffInDays < 7) return `${diffInDays} days ago`;
+
+    return loginDate.toLocaleDateString();
+  }
+  const socialLogin = async (providerType) => {
+    const provider =
+      providerType === "google"
+        ? new GoogleAuthProvider()
+        : new FacebookAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
-  const handleSignUp = () => {
-    if (!validateInputs(true)) return;
-    performAuth(() => createUserWithEmailAndPassword(auth, email, password), true);
+  const handleLogout = () => {
+    signOut(auth);
+    setUser(null);
+    localStorage.removeItem("activeUser");
+    setVerificationSent(false);
   };
-
-  const handleGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-    performAuth(() => signInWithPopup(auth, provider));
-  };
-
-  const handleFacebook = () => {
-    const provider = new FacebookAuthProvider();
-    performAuth(() => signInWithPopup(auth, provider));
-  };
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-lg w-full max-w-sm shadow-md border border-gray-100">
-        {!user ? (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 text-gray-800 font-sans">
+      <div className="bg-white p-8 rounded-xl w-full max-w-sm shadow-xl border border-gray-200">
+        {verificationSent ? (
+          <div className="text-center space-y-5 py-4">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Verify your email
+            </h2>
+            <p className="text-gray-600 text-sm">
+              We've sent a verification link to <br />
+              <span className="font-semibold ">{email}</span>.
+            </p>
+            <p className="text-xs text-gray-400">
+              Please check your inbox (and spam folder) to activate your
+              account.
+            </p>
+            <button
+              onClick={() => {
+                setVerificationSent(false);
+                setIsLoginMode(true);
+              }}
+              className="w-full py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Go to Login
+            </button>
+          </div>
+        ) : user ? (
+          <div className="text-center space-y-6">
+            <div className="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl font-bold mx-auto"></div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Welcome, {user.displayName}!
+              </h2>
+              <p className="text-gray-500 text-sm">{user.email}</p>
+              <p className="text-xs text-blue-500 mt-2 font-medium">
+                Last login: {getSimpleDate(user.lastSeen)}
+              </p>
+            </div>
+            <div className="pt-4 border-t border-gray-100">
+              <button
+                onClick={handleLogout}
+                className="bg-red-50 text-red-600 border border-red-200 p-2 w-full rounded-lg hover:bg-red-600 hover:text-white transition font-medium"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        ) : (
           <div className="flex flex-col gap-4">
-            <h1 className="text-xl font-bold text-center text-gray-800">Welcome</h1>
-            
+            <div className="text-center mb-2">
+              <h1 className="text-2xl font-black text-gray-900">
+                {isLoginMode ? "Welcome Back" : "Create Account"}
+              </h1>
+            </div>
+
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded text-sm text-center">
+              <div className="text-red-600 text-xs text-center bg-red-50 p-3 rounded-lg border border-red-100">
                 {error}
               </div>
             )}
-            <input
-              type="text"
-              placeholder="Full Name"
-              className="border p-2 rounded outline-none focus:border-blue-500"
-              onChange={(e) => setDisplayName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              className="border p-2 rounded outline-none focus:border-blue-500"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
 
+            {!isLoginMode && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  onChange={(e) => setDisplayName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </>
+            )}
             <input
               type="email"
               placeholder="Email"
-              className="border p-2 rounded outline-none focus:border-blue-500"
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               onChange={(e) => setEmail(e.target.value)}
             />
-
             <input
               type="password"
               placeholder="Password"
-              className="border p-2 rounded outline-none focus:border-blue-500"
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               onChange={(e) => setPassword(e.target.value)}
             />
-
             <button
-              onClick={handleLogin}
+              onClick={handleAuth}
               disabled={loading}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded font-semibold transition disabled:opacity-50"
+              className={`p-3 rounded-lg font-bold text-white shadow-md transition transform active:scale-95 ${
+                isLoginMode
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
             >
-              {loading ? "Processing..." : "Login"}
+              {loading
+                ? "Processing..."
+                : isLoginMode
+                  ? "Login"
+                  : "Register Now"}
             </button>
 
             <button
-              onClick={handleSignUp}
-              disabled={loading}
-              className="bg-green-500 hover:bg-green-600 text-white p-2 rounded font-semibold transition disabled:opacity-50"
+              onClick={() => {
+                setIsLoginMode(!isLoginMode);
+                setError("");
+              }}
+              className="text-sm text-gray-600  transition"
             >
-              Sign Up
+              {isLoginMode ? "Don't have an account? " : "Already registered? "}
+              <span className="font-bold underline">
+                {isLoginMode ? "Sign Up" : "Login"}
+              </span>
             </button>
 
-            <div className="text-center text-gray-400 text-sm">or</div>
-
-            <button
-              onClick={handleGoogle}
-              className="border border-gray-300 p-2 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition"
-            >
-              Sign in with Google
-            </button>
-
-            <button
-              onClick={handleFacebook}
-              className="border border-gray-300 p-2 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition"
-            >
-              Sign in with Facebook
-            </button>
-          </div>
-        ) : (
-          <div className="text-center">
-            
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Hi, {user.displayName || "User"}!
-              </h2>
-              <p className="text-gray-500 mb-2">{user.email}</p>
-              {extraData?.phoneNumber && (
-                <p className="text-blue-600 text-sm font-medium">
-                  📞 {extraData.phoneNumber}
-                </p>
-              )}
+            <div className="relative flex py-3 items-center">
+              <div className="flex-grow border-t border-gray-200"></div>
+              <span className="flex-shrink mx-4 text-gray-400 text-xs uppercase tracking-widest">
+                or
+              </span>
+              <div className="flex-grow border-t border-gray-200"></div>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg mb-6 text-xs text-left text-gray-600">
-              <p><strong>Last Login:</strong> {getTimeLabel(user.metadata.lastSignInTime)}</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => socialLogin("google")}
+                className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+              >
+                Google
+              </button>
+              <button
+                onClick={() => socialLogin("facebook")}
+                className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+              >
+                Facebook
+              </button>
             </div>
-
-            <button
-              onClick={() => signOut(auth)}
-              className="bg-red-500 hover:bg-red-600 text-white p-2 w-full rounded font-semibold transition shadow-sm"
-            >
-              Logout
-            </button>
           </div>
         )}
       </div>
