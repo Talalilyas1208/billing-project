@@ -2,7 +2,6 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
-
 export default function Dashboard() {
   const navigate = useNavigate();
 
@@ -17,7 +16,6 @@ export default function Dashboard() {
       console.error("Logout failed", err);
     }
   };
-
   if (!activeUser) return null;
 
   return (

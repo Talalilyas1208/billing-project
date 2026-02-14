@@ -1,6 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-
-
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./Routes/Publicroutes";
 import PrivateRoute from "./Routes/Privateroutes";
@@ -14,7 +18,7 @@ export default function App() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register/>} />
+          <Route path="/register" element={<Register />} />
         </Route>
 
         <Route element={<PrivateRoute />}>

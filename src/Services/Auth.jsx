@@ -1,15 +1,14 @@
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  updateProfile, 
-  sendEmailVerification, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+  signInWithPopup,
+  GoogleAuthProvider,
   FacebookAuthProvider,
-  signOut 
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
-
 
 const User = (user) => ({
   uid: user.uid,
@@ -30,12 +29,12 @@ export const registerWithEmail = async (email, password, displayName) => {
 };
 
 export const loginWithSocial = async (type) => {
-  const provider = type === "google" ? new GoogleAuthProvider() : new FacebookAuthProvider();
+  const provider =
+    type === "google" ? new GoogleAuthProvider() : new FacebookAuthProvider();
 
   const res = await signInWithPopup(auth, provider);
-  
 
-  return User(res.user); 
+  return User(res.user);
 };
 
 export const logoutUser = async () => {
