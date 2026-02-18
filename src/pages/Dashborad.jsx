@@ -1,11 +1,17 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 export default function Dashboard() {
   const navigate = useNavigate();
 
   const [activeUser, setActiveUser] = useLocalStorage("activeUser", null);
+const [lastLogin] = useLocalStorage("settime", null);
+
+  useEffect(() => {
+    console.log("Dashboard detected lastLogin as:", lastLogin);
+  }, [lastLogin]);
 
   const handleLogout = async () => {
     try {
@@ -26,8 +32,15 @@ export default function Dashboard() {
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            Welcome, {activeUser.displayName}!
+            Welcome,
           </h2>
+          {lastLogin? (
+        <p className="text-gray-500 italic">
+          Your last login was on: {new Date(lastLogin).toLocaleString()}
+        </p>
+      ) : (
+        <p>Welcome for the first time!</p>
+      )}
           <p className="text-gray-500 text-sm">{activeUser.email}</p>
         </div>
         <button

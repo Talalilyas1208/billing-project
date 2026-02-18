@@ -7,6 +7,10 @@ import { loginWithEmail, loginWithSocial } from "../services/auth";
 export default function Login() {
   const navigate = useNavigate();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
+  
+
+  const [time, setTime] = useLocalStorage("settime", null);
+
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,30 +19,43 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async () => {
+const handleLogin = async () => {
     const valError = validation(formData, true); 
     if (valError) return setError(valError);
 
     setError("");
-    setLoading(true);
-    try {
-      const user = await loginWithEmail(formData.email, formData.password);
-      setActiveUser(user);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  setLoading(true);
+  try {
+    const user = await loginWithEmail(formData.email, formData.password);
+    console.log(user)
+
+    if (user?.metadata?.lastSignInTime) {
+        console.log(time, )
+      setTime(user.metadata.lastSignInTime);
     }
-  };
+
+    setActiveUser(user);
+    navigate("/dashboard");
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSocial = async (type) => {
+    setError("");
     try {
       const user = await loginWithSocial(type);
+      
+      if (user && user.metadata) {
+        setTime(user.metadata.lastSignInTime);
+      }
+
       setActiveUser(user);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || `Failed to sign in with ${type}`);
     }
   };
 
@@ -47,12 +64,32 @@ export default function Login() {
       <div className="bg-white p-12 rounded-xl shadow-lg w-full max-w-md space-y-4 border border-gray-200">
         <h1 className="text-2xl font-bold text-center text-gray-900">Welcome Back</h1>
         
-        {error && <p className="text-red-500 text-xs text-center bg-red-50 p-2 rounded border border-red-100">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-xs text-center bg-red-50 p-2 rounded border border-red-100">
+            {error}
+          </p>
+        )}
 
-        <input name="email" placeholder="Email" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" onChange={handleChange} />
-        <input name="password" type="password" placeholder="Password" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" onChange={handleChange} />
+        <input 
+          name="email" 
+          type="email"
+          placeholder="Email" 
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" 
+          onChange={handleChange} 
+        />
+        <input 
+          name="password" 
+          type="password" 
+          placeholder="Password" 
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" 
+          onChange={handleChange} 
+        />
 
-        <button onClick={handleLogin} disabled={loading} className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition active:scale-95 disabled:opacity-50">
+        <button 
+          onClick={handleLogin} 
+          disabled={loading} 
+          className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition active:scale-95 disabled:opacity-50"
+        >
           {loading ? "Signing in..." : "Login"}
         </button>
 
@@ -69,8 +106,18 @@ export default function Login() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => handleSocial("google")} className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition">Google</button>
-          <button onClick={() => handleSocial("facebook")} className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition">Facebook</button>
+          <button 
+            onClick={() => handleSocial("google")} 
+            className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+          >
+            Google
+          </button>
+          <button 
+            onClick={() => handleSocial("facebook")} 
+            className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+          >
+            Facebook
+          </button>
         </div>
       </div>
     </div>

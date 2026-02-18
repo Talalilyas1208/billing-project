@@ -14,10 +14,13 @@ const User = (user) => ({
   uid: user.uid,
   email: user.email,
   displayName: user.displayName || "User",
+  metadata: user.metadata
+
 });
 
 export const loginWithEmail = async (email, password) => {
   const res = await signInWithEmailAndPassword(auth, email, password);
+  
   return User(res.user);
 };
 

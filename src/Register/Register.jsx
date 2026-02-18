@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { validation } from "../utils/validation";
 import { registerWithEmail } from "../services/auth";
+import { auth } from "../firebase/firebase";
+import useLocalStorage from "use-local-storage";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
+  const [activeuser,setActiveUser] = useLocalStorage ("sginuser" ,null)
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,12 +26,16 @@ export default function Register() {
 
     setLoading(true);
     try {
-      await registerWithEmail(
+      const newuser =  await registerWithEmail(
         formData.email,
         formData.password,
         formData.displayName,
+     
       );
+      setActiveUser(newuser)
       setVerificationSent(true);
+     
+      
     } catch (err) {
       setError(err.message);
     } finally {
