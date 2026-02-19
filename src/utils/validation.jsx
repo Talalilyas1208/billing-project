@@ -20,8 +20,8 @@ export const validation = (formData, isLoginMode) => {
 //     return "please enter the display name"
 //   }
  
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  const emails = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emails.test(email)) {
     return "This doesn't look like a valid email.";
   }
 

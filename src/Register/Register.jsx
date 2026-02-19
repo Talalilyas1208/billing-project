@@ -15,7 +15,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
-  const [activeuser,setActiveUser] = useLocalStorage ("sginuser" ,null)
+  const [activeUser,setActiveUser] = useLocalStorage ("sginuser" ,null)
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,12 +30,9 @@ export default function Register() {
         formData.email,
         formData.password,
         formData.displayName,
-     
       );
       setActiveUser(newuser)
       setVerificationSent(true);
-     
-      
     } catch (err) {
       setError(err.message);
     } finally {

@@ -7,10 +7,7 @@ import { loginWithEmail, loginWithSocial } from "../services/auth";
 export default function Login() {
   const navigate = useNavigate();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
-  
-
   const [time, setTime] = useLocalStorage("settime", null);
-
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,13 +24,8 @@ const handleLogin = async () => {
   setLoading(true);
   try {
     const user = await loginWithEmail(formData.email, formData.password);
-    console.log(user)
-
-    if (user?.metadata?.lastSignInTime) {
-        console.log(time, )
-      setTime(user.metadata.lastSignInTime);
-    }
-
+    
+  
     setActiveUser(user);
     navigate("/dashboard");
   } catch (err) {
@@ -42,7 +34,6 @@ const handleLogin = async () => {
     setLoading(false);
   }
 };
-
   const handleSocial = async (type) => {
     setError("");
     try {
