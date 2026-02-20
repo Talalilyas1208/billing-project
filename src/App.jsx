@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  Outlet,
 } from "react-router-dom";
 import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./Routes/Publicroutes";
@@ -20,11 +19,9 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
-
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>

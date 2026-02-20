@@ -62,7 +62,6 @@ const handleSocial = (type) => {
          name="email"
           type="email"
           placeholder="Email"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
           onChange={handleChange} />
       <Input
       name="password" 
@@ -70,10 +69,8 @@ const handleSocial = (type) => {
         placeholder="Password" 
         onChange={handleChange}
         errors = {errors}/>
-    
-        
         <Button
-        variant="Login"
+        variant="login"
           onClick={handleLogin}
           disabled={loading}>
           Login

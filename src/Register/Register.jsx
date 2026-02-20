@@ -5,6 +5,7 @@ import { registerWithEmail } from "../services/auth";
 import { auth } from "../firebase/firebase";
 import useLocalStorage from "use-local-storage";
 import Input from "../components/Input";
+import Button from "../components/Button";
 export default function Register() {
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +31,7 @@ export default function Register() {
         formData.email,
         formData.password,
         formData.displayName,
+        formData.phonenumber
       );
       setActiveUser(newuser);
       setVerificationSent(true);
@@ -60,19 +62,16 @@ export default function Register() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 font-sans text-gray-800">
       <div className="bg-white p-12 rounded-xl shadow-lg w-full max-w-md space-y-4 border border-gray-200">
         <h1 className="text-2xl font-bold text-center text-gray-900">
           Create Account
         </h1>
-
         {error && (
           <p className="text-red-500 text-xs text-center bg-red-50 p-2 rounded border border-red-100">
             {error}
-          </p>
-        )}
+          </p>)}
         <Input
           name="displayName"
           placeholder="Full Name"
@@ -80,19 +79,17 @@ export default function Register() {
         <Input
           name="phonenumber"
           placeholder="Phone Number"
-          onChange={handleChange}/>
+          onChange={handleChange} />
         <Input name="email" placeholder="Email" onChange={handleChange} />
         <Input
           name="password"
           type="password"
           placeholder="Password"
-          onChange={handleChange}/>
-        <button
-          onClick={handleRegister}
-          disabled={loading}
-          className="w-full bg-green-600 text-white p-3 rounded-lg font-bold hover:bg-green-700 transition active:scale-95 disabled:opacity-50" >
-          {loading ? "Creating account..." : "Register Now"}
-        </button>
+          onChange={handleChange}
+        />
+        <Button variant="register" onClick={handleRegister} disabled={loading}>
+          Register
+        </Button>
 
         <div className="text-center">
           <p className="text-sm text-gray-600">
