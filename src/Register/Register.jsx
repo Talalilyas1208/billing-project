@@ -4,7 +4,7 @@ import { validation } from "../utils/validation";
 import { registerWithEmail } from "../services/auth";
 import { auth } from "../firebase/firebase";
 import useLocalStorage from "use-local-storage";
-
+import Input from "../components/Input";
 export default function Register() {
   const [formData, setFormData] = useState({
     email: "",
@@ -15,7 +15,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
-  const [activeUser,setActiveUser] = useLocalStorage ("sginuser" ,null)
+  const [activeUser, setActiveUser] = useLocalStorage("sginuser", null);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,12 +26,12 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const newuser =  await registerWithEmail(
+      const newuser = await registerWithEmail(
         formData.email,
         formData.password,
         formData.displayName,
       );
-      setActiveUser(newuser)
+      setActiveUser(newuser);
       setVerificationSent(true);
     } catch (err) {
       setError(err.message);
@@ -73,38 +73,24 @@ export default function Register() {
             {error}
           </p>
         )}
-
-        <input
+        <Input
           name="displayName"
           placeholder="Full Name"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-          onChange={handleChange}
-        />
-        <input
+          onChange={handleChange} />
+        <Input
           name="phonenumber"
           placeholder="Phone Number"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-          onChange={handleChange}
-        />
-        <input
-          name="email"
-          placeholder="Email"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-          onChange={handleChange}
-        />
-        <input
+          onChange={handleChange}/>
+        <Input name="email" placeholder="Email" onChange={handleChange} />
+        <Input
           name="password"
           type="password"
           placeholder="Password"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-          onChange={handleChange}
-        />
-
+          onChange={handleChange}/>
         <button
           onClick={handleRegister}
           disabled={loading}
-          className="w-full bg-green-600 text-white p-3 rounded-lg font-bold hover:bg-green-700 transition active:scale-95 disabled:opacity-50"
-        >
+          className="w-full bg-green-600 text-white p-3 rounded-lg font-bold hover:bg-green-700 transition active:scale-95 disabled:opacity-50" >
           {loading ? "Creating account..." : "Register Now"}
         </button>
 
