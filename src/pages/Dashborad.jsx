@@ -2,6 +2,7 @@ import Sidebar from "../components/Sidebar";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
 
 export default function Dashboard() {
@@ -24,12 +25,11 @@ export default function Dashboard() {
         onLogout={handleLogout} 
       />
 
-      <main className="flex-1 text-black overflow-y-auto p-8 bg-white">
-        <h1 className="text-3xl font-semibold">Main Content Area</h1>
-        <p className="mt-4 text-gray-600">
-          Welcome back, {activeUser.displayName}!
-        </p>
-      </main>
+     <main className="flex-1 p-6">
+  <div className="mt-4">
+    <Outlet /> 
+  </div>
+</main>
 
     </div>
   );

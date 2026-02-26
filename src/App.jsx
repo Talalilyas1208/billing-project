@@ -10,6 +10,7 @@ import PrivateRoute from "./Routes/Privateroutes";
 
 import Register from "./Register/Register";
 import Login from "./Login/login";
+import Produts from "./pages/Products";
 
 export default function App() {
   return (
@@ -20,7 +21,10 @@ export default function App() {
           <Route path="/register" element={<Register />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} >
+        <Route path="products" element={<Produts />} />
+        {/* <Route path="invoices" element={<Invoices />} /> */}
+          </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
