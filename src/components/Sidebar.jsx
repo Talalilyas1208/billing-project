@@ -9,10 +9,8 @@ export default function Sidebar({ activeUser, onLogout }) {
 
   return (
     <aside className="w-64 h-screen bg-neutral-100 border-r border-neutral-200 flex flex-col">
-      {/* Brand Header */}
       <div className="p-6 font-bold text-xl text-black">My App</div>
 
-      {/* Main Navigation Area */}
       <div className="flex-1 px-3 space-y-1 overflow-y-auto">
         
         {/* INVOICING SECTION */}
@@ -54,8 +52,6 @@ export default function Sidebar({ activeUser, onLogout }) {
         </Button>
 
       </div>
-
-      {/* Footer / Profile Section */}
       <div className="p-4 border-t border-neutral-200">
         <Dropdown
           trigger={
