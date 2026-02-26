@@ -1,40 +1,36 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-export default function Feetchhooks(url) {
-  const [data, setdata] = useState("");
-  const [loading, setloading] = useState(false);
-  const [error, setError] = useState("");
+const useApi = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    let ismount = true ;
-    const hookfetch = async () => {
-      setloading(true);
-      try {
-        const req = await fetch(url);
+  const request = useCallback(async (url, method = "GET", body = null) => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const data = await req.json();
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body ? JSON.stringify(body) : null,
+      });
 
-        console.log(data);
-        if (ismount) {
-          setdata(result);
-          setError(null);
-        }
-      } catch (error) {
-        if (ismount) {
-          setError(err.message);
-        }
-      } finally {
-        if (ismount) {
-          setloading(false);
-        }
+      if (!response.ok) {
+        throw new Error("Request failed");
       }
-    
-    };
-      hookfetch()
-       return () => {
-      ismount = false;
-    };
-  },[url]);
-  return { data, loading, error };
-}
+
+      return await response.json();
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { request, loading, error };
+};
+
+export default useApi;
