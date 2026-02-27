@@ -25,11 +25,9 @@ export default function Dashboard() {
         onLogout={handleLogout} 
       />
 
-     <main className="flex-1 p-6">
-  <div className="mt-4">
-    <Outlet /> 
-  </div>
-</main>
+   <main className="flex-1 bg-white overflow-y-auto p-6">
+        <Outlet /> 
+      </main>
 
     </div>
   );

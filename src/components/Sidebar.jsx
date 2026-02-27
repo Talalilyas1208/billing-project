@@ -46,25 +46,18 @@ export default function Sidebar({ activeUser, onLogout }) {
               </Button>
             }
           >
-            {section.children && (
-              <div className="flex flex-col gap-1 p-1">
-                {section.children.map((child, idx) => (
-                  <Button
-                  
-                    key={`sub-${section.id}-${idx}`}
-                    variant="nav"
-                    className="pl-8 text-sm"
-                    onClick={() =>
-                      navigate(
-                       child.Link
-                      )
-                    }
-                  >
-                    {child}
-                  </Button>
-                ))}
-              </div>
-            )}
+           {section.children.map((child, idx) => (
+  <Button 
+    key={`sub-${section.id}-${idx}`} 
+    variant="nav" 
+    className="pl-8 text-sm"
+   
+    onClick={() => navigate(child.link)} 
+  >
+  
+    {child.name} 
+  </Button>
+))}
           </Dropdown>
         ))}
 
