@@ -2,41 +2,89 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
 import { useState } from "react";
-export default function  Produts(){
-
-const [isOpen, setIsOpen] = useState(false);
-    return(
-        <>
+export default function Produts() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [input ,setInput] = useState("")
+    const [todo, setTodo] = useState([]);
+    const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+  const add = () =>{
+    const newtodo = {
+        text :input
+    }
+      setTodo([newtodo, ...todo]);
+    setInput("");
+  }
+  return (
+    <>
       <div className="flex justify-between items-center p-4">
+        <h1 className="text-4xl font-bold">Products</h1>
+        <div className="flex gap-6">
+          <div>
+            <Button onClick={() => setIsOpen(true)} variant="product">
+              create product
+            </Button>
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between items-center mt-1 mb-3">
+                  <p className="text-[22px] font-normal">Create Product</p>
 
-      <h1 className="text-4xl font-bold">
-        Products
-      </h1>
-      <div className="flex gap-6">
-        <div>
-            <Button
-              onClick={() => setIsOpen(true)}
-             variant="product"
-             >create product</Button>
-               <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h2 className="text-xl font-semibold mb-4">Reusable Modal</h2>
-        <Button
-        variant="modal"
-          onClick={() => setIsOpen(false)}
-         
-        >
-          Close
-        </Button>
+                  <Button variant="modal" onClick={() => setIsOpen(false)}  className="w-auto">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </Button>
+                </div>
+                <div className="flex gap-3">
+                  <Input width="xxlg"   label="Name of the product or service"/>
 
-        <Input/>
-      </Modal>
+                  <Input width="sm" placeholder="Unit price"   label= "Price"   onChange={handleChange}/>
+                    <Input width="xs" placeholder="Half width"  label= "Price"/>
+                <Button variant="addbutton" className="w-auto" onclick={add}>
+                     <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-4 h-3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                </Button>
+                </div>
+
+                <div>
+                  <Input placeholder="Products" />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-6 border-top">
+                  <Button variant="product">Save</Button>
+                </div>
+              </div>
+            </Modal>
+          </div>
+          <div>Item 2</div>
+          <div>Item 3</div>
+          <div>Item 4</div>
         </div>
-        <div>Item 2</div>
-        <div>Item 3</div>
-        <div>Item 4</div>
       </div>
-
-    </div>
-        </>
-    )
+    </>
+  );
 }

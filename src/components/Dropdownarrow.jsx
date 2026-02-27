@@ -1,7 +1,8 @@
 const Dropdownarrow = ({ 
   className = "", 
   isOpen = false, 
-  size = 20 
+  size = 20 ,
+
 }) => {
   return (
     <svg
@@ -10,8 +11,8 @@ const Dropdownarrow = ({
       fill="currentColor"
       width={size}
       height={size}
-      className={`transition-transform duration-200 ${
-        isOpen ? "rotate-180" : ""
+      className={`transition-transform duration-200  ${
+        isOpen ? "rotate-180 " : ""
       } ${className}`}
       aria-hidden="true"
     >

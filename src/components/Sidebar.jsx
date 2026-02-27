@@ -32,15 +32,17 @@ export default function Sidebar({ activeUser, onLogout }) {
             isOpen={openSection === section.label}
             onToggle={() => handleToggle(section.label)}
             trigger={
-              <Button variant="nav" className="px-3">
+              <Button variant="nav" className="">
                 <span className="flex-1 text-left font-bold text-[15px]">
                   {section.label}
                 </span>
                 {section.children && (
                   <div
-                    className={`transition-transform ${openSection === section.label ? "rotate-180" : ""}`}
+                    className={`transition-transform ml-30 ${openSection === section.label ? "rotate-180" : ""}`}
                   >
-                    <Dropdownarrow />
+                    <Dropdownarrow 
+                      
+                     />
                   </div>
                 )}
               </Button>
