@@ -19,7 +19,7 @@ export default function Produts() {
   return (
     <>
       <div className="flex justify-between items-center p-4">
-        <h1 className="text-4xl font-bold">Products</h1>
+        <h1 className="text-4xl font-semibold">Products</h1>
         <div className="flex gap-6">
           <div>
             <Button onClick={() => setIsOpen(true)} variant="product">
@@ -47,32 +47,24 @@ export default function Produts() {
                     </svg>
                   </Button>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-6">
                   <Input width="xxlg"   label="Name of the product or service"/>
 
                   <Input width="sm" placeholder="Unit price"   label= "Price"   onChange={handleChange}/>
-                    <Input width="xs" placeholder="Half width"  label= "Price"/>
-                <Button variant="addbutton" className="w-auto" onclick={add}>
-                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-4 h-3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                </Button>
+                    <Input width="xs"  placeholder="Half width"  label= "Price"/>
+
                 </div>
 
-                <div>
-                  <Input placeholder="Products" />
+                <div className="flex gap-5 ">
+                  <Input placeholder="None" size="xxlg" width ="xxlg" label= "Description" />
+                    <Input placeholder="None" size="md" width ="md" label= "Your product number" />
                 </div>
+
+                   <div className="flex gap-5 ">
+                  <Input placeholder="None" size="xxlg" width ="xxlg" label= "Revenue category" />
+                    <Input placeholder="None" size="md" width ="md" label= "Your product number" />
+                </div>
+              
 
                 <div className="flex justify-end gap-3 pt-6 border-top">
                   <Button variant="product">Save</Button>
