@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Dropdown from "./drropdown";
 import Dropdownarrow from "./Dropdownarrow";
-import useApi from "../Hooks/useApi";
+
+import usefetch from "../Hooks/usefetch";
 
 export default function Sidebar({ activeUser, onLogout }) {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Sidebar({ activeUser, onLogout }) {
   const handleToggle = (sectionName) => {
     setOpenSection(openSection === sectionName ? null : sectionName);
   };
-  const { loading, error, data } = useApi("/api/sidebar");
+  const { loading, error, data } = usefetch("/api/sidebar");
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

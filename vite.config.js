@@ -10,9 +10,9 @@ export default defineConfig({
     proxy: {
     
       '/api': {
-        target: 'http://localhost:8080', // Send it to your mock server
+        target: 'http://localhost:8080', 
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''), // Remove '/api' before it hits the mock server
+        rewrite: (path) => path.replace(/^\/api/, ''), 
       },
     },}
 })

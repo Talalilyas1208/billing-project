@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-const useApi = (url = null) => {
+const usefetch = (url = null) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -47,4 +47,4 @@ const useApi = (url = null) => {
   return { data, loading, error, request };
 };
 
-export default useApi;
+export default usefetch;
