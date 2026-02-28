@@ -8,6 +8,12 @@ export default function Produts() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [todo, setTodo] = useState([]);
+  const [fromdata ,setfromdata] =useState ({
+    productname:"",
+    price:"",
+    currency:"",
+    description :"" ,
+  })
   const [selectedCurrency, setSelectedCurrency] = useState("");
   const handleChange = (e) => {
     setInput(e.target.value);
