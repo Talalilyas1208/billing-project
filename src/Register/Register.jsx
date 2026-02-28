@@ -87,7 +87,7 @@ export default function Register() {
           placeholder="Password"
           onChange={handleChange}
         />
-        <Button variant="register" onClick={handleRegister} disabled={loading}>
+        <Button variant="login" onClick={handleRegister} disabled={loading}>
           Register
         </Button>
 

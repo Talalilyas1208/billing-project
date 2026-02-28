@@ -3,16 +3,18 @@ export default function Input(props) {
     type = "text",
     placeholder,
     value,
+    name,         
+    onChange,      
     label,
     size = "md",
     width = "full",
   } = props;
 
   const sizeStyles = {
-    sm: "h-8 px-2 text-sm placeholder:text-xs",  
+    sm: "h-8 px-2 text-sm placeholder:text-xs",
     md: "h-10 px-3 text-base placeholder:text-sm",
     lg: "h-12 px-4 text-lg placeholder:text-base",
-    xxlg : "h-14 px-5 text-lg placeholder:text-sm"
+    xxlg: "h-14 px-5 text-lg placeholder:sm", // Adjusted to match your logic
   };
 
   const widthStyles = {
@@ -20,21 +22,25 @@ export default function Input(props) {
     sm: "w-32",
     md: "w-64",
     lg: "w-96",
-    xxlg: "w-109",
+    xxlg: "w-[436px]", // '109' isn't a standard Tailwind class; used arbitrary value
     full: "w-full",
   };
 
   return (
     <div className={`flex flex-col gap-1 ${widthStyles[width]}`}>
       {label && (
-        <label className="text-sm font-medium text-gray-400">{label}</label>
+        <label className="text-sm font-medium text-gray-500">{label}</label>
       )}
       <input
         type={type}
-        placeholder={placeholder}
+        name={name}
         value={value}
-        className={`border border-gray-300 rounded-lg ${sizeStyles[size]} hover:ring-1 hover:ring-black
-    focus:outline-none focus:ring-1 focus:ring-black`}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`border border-gray-300 rounded-lg transition-all
+          ${sizeStyles[size]} 
+          hover:ring-1 hover:ring-black
+          focus:outline-none focus:ring-1 focus:ring-black`}
       />
     </div>
   );
