@@ -33,5 +33,6 @@ export const validation = (formData, isLoginMode) => {
     return "Please enter your full name to register.";
   }
 
+
   return null; 
 };

@@ -4,131 +4,160 @@ import Modal from "../components/Modal";
 import { useState } from "react";
 import usefetch from "../Hooks/usefetch";
 import Select from "../components/Select";
-export default function Produts() {
+import Table from "../components/Table";
+
+export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState("");
-  const [todo, setTodo] = useState([]);
-  const [fromdata ,setfromdata] =useState ({
-    productname:"",
-    price:"",
-    currency:"",
-    description :"" ,
-  })
-  const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+  const [formData, setFormData] = useState({
+    productname: "",
+    price: "",
+    currency: "",
+    description: "",
+    productNumber: "",
+    revenueCategory: "",
+  });
+  const {
+    data: products,
+    loading: productsLoading,
+    refetch: refetchProducts,
+  } = usefetch("/api/products");
+  const {
+    data: currencies,
+    loading: currencyLoading,
+    error: currencyError,
+  } = usefetch("/api/currency");
+  const {
+    data: revenueCategory,
+    loading: revenueloading,
+    error: revenueError,
+  } = usefetch("/api/revnue");
+  const validProducts = products?.filter((p) => p && p.productname) || [];
+
   const handleChange = (e) => {
-    setInput(e.target.value);
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const add = () => {
-    const newtodo = {
-      text: input,
-    };
-    setTodo([newtodo, ...todo]);
-    setInput("");
+  const handleCurrencyChange = (val) => {
+    setFormData((prev) => ({ ...prev, currency: val }));
   };
-  const { data, loading, error } = usefetch("/api/currency");
-  console.log(data);
-  if (loading) return "loading";
-  if (error) return error;
+  const handlerevnue = (val) => {
+    setFormData((prev) => ({ ...prev, revenueCategory: val }));
+  };
+  const handleSave = async () => {
+    setLoadingSubmit(true);
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setIsOpen(false);
+        setFormData({
+          productname: "",
+          price: "",
+          currency: "",
+          description: "",
+          productNumber: "",
+          revenueCategory: "",
+        });
+        if (refetchProducts) refetchProducts();
+      }
+    } catch (err) {
+      console.error("Save failed:", err);
+    } finally {
+      setLoadingSubmit(false);
+    }
+  };
+
+  if (currencyLoading || productsLoading) return null;
+  if (currencyError)
+    return <div className="p-4 text-red-500 text-center">{currencyError}</div>;
+
   const currencyOptions =
-    data?.map((item) => ({
+    currencies?.map((item) => ({
       value: item.code,
-      label: `${item.code} `,
+      label: `${item.code}`,
     })) || [];
+  const revnueoption = revenueCategory?.map((item) => ({
+    value: item.key || item.id || "",
+    label: item.code || item.name || "Select Category",
+  }));
+
   return (
-    <>
-      <div className="flex justify-between items-center p-4">
-        <h1 className="text-4xl font-semibold">Products</h1>
-        <div className="flex gap-6">
-          <div>
-            <Button onClick={() => setIsOpen(true)} variant="product">
-              create product
-            </Button>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between items-center mt-1 mb-3">
-                  <p className="text-[22px] font-normal">Create Product</p>
-
-                  <Button
-                    variant="modal"
-                    onClick={() => setIsOpen(false)}
-                    className="w-auto"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </Button>
-                </div>
-                <div className="flex gap-6">
-                  <Input width="xxlg" label="Name of the product or service" />
-
-                  <Input
-                    width="sm"
-                    placeholder="Unit price"
-                    label="Price"
-                    onChange={handleChange}
-                  />
-                  <Select
-                   
-                    width="sm"
-                    value={selectedCurrency}
-                    onChange={setSelectedCurrency} 
-                    options={currencyOptions} 
-                  />
-                </div>
-
-                <div className="flex gap-5 ">
-                  <Input
-                    placeholder="None"
-                    size="xxlg"
-                    width="xxlg"
-                    label="Description"
-                  />
-                  <Input
-                    placeholder="None"
-                    size="md"
-                    width="md"
-                    label="Your product number"
-                  />
-                </div>
-
-                <div className="flex gap-5 ">
-                  <Input
-                    placeholder="None"
-                    size="xxlg"
-                    width="xxlg"
-                    label="Revenue category"
-                  />
-                  <Input
-                    placeholder="None"
-                    size="md"
-                    width="md"
-                    label="Your product number"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-3 pt-6 border-top">
-                  <Button variant="product">Save</Button>
-                </div>
-              </div>
-            </Modal>
-          </div>
-          <div>Item 2</div>
-          <div>Item 3</div>
-          <div>Item 4</div>
-        </div>
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-10">
+        <h1 className="text-4xl font-semibold text-gray-900">Products</h1>
+        <Button onClick={() => setIsOpen(true)} variant="product">
+          create product
+        </Button>
       </div>
-    </>
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <div className="flex flex-col gap-3">
+          <p className="text-[22px] font-normal">Create Product</p>
+          <div className="flex gap-6">
+            <Input
+              name="productname"
+              value={formData.productname}
+              onChange={handleChange}
+              width="xxlg"
+              label="Name"
+            />
+            <Input
+              name="price"
+              placeholder="Unit price"
+              value={formData.price}
+              onChange={handleChange}
+              width="sm"
+              label="Price"
+            />
+            <Select
+              width="sm"
+              value={formData.currency}
+              onChange={handleCurrencyChange}
+              options={currencyOptions}
+            />
+          </div>
+          <div className="flex gap-5">
+            <Input
+              name="description"
+              placeholder="NONE"
+              value={formData.description}
+              onChange={handleChange}
+              width="xxlg"
+              label="Description"
+            />
+            <Input
+              name="productNumber"
+              value={formData.productNumber}
+              onChange={handleChange}
+              width="md"
+              label="Product Number"
+            />
+          </div>
+          <div className="flex gap-5">
+            <Select
+              width="61%"
+              label="Revenue Category"
+              value={formData.revenueCategory}
+              onChange={handlerevnue}
+              options={revnueoption}
+            />
+          </div>
+          <div className="flex justify-end pt-6">
+            <Button onClick={handleSave} disabled={loadingSubmit}>
+              {loadingSubmit ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      <Table products={validProducts} />
+    </div>
   );
 }

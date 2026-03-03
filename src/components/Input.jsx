@@ -14,7 +14,7 @@ export default function Input(props) {
     sm: "h-8 px-2 text-sm placeholder:text-xs",
     md: "h-10 px-3 text-base placeholder:text-sm",
     lg: "h-12 px-4 text-lg placeholder:text-base",
-    xxlg: "h-14 px-5 text-lg placeholder:sm", // Adjusted to match your logic
+    xxlg: "h-14 px-5 text-lg placeholder:sm", 
   };
 
   const widthStyles = {
@@ -22,7 +22,7 @@ export default function Input(props) {
     sm: "w-32",
     md: "w-64",
     lg: "w-96",
-    xxlg: "w-[436px]", // '109' isn't a standard Tailwind class; used arbitrary value
+    xxlg: "w-[436px]",
     full: "w-full",
   };
 
