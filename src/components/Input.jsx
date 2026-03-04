@@ -8,6 +8,8 @@ export default function Input(props) {
     label,
     size = "md",
     width = "full",
+     className = "",     
+    containerClass = "", 
   } = props;
 
   const sizeStyles = {
@@ -26,22 +28,23 @@ export default function Input(props) {
     full: "w-full",
   };
 
-  return (
-    <div className={`flex flex-col gap-1 ${widthStyles[width]}`}>
-      {label && (
-        <label className="text-sm font-medium text-gray-500">{label}</label>
-      )}
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`border border-gray-300 rounded-lg transition-all
-          ${sizeStyles[size]} 
-          hover:ring-1 hover:ring-black
-          focus:outline-none focus:ring-1 focus:ring-black`}
-      />
-    </div>
-  );
+ return (
+  <div className={`flex flex-col gap-1 ${widthStyles[width]} ${containerClass}`}>
+    {label && (
+      <label className="text-sm font-medium text-gray-500">{label}</label>
+    )}
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`border border-gray-300 rounded-lg transition-all
+        ${sizeStyles[size]}
+        hover:ring-1 hover:ring-black
+        focus:outline-none focus:ring-1 focus:ring-black
+        ${className}`} 
+    />
+  </div>
+);
 }

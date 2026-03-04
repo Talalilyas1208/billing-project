@@ -17,17 +17,10 @@ export default function Products() {
     description: "",
     productNumber: "",
     revenueCategory: "",
+     supplier : ""
   });
-  const {
-    data: products,
-    loading: productsLoading,
-    refetch: refetchProducts,
-  } = usefetch("/api/products");
-  const {
-    data: currencies,
-    loading: currencyLoading,
-    error: currencyError,
-  } = usefetch("/api/currency");
+  const { data: products,loading: productsLoading,refetch: refetchProducts,} = usefetch("/api/products");
+  const {data: currencies,loading: currencyLoading,error: currencyError,} = usefetch("/api/currency");
   const {
     data: revenueCategory,
     loading: revenueloading,
@@ -63,7 +56,8 @@ export default function Products() {
           currency: "",
           description: "",
           productNumber: "",
-          revenueCategory: "",
+         revenueCategory: "",
+         supplier : ""
         });
         if (refetchProducts) refetchProducts();
       }
@@ -87,6 +81,7 @@ export default function Products() {
     value: item.key || item.id || "",
     label: item.code || item.name || "Select Category",
   }));
+  
 
   return (
     <div className="p-4">
@@ -134,21 +129,37 @@ export default function Products() {
             />
             <Input
               name="productNumber"
+             
               value={formData.productNumber}
               onChange={handleChange}
               width="md"
               label="Product Number"
+              placeholder="nothing"
             />
           </div>
-          <div className="flex gap-5">
-            <Select
-              width="61%"
-              label="Revenue Category"
-              value={formData.revenueCategory}
-              onChange={handlerevnue}
-              options={revnueoption}
-            />
+          <div className="flex gap-4 w-full items-end">
+            <div className="flex-[4]">
+              <Select
+                width="100%"
+                label="Revenue Category"
+                value={formData.revenueCategory}
+                onChange={handlerevnue}
+                options={revnueoption}
+              />
+            </div>
+
+            <div className="flex-[2] ">
+              <Input
+                name="supplier"
+                label="Your supplier's product number"
+                 placeholder="nothing"
+                   value={formData.supplier}
+                onChange={handleChange}
+                width="80%"
+              />
+            </div>
           </div>
+
           <div className="flex justify-end pt-6">
             <Button onClick={handleSave} disabled={loadingSubmit}>
               {loadingSubmit ? "Saving..." : "Save"}

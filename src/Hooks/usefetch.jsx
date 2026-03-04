@@ -5,7 +5,6 @@ const usefetch = (url = null) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 🔹 Core request function
   const request = useCallback(
     async (customUrl = url, method = "GET", body = null) => {
       setLoading(true);
@@ -21,8 +20,6 @@ const usefetch = (url = null) => {
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
         const result = await response.json();
-
-        // ✅ If it's GET → update state
         if (method === "GET") {
           setData(result);
         }
@@ -38,14 +35,12 @@ const usefetch = (url = null) => {
     [url]
   );
 
-  // 🔹 Auto fetch on mount
   useEffect(() => {
     if (url) {
       request(url, "GET");
     }
   }, [url, request]);
 
-  // 🔹 Manual refetch helper
   const refetch = useCallback(() => {
     if (url) request(url, "GET");
   }, [url, request]);
