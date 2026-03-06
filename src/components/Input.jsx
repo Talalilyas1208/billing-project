@@ -1,50 +1,63 @@
+
+import { Input as AntInput, InputNumber } from "antd";
+
 export default function Input(props) {
   const {
     type = "text",
     placeholder,
     value,
-    name,         
-    onChange,      
+    name,
+    onChange,
     label,
-    size = "md",
-    width = "full",
-     className = "",     
-    containerClass = "", 
+    size,
+    multiline = false,
+    rows = 1,
+
+    maxRows = 1,
   } = props;
 
-  const sizeStyles = {
-    sm: "h-8 px-2 text-sm placeholder:text-xs",
-    md: "h-10 px-3 text-base placeholder:text-sm",
-    lg: "h-12 px-4 text-lg placeholder:text-base",
-    xxlg: "h-14 px-5 text-lg placeholder:sm", 
+
+  const handleNumberChange = (newValue) => {
+    if (onChange) {
+      onChange({
+        target: {
+          name: name,
+          value: newValue,
+        },
+      });
+    }
   };
 
-  const widthStyles = {
-    xs: "w-18",
-    sm: "w-32",
-    md: "w-64",
-    lg: "w-96",
-    xxlg: "w-[436px]",
-    full: "w-full",
-  };
+  let InputComponent;
+  if (multiline) {
+    InputComponent = AntInput.TextArea;
+  } else if (type === "password") {
+    InputComponent = AntInput.Password;
+  } else if (type === "number") {
+    InputComponent = InputNumber;
+  } else {
+    InputComponent = AntInput;
+  }
 
- return (
-  <div className={`flex flex-col gap-1 ${widthStyles[width]} ${containerClass}`}>
-    {label && (
-      <label className="text-sm font-medium text-gray-500">{label}</label>
-    )}
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={`border border-gray-300 rounded-lg transition-all
-        ${sizeStyles[size]}
-        hover:ring-1 hover:ring-black
-        focus:outline-none focus:ring-1 focus:ring-black
-        ${className}`} 
-    />
-  </div>
-);
+  return (
+    <div className="flex flex-col">
+      {label && <label className="text-gray-400">{label}</label>}
+
+  <InputComponent
+  {...(type !== "number" ? { type } : {})}
+  name={name}
+  value={value}
+  placeholder={placeholder}
+  size={size}
+  style={{ width: "100%" }}
+  onChange={type === "number" ? handleNumberChange : onChange}
+  {...(type === "number"
+    ? { precision: 2, }
+    : {})}
+  {...(multiline
+    ? { autoSize: { minRows: rows, maxRows: maxRows } }
+    : {})}
+/>
+    </div>
+  );
 }

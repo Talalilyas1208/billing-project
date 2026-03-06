@@ -10,7 +10,7 @@ function Modal(props) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-      className="bg-white w-full max-w-3xl p-6 rounded-xl shadow-xl mx-auto"
+      className="bg-white w-full  max-w-4xl  p-6 rounded-xl shadow-xl mx-auto"
       >
         {children}
       </div>
