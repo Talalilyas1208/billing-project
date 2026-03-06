@@ -1,4 +1,3 @@
-
 import { Input as AntInput, InputNumber } from "antd";
 
 export default function Input(props) {
@@ -15,7 +14,6 @@ export default function Input(props) {
 
     maxRows = 1,
   } = props;
-
 
   const handleNumberChange = (newValue) => {
     if (onChange) {
@@ -43,21 +41,19 @@ export default function Input(props) {
     <div className="flex flex-col">
       {label && <label className="text-gray-400">{label}</label>}
 
-  <InputComponent
-  {...(type !== "number" ? { type } : {})}
-  name={name}
-  value={value}
-  placeholder={placeholder}
-  size={size}
-  style={{ width: "100%" }}
-  onChange={type === "number" ? handleNumberChange : onChange}
-  {...(type === "number"
-    ? { precision: 2, }
-    : {})}
-  {...(multiline
-    ? { autoSize: { minRows: rows, maxRows: maxRows } }
-    : {})}
-/>
+      <InputComponent
+        {...(type !== "number" ? { type } : {})}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        size={size}
+        style={{ width: "100%" }}
+        onChange={type === "number" ? handleNumberChange : onChange}
+        {...(type === "number" ? { precision: 2 } : {})}
+        {...(multiline
+          ? { autoSize: { minRows: rows, maxRows: maxRows } }
+          : {})}
+      />
     </div>
   );
 }
