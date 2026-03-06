@@ -11,6 +11,7 @@ export default function Input(props) {
     size,
     multiline = false,
     rows = 1,
+     showControls = true,
 
     maxRows = 1,
   } = props;
@@ -42,12 +43,13 @@ export default function Input(props) {
       {label && <label className="text-gray-400">{label}</label>}
 
       <InputComponent
+      className="shadow-md rounded-md p-2"
         {...(type !== "number" ? { type } : {})}
         name={name}
         value={value}
         placeholder={placeholder}
         size={size}
-        style={{ width: "100%" }}
+       controls={showControls}
         onChange={type === "number" ? handleNumberChange : onChange}
         {...(type === "number" ? { precision: 2 } : {})}
         {...(multiline

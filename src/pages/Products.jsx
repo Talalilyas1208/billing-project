@@ -177,7 +177,7 @@ export default function Products() {
                       name="price"
                       type="number"
                       value={formData.price}
-                     
+                     controls={false}
                       onChange={handleChange}
                       size="large"/>
                   </Col>
