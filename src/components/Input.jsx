@@ -9,10 +9,12 @@ export default function Input(props) {
     onChange,
     label,
     size = "large",
+    style = {},
     multiline = false,
     rows = 1,
     showControls = false,
     maxRows = 1,
+    
   } = props;
 
   const handleNumberChange = (newValue) => {
@@ -54,7 +56,7 @@ export default function Input(props) {
         {...(type !== "number" && type !== "unitnumber" ? { type } : {})}
         name={name}
         value={value}
-         style={{ width: "100%" }}
+         style={{ width: "100%" , ...style }}
         placeholder={placeholder}
         size={size}
         onChange={

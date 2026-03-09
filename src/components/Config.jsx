@@ -14,6 +14,11 @@ const Config = ({ children}) => (
         activeBorderColor: '#108dfaff',
         hoverBorderColor: '#000000ff',
       },
+    Multilineinput: {
+    activeBorderColor: '#108dfaff',
+        hoverBorderColor: '#000000ff',
+    },
+    
     },
   }}
   >
