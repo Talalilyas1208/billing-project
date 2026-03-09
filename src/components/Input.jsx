@@ -9,6 +9,7 @@ export default function Input(props) {
     onChange,
     label,
     size = "large",
+    className = "",
     style = {},
   } = props;
 
@@ -20,13 +21,13 @@ export default function Input(props) {
       {label && <label className="text-gray-400">{label}</label>}
 
       <InputComponent
-        className="shadow-md rounded-md w-full"
+        className={{...className}}
         type={type}
         name={name}
         value={value}
         placeholder={placeholder}
         size={size}
-        style={{ width: "100%", ...style }}
+        style={{ ...style }}
         onChange={onChange}
       />
     </div>

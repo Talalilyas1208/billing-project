@@ -7,13 +7,11 @@ export default function Numbersinput(props) {
     value,
     onChange,
     placeholder,
-    size = "large",
-  
-    precision = 2,
+    antUI = {},
     showControls = false,
-    width = "100%",
+    style,
+    className,
   } = props;
-
   const handleChange = (newValue) => {
     if (onChange) {
       onChange({
@@ -24,21 +22,18 @@ export default function Numbersinput(props) {
       });
     }
   };
-
   return (
-    <div className="flex flex-col" style={{ width }}>
+    <div className={`flex flex-col ${className}`}>
       {label && <label className="text-gray-400">{label}</label>}
 
       <AntInputNumber
-        className="shadow-md rounded-md w-full"
+        style={{ ...style }}
         name={name}
         value={value}
         placeholder={placeholder}
-        size={size}
         controls={showControls}
-        precision={precision}
-      
         onChange={handleChange}
+        {...antUI}
       />
     </div>
   );

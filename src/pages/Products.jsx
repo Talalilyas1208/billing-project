@@ -1,6 +1,6 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useEffect } from "react";
-import { Row, Col ,Space } from "antd";
+import { Row, Col, Space } from "antd";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
@@ -11,6 +11,7 @@ import usefetch from "../Hooks/usefetch";
 import Config from "../components/Config";
 import Multilineinput from "../components/Multilineinput";
 import Numbersinput from "../components/Numbersinput";
+import Createproductfrom from "../components/Createproductfrom";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,10 @@ export default function Products() {
   });
 
   const {
-    data: products,loading: productsLoading, refetch: refetchProducts, } = usefetch("/api/products");
+    data: products,
+    loading: productsLoading,
+    refetch: refetchProducts,
+  } = usefetch("/api/products");
 
   const {
     data: currencies,
@@ -106,119 +110,45 @@ export default function Products() {
       </div>
     );
   }
-const currencyOptions =
-  currencies?.map((item) => ({
-    value: item.code, 
-    label: item.code,
-  })) || [];
+  const currencyOptions =
+    currencies?.map((item) => ({
+      value: item.code,
+      label: item.code,
+    })) || [];
 
-const revenueOptions =
-  revenueCategory?.map((item) => ({
-  
-    value: String(item.id || item.key || ""), 
-    label: item.name || item.code || "Select Category",
-  })) || [];
-    
+  const revenueOptions =
+    revenueCategory?.map((item) => ({
+      value: String(item.id || item.key || ""),
+      label: item.name || item.code || "Select Category",
+    })) || [];
+
   return (
     <Config>
-      <div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 40,
-          }}
-        >
-          <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
-
-          <Button onClick={() => setIsOpen(true)} variant="product">
-            Create Product
-          </Button>
-        </div>
+      <div style={{ padding: "0 24px" }}>
+        <Row
+          justify="space-between"
+          align="middle"
+          style={{ marginBottom: 40 }}>
+          <Col>
+            <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
+          </Col>
+          <Col>
+            <Button onClick={() => setIsOpen(true)} variant="product">
+              Create Product
+            </Button>
+          </Col>
+        </Row>
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <h2 style={{ fontSize: 22 }}>Create Product</h2>
-            <Row gutter={16}>
-              <Col span={14}>
-                <Row gutter={[0, 16]}>
-                  <Col span={24}>
-                    <Input
-                      label="Name"
-                      name={"productname"}
-                      value={formData.productname}
-                      onChange={handleChange}
-                      antUI ={{size:"large"}}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <Multilineinput
-                      label={"Description"}
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      placeholder={"None"} 
-                        antUI = {{size :"large"}}
-                        />
-                  </Col>
-                  <Col span={24}>
-                    <Select
-                      showSearch
-                      label={"Revenue Category"}
-                     value={formData.revenueCategory}
-                      onChange={handleRevenueChange}
-                      options={revenueOptions}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-              <Space size="middle"></Space>
-              <Col span={10} >
-                <Row gutter={[23, 16]}>
-                  <Col span={16}>
-                    <Numbersinput
-                      label={"Price"}
-                      name="price"
-                      type="number"
-                      value={formData.price}
-                     showControls={false}
-                      onChange={handleChange}
-                        antUI = {{size :"large" ,width:"100%"}}/>
-                  </Col>
-                  <Col span={8}>
-                    <Select
-                      showSearch
-                      label={"Currency"}
-                      value={formData.currency}
-                      onChange={handleCurrencyChange}
-                      options={currencyOptions}/>
-                  </Col>
-                  <Col span={24}>
-                    <Input
-                      label={"Product Number"}
-                      name="productNumber"
-                      value={formData.productNumber}
-                      onChange={handleChange}
-                      antUI = {{size :"large"}}
-                     />
-                  </Col>
-                  <Col span={24}>
-                    <Input
-                      label={"Supplier Product Number"}
-                      name="supplier"
-                      value={formData.supplier}
-                      onChange={handleChange}
-                      antUI={{size: "large", width: "80%"}}
-                      />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Button onClick={handleSave} disabled={loadingSubmit}>
-                {loadingSubmit ? "Saving..." : "Save"}
-              </Button>
-            </div>
-          </div>
+           <Createproductfrom 
+            formData={formData}
+            handleChange={handleChange}
+            handleCurrencyChange={handleCurrencyChange}
+            handleRevenueChange={handleRevenueChange}
+            currencyOptions={currencyOptions}
+            revenueOptions={revenueOptions}
+            handleSave={handleSave}
+            loadingSubmit={loadingSubmit}
+          />
         </Modal>
 
         <Table products={validProducts} />

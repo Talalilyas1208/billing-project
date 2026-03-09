@@ -1,33 +1,22 @@
-import React from 'react';
-import { ConfigProvider, Flex, Form } from 'antd';
+import React from "react";
+import { ConfigProvider } from "antd";
 
-const Config = ({ children}) => (
- <ConfigProvider
-  theme={{
-    token: {
-      colorPrimary: '#108dfaff',
-    
-
-    },
-    components: {
-      Input: {
-        activeBorderColor: '#108dfaff',
-        hoverBorderColor: '#000000ff',
+const Config = ({ children }) => (
+  <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: "#108dfaff",
       },
-    Multilineinput: {
-    activeBorderColor: '#108dfaff',
-        hoverBorderColor: '#000000ff',
-    },
-    
-    },
-  }}
+      components: {
+        Input: {
+          activeBorderColor: "#108dfaff",
+          hoverBorderColor: "#000000ff",
+        },
+      },
+    }}
   >
-   
-    <Flex >
-      <Form  >
-        {children}
-      </Form>
-    </Flex>
+    {children}
   </ConfigProvider>
 );
-export default  Config ;
+
+export default Config;
