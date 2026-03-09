@@ -8,11 +8,10 @@ export default function Input(props) {
     name,
     onChange,
     label,
-    size,
+    size = "large",
     multiline = false,
     rows = 1,
-     showControls = true,
-
+    showControls = false,
     maxRows = 1,
   } = props;
 
@@ -26,35 +25,41 @@ export default function Input(props) {
       });
     }
   };
-
   let InputComponent;
+  let multilines = {};
+
   if (multiline) {
     InputComponent = AntInput.TextArea;
+    multilines = { autoSize: { minRows: rows, maxRows: maxRows } };
   } else if (type === "password") {
     InputComponent = AntInput.Password;
   } else if (type === "number") {
     InputComponent = InputNumber;
+
+    multilines = { controls: showControls, precision: 2 };
+  } else if (type === "unitnumber") {
+    InputComponent = InputNumber;
+
+    multiline = { controls: showControls, precision: 0 };
   } else {
     InputComponent = AntInput;
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col " style={{width:"100%"}}>
       {label && <label className="text-gray-400">{label}</label>}
 
       <InputComponent
-      className="shadow-md rounded-md p-2"
-        {...(type !== "number" ? { type } : {})}
+        className="shadow-md rounded-md  w-full"
+        {...(type !== "number" && type !== "unitnumber" ? { type } : {})}
         name={name}
         value={value}
+         style={{ width: "100%" }}
         placeholder={placeholder}
         size={size}
-       controls={showControls}
-        onChange={type === "number" ? handleNumberChange : onChange}
-        {...(type === "number" ? { precision: 2 } : {})}
-        {...(multiline
-          ? { autoSize: { minRows: rows, maxRows: maxRows } }
-          : {})}
+        onChange={
+          type === "number" || type === "unitnumber" ? handleNumberChange: onChange}
+        {...multilines}
       />
     </div>
   );

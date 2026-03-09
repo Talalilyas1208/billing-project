@@ -1,6 +1,6 @@
 import { useState} from "react";
 import { useEffect } from "react";
-import { Row, Col } from "antd";
+import { Row, Col ,Space } from "antd";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
@@ -17,10 +17,10 @@ export default function Products() {
   const [formData, setFormData] = useState({
     productname: "",
     price: "",
-    currency: "",
+    currency: "PKR",
     description: "",
     productNumber: "",
-    revenueCategory: "",
+    revenueCategory: "1",
     supplier: "",
   });
 
@@ -104,16 +104,18 @@ export default function Products() {
       </div>
     );
   }
-  const currencyOptions =
-    currencies?.map((item) => ({
-      value: item.code,
-      label: item.code,
-    })) || [];
-  const revenueOptions =
-    revenueCategory?.map((item) => ({
-      value: item.key || item.id || "1",
-      label: item.code || item.name || "Select Category",
-    })) || [];
+const currencyOptions =
+  currencies?.map((item) => ({
+    value: item.code, 
+    label: item.code,
+  })) || [];
+
+const revenueOptions =
+  revenueCategory?.map((item) => ({
+  
+    value: String(item.id || item.key || ""), 
+    label: item.name || item.code || "Select Category",
+  })) || [];
     
   return (
     <Config>
@@ -144,8 +146,6 @@ export default function Products() {
                      
                       value={formData.productname}
                       onChange={handleChange}
-                       multiline
-                      size="large"
                     />
                   </Col>
                   <Col span={24}>
@@ -154,23 +154,24 @@ export default function Products() {
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
-                      size={"large"}
-                       multiline
+                      rows ={"2"}
+                       multiline = {"false"}
                       placeholder={"None"} />
                   </Col>
                   <Col span={24}>
                     <Select
                       showSearch
                       label={"Revenue Category"}
-                      value={formData.revenueCategory}
+                     value={formData.revenueCategory}
                       onChange={handleRevenueChange}
                       options={revenueOptions}
                     />
                   </Col>
                 </Row>
               </Col>
-              <Col span={10}>
-                <Row gutter={[16, 16]}>
+              <Space size="middle"></Space>
+              <Col span={10} >
+                <Row gutter={[23, 16]}>
                   <Col span={16}>
                     <Input
                       label={"Price"}

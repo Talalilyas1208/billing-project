@@ -5,18 +5,20 @@ const Select = ({
   options = [],
   onChange,
   placeholder = "Select...",
- width = "",
+  label,
   showSearch = false,
 }) => {
   return (
-    <div  className="mt-5">
+    <div className="flex flex-col"> 
+     
+      {label && <label className="text-gray-400 ">{label}</label>}
+      
       <AntSelect
-        value={value}
+        value={value || undefined} 
         onChange={onChange}
         placeholder={placeholder}
         options={options}
         showSearch={showSearch}
-     
         style={{ width: "100%", height: 42 }}
         allowClear
       />
