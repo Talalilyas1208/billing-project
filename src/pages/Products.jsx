@@ -9,6 +9,7 @@ import Table from "../components/Table";
 
 import usefetch from "../Hooks/usefetch";
 import Config from "../components/Config";
+import Multilineinput from "../components/Multilineinput";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -146,17 +147,20 @@ const revenueOptions =
                      
                       value={formData.productname}
                       onChange={handleChange}
+                      antUI ={{size:"large"}}
                     />
                   </Col>
                   <Col span={24}>
-                    <Input
+                    <Multilineinput
                       label={"Description"}
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
-                      rows ={"2"}
+                     
                        multiline = {"false"}
-                      placeholder={"None"} />
+                      placeholder={"None"} 
+                        antUI = {{row : "2"}}
+                        />
                   </Col>
                   <Col span={24}>
                     <Select
@@ -178,9 +182,9 @@ const revenueOptions =
                       name="price"
                       type="number"
                       value={formData.price}
-                     controls={false}
+                     showControls={false}
                       onChange={handleChange}
-                      size="large"/>
+                        antUI = {{size :"large" ,width:"100%"}}/>
                   </Col>
                   <Col span={8}>
                     <Select
@@ -196,7 +200,8 @@ const revenueOptions =
                       name="productNumber"
                       value={formData.productNumber}
                       onChange={handleChange}
-                      size="large" />
+                      antUI = {{size :"large"}}
+                     />
                   </Col>
                   <Col span={24}>
                     <Input
@@ -204,7 +209,8 @@ const revenueOptions =
                       name="supplier"
                       value={formData.supplier}
                       onChange={handleChange}
-                      size="large"/>
+                      antUI={{size: "large", width: "80%"}}
+                      />
                   </Col>
                 </Row>
               </Col>
