@@ -10,6 +10,7 @@ import Table from "../components/Table";
 import usefetch from "../Hooks/usefetch";
 import Config from "../components/Config";
 import Multilineinput from "../components/Multilineinput";
+import Numbersinput from "../components/Numbersinput";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -144,7 +145,6 @@ const revenueOptions =
                     <Input
                       label="Name"
                       name={"productname"}
-                     
                       value={formData.productname}
                       onChange={handleChange}
                       antUI ={{size:"large"}}
@@ -156,10 +156,8 @@ const revenueOptions =
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
-                     
-                       multiline = {"false"}
                       placeholder={"None"} 
-                        antUI = {{row : "2"}}
+                        antUI = {{size :"large"}}
                         />
                   </Col>
                   <Col span={24}>
@@ -177,7 +175,7 @@ const revenueOptions =
               <Col span={10} >
                 <Row gutter={[23, 16]}>
                   <Col span={16}>
-                    <Input
+                    <Numbersinput
                       label={"Price"}
                       name="price"
                       type="number"

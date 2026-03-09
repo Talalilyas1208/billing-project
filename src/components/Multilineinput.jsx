@@ -1,28 +1,25 @@
-import { Typography } from 'antd';
-import { Input } from 'antd';
-export default function Multilineinput(props) {
+import { Input } from "antd";
 
-    
- const {
+export default function Multilinenput(props) {
+  const {
+    placeholder,
     value,
+    name,
     onChange,
-    placeholder,type="text"
- } = props;
-
-    
-
-const { TextArea } = Input;
-    return (
-
-  <>
-      <TextArea
+    label,
+    antUI = {}
+  } = props;
+  return (
+    <>
+      {label && <label className="text-gray-400">{label}</label>}
+      <Input.TextArea
+        name={name}
         value={value}
+        placeholder={placeholder}
         onChange={onChange}
-      placeholder={placeholder}
-      type={type}
-        autoSize={{ minRows: 3, maxRows: 5 }}
+        autoSize={{ minRows: 1, maxRows: 1 }}
+        {...antUI}
       />
     </>
-        
-    )
+  );
 }

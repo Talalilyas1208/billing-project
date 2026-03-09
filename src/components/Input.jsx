@@ -1,4 +1,4 @@
-import { Input as AntInput, InputNumber } from "antd";
+import { Input as AntInput } from "antd";
 
 export default function Input(props) {
   const {
@@ -10,58 +10,24 @@ export default function Input(props) {
     label,
     size = "large",
     style = {},
-    multiline = false,
-    rows = 1,
-    showControls = false,
-    maxRows = 1,
-    
   } = props;
 
-  const handleNumberChange = (newValue) => {
-    if (onChange) {
-      onChange({
-        target: {
-          name: name,
-          value: newValue,
-        },
-      });
-    }
-  };
-  let InputComponent;
-  let multilines = {};
-
-  if (multiline) {
-    InputComponent = AntInput.TextArea;
-    multilines = { autoSize: { minRows: rows, maxRows: maxRows } };
-  } else if (type === "password") {
-    InputComponent = AntInput.Password;
-  } else if (type === "number") {
-    InputComponent = InputNumber;
-
-    multilines = { controls: showControls, precision: 2 };
-  } else if (type === "unitnumber") {
-    InputComponent = InputNumber;
-
-    multiline = { controls: showControls, precision: 0 };
-  } else {
-    InputComponent = AntInput;
-  }
+  const InputComponent =
+    type === "password" ? AntInput.Password : AntInput;
 
   return (
-    <div className="flex flex-col " style={{width:"100%"}}>
+    <div className="flex flex-col" style={{ width: "100%" }}>
       {label && <label className="text-gray-400">{label}</label>}
 
       <InputComponent
-        className="shadow-md rounded-md  w-full"
-        {...(type !== "number" && type !== "unitnumber" ? { type } : {})}
+        className="shadow-md rounded-md w-full"
+        type={type}
         name={name}
         value={value}
-         style={{ width: "100%" , ...style }}
         placeholder={placeholder}
         size={size}
-        onChange={
-          type === "number" || type === "unitnumber" ? handleNumberChange: onChange}
-        {...multilines}
+        style={{ width: "100%", ...style }}
+        onChange={onChange}
       />
     </div>
   );
