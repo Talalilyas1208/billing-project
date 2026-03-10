@@ -7,18 +7,22 @@ export default function Multilinenput(props) {
     name,
     onChange,
     label,
-    antUI = {}
+    antUI = {},
+    style,
+    className
   } = props;
+  const { minRows, maxRows, ...AntUI } = antUI;
   return (
     <>
-      {label && <label className="text-gray-400">{label}</label>}
+      {label && <label className={className}>{label}</label>}
       <Input.TextArea
         name={name}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        autoSize={{ minRows: 1, maxRows: 1 }}
-        {...antUI}
+        autoSize={{minRows,maxRows }}
+        style={{...style}}
+        {...AntUI}
       />
     </>
   );

@@ -17,8 +17,8 @@ export default function Input(props) {
     type === "password" ? AntInput.Password : AntInput;
 
   return (
-    <div className="flex flex-col" style={{ width: "100%" }}>
-      {label && <label className="text-gray-400">{label}</label>}
+    <div >
+      {label && <label className={className}>{label}</label>}
 
       <InputComponent
         className={{...className}}

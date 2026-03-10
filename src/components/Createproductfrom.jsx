@@ -30,7 +30,7 @@ export default function Createproductfrom(props) {
                 value={formData.productname}
                 onChange={handleChange}
                 antUI={{ size: "large" }}
-                className="shadow-md rounded-md w-full"
+                className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -46,7 +46,8 @@ export default function Createproductfrom(props) {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder={"None"}
-                antUI={{ row: "2" }}
+                  className=" text-gray-400"
+                antUI={{minRows: 2, maxRows: 3 , size:"large"}}
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -83,6 +84,7 @@ export default function Createproductfrom(props) {
 
                   precision: 2,
                 }}
+                 className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -108,6 +110,7 @@ export default function Createproductfrom(props) {
                 value={formData.productNumber}
                 onChange={handleChange}
                 antUI={{ size: "large" }}
+                 className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -123,6 +126,7 @@ export default function Createproductfrom(props) {
                 value={formData.supplier}
                 onChange={handleChange}
                 antUI={{ size: "large", width: "80%" }}
+                 className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",

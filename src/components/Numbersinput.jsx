@@ -23,8 +23,8 @@ export default function Numbersinput(props) {
     }
   };
   return (
-    <div className={`flex flex-col ${className}`}>
-      {label && <label className="text-gray-400">{label}</label>}
+    <div className={ className}>
+      {label && <label className={className}>{label}</label>}
 
       <AntInputNumber
         style={{ ...style }}

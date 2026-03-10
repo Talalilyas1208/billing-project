@@ -75,18 +75,18 @@ export default function Register() {
         <Input
           name="displayName"
           placeholder="Full Name"
-          onChange={handleChange} size={"large"}/>
+          onChange={handleChange}   antUI = {{size:"large"}}/>
         <Input
           name="phonenumber"
           placeholder="Phone Number"
           onChange={handleChange}size={"large"} />
-        <Input name="email" placeholder="Email" onChange={handleChange} size={"large"}/>
+        <Input name="email" placeholder="Email" onChange={handleChange}   antUI = {{size:"large"}}/>
         <Input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleChange}
-          size={"large"}  
+       antUI = {{size:"large"}}
         />
         <Button variant="login" onClick={handleRegister} disabled={loading}>
           Register

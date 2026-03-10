@@ -63,14 +63,14 @@
             type="email"
             placeholder="Email"
             onChange={handleChange}
-            size={"large"} />
+             antUI = {{size:"large"}}/>
           
         <Input
         name="password" 
           type="password" 
           placeholder="Password" 
           onChange={handleChange}
-           size={"large"}
+             antUI = {{size:"large"}}
           errors = {errors}/>
           <Button
           variant="login"
