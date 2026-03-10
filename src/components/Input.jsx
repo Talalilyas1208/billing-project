@@ -8,7 +8,7 @@ export default function Input(props) {
     name,
     onChange,
     label,
-    size = "large",
+   antUI,
     className = "",
     style = {},
   } = props;
@@ -26,8 +26,8 @@ export default function Input(props) {
         name={name}
         value={value}
         placeholder={placeholder}
-        size={size}
         style={{ ...style }}
+        {...antUI }
         onChange={onChange}
       />
     </div>
