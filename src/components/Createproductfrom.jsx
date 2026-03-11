@@ -8,10 +8,10 @@ import Numbersinput from "./Numbersinput";
 import usefetch from "../Hooks/usefetch";
 
 export default function Createproductfrom(props) {
-  // We receive these from the parent now
+ 
   const {  refetchProducts, onClose } = props;
 
-  // Shifted exactly from Products component
+  
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [formData, setFormData] = useState({
     productname: "",
@@ -58,7 +58,7 @@ export default function Createproductfrom(props) {
       });
 
       if (response.ok) {
-        // Shifted logic: Close modal, reset form, and refetch
+       
         onClose(); 
 
         setFormData({
