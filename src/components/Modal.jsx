@@ -1,21 +1,22 @@
-function Modal(props) {
-  const { isOpen, onClose, children } = props;
+import { Modal } from "antd";
 
-  if (!isOpen) return null;
 
+
+function Modals({ isOpen, onClose, children, title = "Create New Product" }) {
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 flex items-start justify-start bg-black/50 p-20"
+    <Modal
+      title={title}
+      centered
+      open={isOpen}      
+      onCancel={onClose}   
+      footer={null}       
+      destroyOnClose     
+      width={800}          
     >
-      <div
-        onClick={(e) => e.stopPropagation()}
-      className="bg-white w-full  max-w-3xl  p-6 rounded-xl shadow-xl mx-auto"
-      >
-        {children}
-      </div>
-    </div>
+      {children}
+    </Modal>
   );
 }
 
-export default Modal;
+export default Modals;
+

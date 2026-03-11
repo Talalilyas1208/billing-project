@@ -6,6 +6,7 @@ import Select from "./Select";
 import Multilineinput from "./Multilineinput";
 import Numbersinput from "./Numbersinput";
 import usefetch from "../Hooks/usefetch";
+import { Form } from "antd";
 
 export default function Createproductfrom(props) {
  
@@ -106,7 +107,7 @@ export default function Createproductfrom(props) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <h2 style={{ fontSize: 22 }}>Create Product</h2>
-
+      <Form>
       <Row gutter={16}>
         <Col span={14}>
           <Row gutter={[0, 16]}>
@@ -202,6 +203,14 @@ export default function Createproductfrom(props) {
                   borderRadius: "0.5rem",
                   width: "100%",
                 }}
+                  rules={[
+                    {
+                      required: true,
+                      whitespace: true,
+                   
+                      
+                    },
+                  ]}
               />
             </Col>
 
@@ -223,7 +232,7 @@ export default function Createproductfrom(props) {
           </Row>
         </Col>
       </Row>
-
+</Form>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button onClick={handleSave} disabled={loadingSubmit}>
           {loadingSubmit ? "Saving..." : "Save"}

@@ -1,30 +1,23 @@
 import { useState } from "react";
 import { Row, Col } from "antd";
 import Button from "../components/Button";
-import Modal from "../components/Modal";
+import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../Hooks/usefetch";
 import Config from "../components/Config";
 import Createproductfrom from "../components/Createproductfrom";
 
 export default function Products() {
-  // 1. Local state only for the Modal visibility
+
   const [isOpen, setIsOpen] = useState(false);
 
-  // 2. Data fetching remains here to feed the Table and the Form options
   const {
     data: products,
     loading: productsLoading,
     refetch: refetchProducts,
   } = usefetch("/api/products");
-
-
-
   if ( productsLoading ) return null;
   
-  
-
-
 
   const validProducts = products?.filter((p) => p && p.productname) || [];
 
@@ -45,7 +38,11 @@ export default function Products() {
           </Col>
         </Row>
 
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+     <Modals 
+          isOpen={isOpen} 
+          onClose={() => setIsOpen(false)} 
+          title="Add New Product"
+        >
           
            <Createproductfrom 
            
@@ -53,7 +50,7 @@ export default function Products() {
             refetchProducts={refetchProducts}
             onClose={() => setIsOpen(false)}
           />
-        </Modal>
+        </Modals>
 
         <Table products={validProducts} />
       </div>
