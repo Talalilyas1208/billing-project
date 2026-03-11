@@ -12,10 +12,8 @@ export default function Input(props) {
     className = "",
     style = {},
   } = props;
-
   const InputComponent =
     type === "password" ? AntInput.Password : AntInput;
-
   return (
     <div >
       {label && <label className={className}>{label}</label>}

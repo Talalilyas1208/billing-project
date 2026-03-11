@@ -1,21 +1,108 @@
+import { useState } from "react";
 import { Row, Col, Space } from "antd";
 import Button from "./Button";
 import Input from "./Input";
 import Select from "./Select";
 import Multilineinput from "./Multilineinput";
 import Numbersinput from "./Numbersinput";
+import usefetch from "../Hooks/usefetch";
 
 export default function Createproductfrom(props) {
+  // We receive these from the parent now
+  const {  refetchProducts, onClose } = props;
+
+  // Shifted exactly from Products component
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [formData, setFormData] = useState({
+    productname: "",
+    price: "",
+    currency: "PKR",
+    description: "",
+    productNumber: "",
+    revenueCategory: "1",
+    supplier: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCurrencyChange = (val) => {
+    setFormData((prev) => ({
+      ...prev,
+      currency: val,
+    }));
+  };
+
+  const handleRevenueChange = (val) => {
+    setFormData((prev) => ({
+      ...prev,
+      revenueCategory: val,
+    }));
+  };
+
+  const handleSave = async () => {
+    setLoadingSubmit(true);
+
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Shifted logic: Close modal, reset form, and refetch
+        onClose(); 
+
+        setFormData({
+          productname: "",
+          price: "",
+          currency: "",
+          description: "",
+          productNumber: "",
+          revenueCategory: "",
+          supplier: "",
+        });
+
+        refetchProducts && refetchProducts();
+      }
+    } catch (err) {
+      console.error("Save failed:", err);
+    } finally {
+      setLoadingSubmit(false);
+    }
+    
+  };
+   const {
+    data: revenueCategory,
+    loading: revenueLoading,
+    error: revenueError,
+  } = usefetch("/api/revnue");
   const {
-    formData,
-    handleChange,
-    handleCurrencyChange,
-    handleRevenueChange,
-    currencyOptions,
-    revenueOptions,
-    handleSave,
-    loadingSubmit,
-  } = props;
+    data: currencies,
+    loading: currencyLoading,
+    error: currencyError,
+  } = usefetch("/api/currency");
+   const currencyOptions =
+    currencies?.map((item) => ({
+      value: item.code,
+      label: item.code,
+    })) || [];
+
+  const revenueOptions =
+    revenueCategory?.map((item) => ({
+      value: String(item.id || item.key || ""),
+      label: item.name || item.code || "Select Category",
+    })) || [];
+  
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <h2 style={{ fontSize: 22 }}>Create Product</h2>
@@ -46,8 +133,8 @@ export default function Createproductfrom(props) {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder={"None"}
-                  className=" text-gray-400"
-                antUI={{minRows: 2, maxRows: 3 , size:"large"}}
+                className=" text-gray-400"
+                antUI={{ minRows: 2, maxRows: 2, size: "large" }}
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -81,10 +168,9 @@ export default function Createproductfrom(props) {
                 onChange={handleChange}
                 antUI={{
                   size: "large",
-
                   precision: 2,
                 }}
-                 className=" w-full text-gray-400"
+                className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -110,7 +196,7 @@ export default function Createproductfrom(props) {
                 value={formData.productNumber}
                 onChange={handleChange}
                 antUI={{ size: "large" }}
-                 className=" w-full text-gray-400"
+                className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
@@ -126,7 +212,7 @@ export default function Createproductfrom(props) {
                 value={formData.supplier}
                 onChange={handleChange}
                 antUI={{ size: "large", width: "80%" }}
-                 className=" w-full text-gray-400"
+                className=" w-full text-gray-400"
                 style={{
                   boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                   borderRadius: "0.5rem",
