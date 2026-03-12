@@ -1,6 +1,6 @@
 import { Input } from "antd";
 
-export default function Multilinenput(props) {
+export default function MultilIneinput(props) {
   const {
     placeholder,
     value,
