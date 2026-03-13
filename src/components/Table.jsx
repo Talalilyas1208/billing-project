@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function Table({ products }) {
+export default function Table(props) {
+  const {products} = props ;
 
   if (!products || products.length === 0) {
     return (

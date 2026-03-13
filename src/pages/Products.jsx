@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Row, Col, Spin } from "antd"; // Import Spin
+import { Row, Col, Spin ,Form} from "antd"; 
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
-import Createproductfrom from "../components/Createproductfrom";
+import CreateProductForm from "../components/Createproductfrom";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
+  const [form] = Form.useForm();
   const {
     data: products,
     loading: productsLoading, 
@@ -33,12 +34,14 @@ export default function Products() {
         <Modals 
           isOpen={isOpen} 
           onClose={() => setIsOpen(false)} 
+            form={form}
 
           style={{ width: 800, top: 150 , title:"create product"}}
         >
-          <Createproductfrom 
+          <CreateProductForm
             refetchProducts={refetchProducts}
             onClose={() => setIsOpen(false)}
+              form={form}
           />
         </Modals>
         <Table 
