@@ -5,10 +5,12 @@ import Input from "./Input";
 import Select from "./Select";
 import NumbersInput from "./Numbersinput";    
 import useFetch from "../hooks/Usefetch";   
-import MultilIneinput from "./Multilineinput";
+import InputTextAreas from "./InputTextAreas";
 
-export default function CreateProductForm({ refetchProducts, onClose }) {
-  const [form] = Form.useForm();
+
+export default function CreateProductForm(props) {
+  const { refetchProducts, onClose,form } = props ;
+
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const onFinish = async (values) => {
     setLoadingSubmit(true);
@@ -31,16 +33,7 @@ export default function CreateProductForm({ refetchProducts, onClose }) {
     }
   };
 
-const handleCancelRequest = () => {
-  const useform = form.isFieldsTouched(); 
-  
-  if (useform) {
-    
-    onClose(true); 
-  } else {
-    onClose(false);
-  }
-};
+
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
 
@@ -53,6 +46,7 @@ const handleCancelRequest = () => {
     value: String(item.id || item.key || ""),
     label: item.name || item.code || "Select Category",
   })) || [];
+
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>    
@@ -80,7 +74,7 @@ const handleCancelRequest = () => {
             </Form.Item>
 
             <Form.Item name="description" label="Description">
-              <MultilIneinput
+              <InputTextAreas
                 placeholder="None"
                 antUI={{ minRows: 2, maxRows: 2, size: "large" }}
                 style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}
