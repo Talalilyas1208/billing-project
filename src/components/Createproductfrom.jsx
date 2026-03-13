@@ -4,7 +4,7 @@ import Button from "./Button";
 import Input from "./Input";
 import Select from "./Select";
 import NumbersInput from "./Numbersinput";    
-import useFetch from "../Hooks/usefetch";   
+import useFetch from "../hooks/Usefetch";   
 import MultilIneinput from "./Multilineinput";
 
 export default function CreateProductForm({ refetchProducts, onClose }) {
@@ -31,6 +31,16 @@ export default function CreateProductForm({ refetchProducts, onClose }) {
     }
   };
 
+const handleCancelRequest = () => {
+  const useform = form.isFieldsTouched(); 
+  
+  if (useform) {
+    
+    onClose(true); 
+  } else {
+    onClose(false);
+  }
+};
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
 
@@ -128,6 +138,9 @@ export default function CreateProductForm({ refetchProducts, onClose }) {
           </Col>
         </Row>
 
+{/* <Button onClick={handleCancelRequest} type="secondary">
+            Cancel
+          </Button> */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
           <Button onClick={() => form.submit()} disabled={loadingSubmit}>
             {loadingSubmit ? "Saving..." : "Save"}

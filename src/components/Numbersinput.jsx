@@ -1,5 +1,4 @@
 import { InputNumber as AntInputNumber } from "antd";
-
 export default function Numbersinput(props) {
   const {
     label,

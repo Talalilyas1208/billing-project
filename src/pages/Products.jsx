@@ -3,7 +3,7 @@ import { Row, Col, Spin } from "antd"; // Import Spin
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
-import usefetch from "../Hooks/usefetch";
+import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
 import Createproductfrom from "../components/Createproductfrom";
 
