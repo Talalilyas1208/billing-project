@@ -15,6 +15,34 @@ export default function Products() {
     loading: productsLoading, 
     refetch: refetchProducts,
   } = usefetch("/api/products");
+  const productColumns = [
+  {
+    title: "Product Name",
+    dataIndex: "productname",
+    key: "productname",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    key: "price",
+    render: (_, record) => `${record.price} ${record.currency}`,
+  },
+  {
+    title: "Product Number",
+    dataIndex: "productNumber",
+    key: "productNumber",
+  },
+  {
+    title: "Supplier",
+    dataIndex: "supplier",
+    key: "supplier",
+  },
+];
 
   const validProducts = products?.filter((p) => p && p.productname) || [];
   return (
@@ -45,8 +73,9 @@ export default function Products() {
           />
         </Modals>
         <Table 
-          products={validProducts} 
-          loading={productsLoading} 
+          data={validProducts}
+  columns={productColumns}
+  loading={productsLoading}
         />
         {productsLoading && validProducts.length === 0 && (
           <div style={{ textAlign: 'center', marginTop: 20 }}>
