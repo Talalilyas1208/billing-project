@@ -1,6 +1,6 @@
 import { Input } from "antd";
-
-export default function MultilIneinput(props) {
+// for description
+export default function InputTextAreas(props) {
   const {
     placeholder,
     value,
