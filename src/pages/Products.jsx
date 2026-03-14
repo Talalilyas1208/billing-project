@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Col, Spin ,Form} from "antd"; 
+import { Row, Col, Spin ,Form ,Input} from "antd"; 
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
@@ -9,6 +9,7 @@ import CreateProductForm from "../components/Createproductfrom";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
   const {
     data: products,
@@ -21,11 +22,7 @@ export default function Products() {
     dataIndex: "productname",
     key: "productname",
   },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
+ 
   {
     title: "Price",
     dataIndex: "price",
@@ -42,16 +39,34 @@ export default function Products() {
     dataIndex: "supplier",
     key: "supplier",
   },
+  {
+     title:"Revenue Category",
+        dataIndex:"revenueCategory" ,
+        key:"revenueCategory"
+
+  },
+  {
+    dataIndex:"currency",
+     title:"Currency",
+     key:"currency"
+  }
 ];
 
-  const validProducts = products?.filter((p) => p && p.productname) || [];
+ const filteredProducts = (products || [])
+    .filter((p) => p && p.productname)
+    .filter((p) => 
+      p.productname.toLowerCase().includes(searchText.toLowerCase()) ||
+      p.productNumber?.toLowerCase().includes(searchText.toLowerCase())
+    );
+   
   return (
     <Config>
-      <div style={{ padding: "0 24px" }}>
+     <div style={{ padding: "0 24px" }}>
         <Row justify="space-between" align="middle" style={{ marginBottom: 40 }}>
           <Col>
             <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
           </Col>
+         
           <Col>
             <Button onClick={() => setIsOpen(true)} variant="product">
               Create Product
@@ -72,12 +87,24 @@ export default function Products() {
               form={form}
           />
         </Modals>
+         <Col span={8}>
+            {/* 3. Search Input */}
+            <Input.Search
+              placeholder="Search by product name or number..."
+              allowClear
+              enterButton
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: '100%' }}
+            />
+          </Col>
         <Table 
-          data={validProducts}
+          data={filteredProducts}
   columns={productColumns}
   loading={productsLoading}
+  bordered
+ 
         />
-        {productsLoading && validProducts.length === 0 && (
+        {productsLoading && filteredProducts.length === 0 && (
           <div style={{ textAlign: 'center', marginTop: 20 }}>
             <Spin t="Fetching data..." />
           </div>

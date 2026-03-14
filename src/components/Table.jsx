@@ -16,6 +16,9 @@ export default function Table({ data, columns, loading }) {
       dataSource={data}
       columns={columns}
       rowKey="id"
+      pagination={{ pageSize: 5 }}
+      bordered
+      tableLayout="fixed"
       loading={loading}
     />
   );

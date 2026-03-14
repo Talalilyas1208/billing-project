@@ -43,7 +43,7 @@ export default function CreateProductForm(props) {
   })) || [];
 
   const revenueOptions = revenueCategory?.map((item) => ({
-    value: String(item.id || item.key || ""),
+    value: String(item.key || item.code || ""),
     label: item.name || item.code || "Select Category",
   })) || [];
 
@@ -56,7 +56,7 @@ export default function CreateProductForm(props) {
         onFinish={onFinish}
         initialValues={{
           currency: "PKR",
-          revenueCategory: "1",
+          
         }}
       >
         <Row gutter={16}>
