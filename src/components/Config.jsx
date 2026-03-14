@@ -15,8 +15,14 @@ const Config = ({ children }) => (
         InputNumber : {
             activeBorderColor: "#108dfaff",
           hoverBorderColor: "#000000ff",
-        }
+        },
+        Table: {
+        headerBg: '#ffffffff', // Background color
+        headerColor: '#1f1f1fff', // Text color
+        headerSortHoverBg: '#0050b3', // Background when hovering over sortable header
+        headerSortActiveBg: '#0050b3', // Background when sorted
       },
+      },  
     }}
   >
     {children}
