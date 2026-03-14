@@ -132,6 +132,7 @@
     columns={productColumns}
     loading={productsLoading}
     bordered
+    style= {{height:"100%"}}
   
           />
           {productsLoading && filteredProducts.length === 0 && (
