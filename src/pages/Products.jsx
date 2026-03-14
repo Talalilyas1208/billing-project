@@ -53,7 +53,7 @@ export default function Products() {
 
   const productColumns = [
     {
-      title: "Name", // matches screenshot
+      title: "Name",
       key: "name_group",
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
