@@ -11,8 +11,7 @@ export default function Button(props) {
 
   signout:
     "bg-red-50 text-red-600 border border-red-200 hover:bg-red-600 hover:text-white transition font-medium",
-
-  nav:
+   nav:
     "bg-transparent text-gray-700 hover:bg-neutral-200 justify-start font-medium pl-4 pr-35 ",
 
   profile:
