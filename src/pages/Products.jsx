@@ -120,27 +120,35 @@ export default function Products() {
           form={form}
           style={{ width: 800, top: 150, title: "create product" }}
         >
-          <CreateProductForm
-            refetchProducts={refetchProducts}
-            onClose={() => setIsOpen(false)}
-            form={form}
-          />
+          {isOpen && (
+            <CreateProductForm
+              refetchProducts={refetchProducts}
+              onClose={() => setIsOpen(false)}
+              form={form}
+            />
+          )}
         </Modals>
-        <Col span={8}>
-          <Input.Search
-            placeholder="Search by product name or number..."
-            allowClear
-            enterButton
-            onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: "100%" }}
-          />
-        </Col>
+        <Row justify="end">
+          <Col span={8}>
+            <Input.Search
+              placeholder="Search by product name or number..."
+              allowClear
+              enterButton
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: "100%" }}
+            />
+          </Col>
+        </Row>
         <Table
           data={filteredProducts}
           columns={productColumns}
           loading={productsLoading}
           bordered
-          style={{ height: "100%" }}
+          style={{
+            borderRadius: "12px",
+            border: "1px solid #999797ff",
+            overflow: "hidden",
+          }}
         />
         {productsLoading && filteredProducts.length === 0 && (
           <div style={{ textAlign: "center", marginTop: 20 }}>

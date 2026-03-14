@@ -19,8 +19,9 @@ const Config = ({ children }) => (
         Table: {
         headerBg: '#ffffffff', 
         headerColor: '#1f1f1fff', 
-        headerSortHoverBg: '#0050b3', 
-        headerSortActiveBg: '#0050b3', 
+   
+     
+        
       },
       },  
     }}
