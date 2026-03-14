@@ -5,7 +5,7 @@ import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
-import CreateProductForm from "../components/Createproductfrom";
+import CreateProductForm from "../components/pages/CreateProductFrom";
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");

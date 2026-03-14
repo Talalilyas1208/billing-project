@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Row, Col, Space, Form } from "antd";
-import Button from "./Button";
-import Input from "./Input";
-import Select from "./Select";
-import NumbersInput from "./Numbersinput";    
-import useFetch from "../hooks/Usefetch";   
-import InputTextAreas from "./InputTextAreas";
+import Button from "../Button";
+import Input from "../Input";
+import Select from "../Select";
+import NumbersInput from "../Numbersinput";    
+import useFetch from "../../hooks/Usefetch";   
+import InputTextAreas from "../InputTextAreas";
 
 
 export default function CreateProductForm(props) {
