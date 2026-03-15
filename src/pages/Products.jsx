@@ -131,7 +131,7 @@ export default function Products() {
         <Row justify="end">
           <Col span={8}>
             <Input.Search
-              placeholder="Search by product name or number..."
+              placeholder="products..."
               allowClear
               enterButton
               onChange={(e) => setSearchText(e.target.value)}
@@ -146,8 +146,9 @@ export default function Products() {
           bordered
           style={{
             borderRadius: "12px",
-            border: "1px solid #999797ff",
+            border: "1px solid #d0d0d0ff",
             overflow: "hidden",
+            marginTop:"10px"
           }}
         />
         {productsLoading && filteredProducts.length === 0 && (
