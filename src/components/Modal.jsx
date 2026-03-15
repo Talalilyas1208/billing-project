@@ -5,13 +5,20 @@ const { confirm } = Modal;
 function Modals(props) {
   const { isOpen, onClose, children, style, form } = props;
 
-
   const { width, top, title } = style;
 
-  const alert = () => {
+  
+  const handleCloseAndReset = () => {
+    onClose();
+    if (form) {
+      form.resetFields();
+    }
+  };
 
+  const alert = () => {
+   
     if (!form?.isFieldsTouched()) {
-      onClose();
+      handleCloseAndReset();
       return;
     }
 
@@ -19,13 +26,13 @@ function Modals(props) {
       title: "Confirm navigation",
       style: { top: 300 },
       content:
-        "Your changes have not been saved yet. Are you sure you want to leave this page",
+        "Your changes have not been saved yet. Are you sure you want to leave this page?",
       okText: "Leave this page",
       okType: "danger",
       cancelText: "No, stay",
       width: "40%",
       onOk() {
-        onClose();
+        handleCloseAndReset();
       },
     });
   };
@@ -38,6 +45,7 @@ function Modals(props) {
       footer={null}
       width={width}
       style={{ top }}
+     
     >
       {children}
     </Modal>

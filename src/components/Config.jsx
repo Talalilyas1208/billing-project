@@ -5,25 +5,40 @@ const Config = ({ children }) => (
   <ConfigProvider
     theme={{
       token: {
-        colorPrimary: "#108dfaff",
+        colorPrimary: "#001b67ff",
       },
       components: {
         Input: {
           activeBorderColor: "#108dfaff",
           hoverBorderColor: "#000000ff",
         },
-        InputNumber : {
-            activeBorderColor: "#108dfaff",
+        InputNumber: {
+          activeBorderColor: "#108dfaff",
           hoverBorderColor: "#000000ff",
         },
         Table: {
-        headerBg: '#ffffffff', 
-        headerColor: '#1f1f1fff', 
-   
-     
-        
+          headerBg: "#ffffffff",
+          headerColor: "#1f1f1fff",
+        },
+
+        Menu: {
+          containerBg: "#f5f5f5",
+
+          itemSelectedBg: "#e6e6e6ff",
+
+          itemSelectedColor: "#000000ff",
+
+          itemHoverColor: "#000000ff",
+
+          itemHoverBg: "#c5c3c3ff",
+
+          itemActiveBg: "#c5c3c3ff",
+
+          itemSelectedBorderFontSize: 0,
+          activeBarBorderWidth: 4,
+          itemBorderRadius: 4,
+        },
       },
-      },  
     }}
   >
     {children}
