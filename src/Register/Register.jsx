@@ -1,23 +1,24 @@
 import { useState } from "react";
-import {  Link ,Form } from "react-router-dom";
+import { Link, Form ,useNavigate } from "react-router-dom";
 import { validation } from "../utils/validation";
-import { registerWithEmail } from "../services/auth";
+import { loginWithSocial, registerWithEmail } from "../services/auth";
 import useLocalStorage from "use-local-storage";
 import Input from "../components/Input";
 import Button from "../components/Button";
+
 export default function Register() {
-  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     displayName: "",
     phonenumber: "",
   });
+  const navigate= useNavigate()
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [activeUser, setActiveUser] = useLocalStorage("sginuser", null);
-
+const [time,setTime] =useState()
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -31,7 +32,7 @@ export default function Register() {
         formData.email,
         formData.password,
         formData.displayName,
-        formData.phonenumber
+        formData.phonenumber,
       );
       setActiveUser(newuser);
       setVerificationSent(true);
@@ -40,6 +41,26 @@ export default function Register() {
     } finally {
       setLoading(false);
     }
+  };
+  const handleAuth = async (authMethod) => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const user = await authMethod();
+      if (user?.metadata?.lastSignInTime) {
+        setTime(user.metadata.lastSignInTime);
+      }
+      setActiveUser(user);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handlelogin = async (type) => {
+    handleAuth(() => loginWithSocial(type));
   };
 
   if (verificationSent) {
@@ -71,25 +92,42 @@ export default function Register() {
         {error && (
           <p className="text-red-500 text-xs text-center bg-red-50 p-2 rounded border border-red-100">
             {error}
-          </p>)}
+          </p>
+        )}
         <Input
           name="displayName"
           placeholder="Full Name"
-          onChange={handleChange}   antUI = {{size:"large"}}/>
+          onChange={handleChange}
+          antUI={{ size: "large" }}
+        />
         <Input
           name="phonenumber"
           placeholder="Phone Number"
-          onChange={handleChange}size={"large"} />
-        <Input name="email" placeholder="Email" onChange={handleChange}   antUI = {{size:"large"}}/>
+          onChange={handleChange}
+          size={"large"}
+        />
+        <Input
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+          antUI={{ size: "large" }}
+        />
         <Input
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleChange}
-       antUI = {{size:"large"}}
+          antUI={{ size: "large" }}
         />
         <Button variant="login" onClick={handleRegister} disabled={loading}>
           Register
+        </Button>
+        <Button
+          variant="google"
+          onClick={() => handlelogin("google")}
+          className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+        >
+          Google
         </Button>
 
         <div className="text-center">
