@@ -92,7 +92,8 @@ export default function Products() {
     .filter(
       (p) =>
         p.productname.toLowerCase().includes(searchText.toLowerCase()) ||
-        p.productNumber?.toLowerCase().includes(searchText.toLowerCase()),
+        p.productNumber?.toLowerCase().includes(searchText.toLowerCase())||
+      p.price.toString().toLowerCase().includes(searchText.toLowerCase())
     );
 
   return (

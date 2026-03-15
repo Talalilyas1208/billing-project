@@ -40,6 +40,7 @@ export const loginWithSocial = async (type) => {
   return User(data.user);
 };
 
+
 export const logoutUser = async () => {
   await signOut(auth);
 };

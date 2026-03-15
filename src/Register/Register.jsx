@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {  Link ,Form } from "react-router-dom";
 import { validation } from "../utils/validation";
 import { registerWithEmail } from "../services/auth";
-import { auth } from "../firebase/firebase";
 import useLocalStorage from "use-local-storage";
 import Input from "../components/Input";
 import Button from "../components/Button";
 export default function Register() {
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
