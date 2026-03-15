@@ -6,6 +6,7 @@ import Select from "../Select";
 import NumbersInput from "../Numbersinput";    
 import useFetch from "../../hooks/Usefetch";   
 import InputTextAreas from "../InputTextAreas";
+import usefetch from "../../hooks/Usefetch";
 
 
 export default function CreateProductForm(props) {
@@ -36,7 +37,7 @@ export default function CreateProductForm(props) {
 
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
-
+  const {data:vat} =useFetch("/api/vat")
   const currencyOptions = currencies?.map((item) => ({
     value: item.code,
     label: item.code,
@@ -46,7 +47,19 @@ export default function CreateProductForm(props) {
     value: String(item.key || item.code || ""),
     label: item.name || item.code || "Select Category",
   })) || [];
+ 
 
+  const vatoptions = vat?.map((item) => ({
+    value :item.code,
+    label: (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <span>{item.code}</span>
+      {item. description && <span style={{ fontSize: '12px', color: '#8c8c8c' }}>{item. description}</span>}
+    </div>
+  ),
+    
+       
+  }))
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>    
@@ -87,6 +100,13 @@ export default function CreateProductForm(props) {
               rules={[{ required: true }]}
             >
               <Select showSearch options={revenueOptions} />
+            </Form.Item>
+            <Form.Item 
+              name="vat" 
+              label="VAT"
+              rules={[{ required: true }]}
+            >
+              <Select showSearch options={vatoptions} />
             </Form.Item>
           </Col>
 
