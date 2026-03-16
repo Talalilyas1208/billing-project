@@ -6,8 +6,6 @@ import Select from "../Select";
 import NumbersInput from "../Numbersinput";    
 import useFetch from "../../hooks/Usefetch";   
 import InputTextAreas from "../InputTextAreas";
-import usefetch from "../../hooks/Usefetch";
-
 
 export default function CreateProductForm(props) {
   const { refetchProducts, onClose,form } = props ;

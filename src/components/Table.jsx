@@ -18,7 +18,7 @@ export default function Table({ data, columns, loading,style }) {
       dataSource={data}
       columns={columns}
       rowKey="id"
-      pagination={{pageSize: 5 }}
+      pagination={{pageSize: 10 }}
       bordered
      
       scroll={{ y: 600 }}
