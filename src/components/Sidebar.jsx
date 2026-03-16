@@ -17,8 +17,8 @@ export default function Sidebar({ activeUser, onLogout }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const menuItems = Array.isArray(data)
-  ? data.map((section) => {
+  const menuItems = Array.isArray(data.data)
+  ? data.data.map((section) => {
       if (section.children) {
         return {
           key: section.label,

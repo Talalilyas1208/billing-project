@@ -11,7 +11,7 @@ export default function Products() {
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
   const [page,setpage] =useState(1)
-  const [limit] =useState()
+  const [limit] =useState(10)
   const {
     data: products,
     loading: productsLoading,
