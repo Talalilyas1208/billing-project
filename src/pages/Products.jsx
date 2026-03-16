@@ -138,13 +138,13 @@ export default function Products() {
           columns={productColumns}
           loading={productsLoading}
           pagination={{
-    current: page,           
-    pageSize: limit,        
-    total: products.totalItems, 
-    onChange: (p) => setpage(p), 
-    showSizeChanger: false,  
-    position: ['bottomCenter'],
-  }}
+         current: page,           
+          pageSize: limit,        
+          total: products.totalItems, 
+         onChange: (p) => setpage(p), 
+         showSizeChanger: false,  
+         position: ['bottomCenter'],
+         }}
           bordered
           style={{
             borderRadius: "12px",
