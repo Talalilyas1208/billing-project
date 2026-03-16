@@ -17,23 +17,25 @@ export default function Sidebar({ activeUser, onLogout }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const menuItems = data.map((section) => {
-    if (section.children) {
-      return {
-        key: section.label,
-        label: section.label,
-        children: section.children.map((child) => ({
-          key: child.link,
-          label: child.name,
-          onClick: () => navigate(child.link),
-        })),
-      };
-    }
+  const menuItems = Array.isArray(data)
+  ? data.map((section) => {
+      if (section.children) {
+        return {
+          key: section.label,
+          label: section.label,
+          children: section.children.map((child) => ({
+            key: child.link,
+            label: child.name,
+            onClick: () => navigate(child.link),
+          })),
+        };
+      }
+
     return {
       key: section.label,
       label: section.label,
     };
-  });
+  }) :[];
 
   return (
     <Config>

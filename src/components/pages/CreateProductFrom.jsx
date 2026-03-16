@@ -38,28 +38,35 @@ export default function CreateProductForm(props) {
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
   const {data:vat} =useFetch("/api/vat")
-  const currencyOptions = currencies?.map((item) => ({
-    value: item.code,
-    label: item.code,
-  })) || [];
+const currencyOptions = Array.isArray(currencies.data)
+  ? currencies.data.map((item) => ({
+      value: item.code,
+      label: item.code,
+    }))
+  : [];
 
-  const revenueOptions = revenueCategory?.map((item) => ({
-    value: String(item.key || item.code || ""),
-    label: item.name || item.code || "Select Category",
-  })) || [];
- 
+const revenueOptions = Array.isArray(revenueCategory.data)
+  ? revenueCategory.data.map((item) => ({
+      value: String(item.key || item.code || ""),
+      label: item.name || item.code || "Select Category",
+    }))
+  : [];
 
-  const vatoptions = vat?.map((item) => ({
-    value :item.code,
-    label: (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <span>{item.code}</span>
-      {item. description && <span style={{ fontSize: '12px', color: '#8c8c8c' }}>{item. description}</span>}
-    </div>
-  ),
-    
-       
-  }))
+const vatoptions = Array.isArray(vat.data)
+  ? vat.data.map((item) => ({
+      value: item.code,
+      label: (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <span>{item.code}</span>
+          {item.description && (
+            <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
+              {item.description}
+            </span>
+          )}
+        </div>
+      ),
+    }))
+  : [];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>    
