@@ -8,9 +8,10 @@ import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./Routes/Publicroutes";
 import PrivateRoute from "./Routes/Privateroutes";
 
-import Register from "./Register/Register";
-import Login from "./Login/login";
+import Register from "./register/Register";
+import Login from "./login/login";
 import Produts from "./pages/Products";
+import Invoice from "./pages/Invoice";
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} >
         <Route path="products" element={<Produts />} />
-        {/* <Route path="invoices" element={<Invoices />} /> */}
+        <Route path="invoices" element={<Invoice />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
