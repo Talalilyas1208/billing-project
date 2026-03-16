@@ -11,12 +11,12 @@ export default function Products() {
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
   const [page,setpage] =useState(1)
-  const [limit] =useState(10)
+  const [limit] =useState(5)
   const {
     data: products,
     loading: productsLoading,
     refetch: refetchProducts,
-  } = usefetch( `/api/products?page=${page}&limit=${limit}`);
+  } = usefetch( `/api/products?page=${page}&limit=${limit}&=${searchText}`);
   //   const productColumns = [
   //   {
   //     title: "Product Name",
@@ -91,11 +91,7 @@ export default function Products() {
   ];
   const filteredProducts = (Array.isArray(products.data) ? products.data : [])
   .filter((p) => p && p.productname)
-  .filter(
-    (p) =>
-      p.productname.toLowerCase().includes(searchText.toLowerCase()) ||
-      p.productNumber?.toLowerCase().includes(searchText.toLowerCase())
-  );
+
   return (
     <Config>
       <div style={{ padding: "0 24px" }}>
@@ -141,6 +137,14 @@ export default function Products() {
           data={filteredProducts}
           columns={productColumns}
           loading={productsLoading}
+          pagination={{
+    current: page,           
+    pageSize: limit,        
+    total: products.totalItems, 
+    onChange: (p) => setpage(p), 
+    showSizeChanger: false,  
+    position: ['bottomCenter'],
+  }}
           bordered
           style={{
             borderRadius: "12px",

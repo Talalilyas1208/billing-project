@@ -1,7 +1,7 @@
 import { Table as AntTable } from "antd";
 import Config from "./Config";
 
-export default function Table({ data, columns, loading,style }) {
+export default function Table({ data, columns, loading,style ,pagination}) {
   if (!data || data.length === 0) {
     return (
       <div className="mt-32 text-center">
@@ -18,7 +18,7 @@ export default function Table({ data, columns, loading,style }) {
       dataSource={data}
       columns={columns}
       rowKey="id"
-      pagination={{pageSize: 10 }}
+      pagination={pagination}
       bordered
      
       scroll={{ y: 600 }}
