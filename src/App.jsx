@@ -12,6 +12,8 @@ import Register from "./register/Register";
 import Login from "./login/login";
 import Produts from "./pages/Products";
 import Invoice from "./pages/Invoice";
+import EmptyInvoicePage from "./pages/Emptyinvoicepage";
+import Newinvoice from "./pages/Newinvoice";
 
 export default function App() {
   return (
@@ -24,7 +26,10 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} >
         <Route path="products" element={<Produts />} />
-        <Route path="invoices" element={<Invoice />} />
+        <Route path="invoices" element={<Invoice />} >
+           <Route path="empty" element = {<EmptyInvoicePage/>} />
+            <Route path="NEW" element = {<Newinvoice/>} />
+        </Route>
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />

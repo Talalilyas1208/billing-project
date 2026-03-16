@@ -92,9 +92,7 @@ export default function Products() {
     .filter(
       (p) =>
         p.productname.toLowerCase().includes(searchText.toLowerCase()) ||
-        p.productNumber?.toLowerCase().includes(searchText.toLowerCase())||
-      p.price.toString().toLowerCase().includes(searchText.toLowerCase())
-    );
+        p.productNumber?.toLowerCase().includes(searchText.toLowerCase()),);
 
   return (
     <Config>
@@ -102,8 +100,7 @@ export default function Products() {
         <Row
           justify="space-between"
           align="middle"
-          style={{ marginBottom: 40 }}
-        >
+          style={{ marginBottom: 40 }}>
           <Col>
             <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
           </Col>
@@ -119,15 +116,13 @@ export default function Products() {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           form={form}
-          style={{ width: 800, top: 150, title: "create product" }}
-        >
+          style={{ width: 800, top: 150, title: "create product" }}>
           {isOpen && (
             <CreateProductForm
               refetchProducts={refetchProducts}
               onClose={() => setIsOpen(false)}
               form={form}
-            />
-          )}
+            /> )}
         </Modals>
         <Row justify="end">
           <Col span={8}>
@@ -150,8 +145,7 @@ export default function Products() {
             border: "1px solid #d0d0d0ff",
             overflow: "hidden",
             marginTop:"10px"
-          }}
-        />
+          }}/>
         {productsLoading && filteredProducts.length === 0 && (
           <div style={{ textAlign: "center", marginTop: 20 }}>
             <Spin t="Fetching data..." />

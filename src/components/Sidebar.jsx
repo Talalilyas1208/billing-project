@@ -29,7 +29,6 @@ export default function Sidebar({ activeUser, onLogout }) {
         })),
       };
     }
-
     return {
       key: section.label,
       label: section.label,
