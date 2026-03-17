@@ -10,13 +10,15 @@ export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const [page,setpage] =useState(1)
-  const [limit] =useState(5)
+  const [page, setpage] = useState(1);
+  const [limit] = useState(5);
   const {
     data: products,
     loading: productsLoading,
     refetch: refetchProducts,
-  } = usefetch( `/api/products?page=${page}&limit=${limit}&=${searchText}`);
+  } = usefetch(
+    `/api/products?page=${page}&limit=${limit}&search=${searchText}`,
+  );
   //   const productColumns = [
   //   {
   //     title: "Product Name",
@@ -89,8 +91,7 @@ export default function Products() {
       ),
     },
   ];
-  const filteredProducts = (Array.isArray(products.data) ? products.data : [])
-  .filter((p) => p && p.productname)
+  const data = Array.isArray(products.data) ? products.data : [];
 
   return (
     <Config>
@@ -98,7 +99,8 @@ export default function Products() {
         <Row
           justify="space-between"
           align="middle"
-          style={{ marginBottom: 40 }}>
+          style={{ marginBottom: 40 }}
+        >
           <Col>
             <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
           </Col>
@@ -114,13 +116,15 @@ export default function Products() {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           form={form}
-          style={{ width: 800, top: 150, title: "create product" }}>
+          style={{ width: 800, top: 150, title: "create product" }}
+        >
           {isOpen && (
             <CreateProductForm
               refetchProducts={refetchProducts}
               onClose={() => setIsOpen(false)}
               form={form}
-            /> )}
+            />
+          )}
         </Modals>
         <Row justify="end">
           <Col span={8}>
@@ -128,31 +132,35 @@ export default function Products() {
               placeholder="products..."
               allowClear
               enterButton
-              onChange={(e) => setSearchText(e.target.value)}
+              onSearch={(value) => {
+                setSearchText(value);
+                setpage(1);
+              }}
               style={{ width: "100%" }}
             />
           </Col>
         </Row>
         <Table
-          data={filteredProducts}
+          data={data}
           columns={productColumns}
           loading={productsLoading}
           pagination={{
-         current: page,           
-          pageSize: limit,        
-          total: products.totalItems, 
-         onChange: (p) => setpage(p), 
-         showSizeChanger: false,  
-         position: ['bottomCenter'],
-         }}
+            current: page,
+            pageSize: limit,
+            total: products.totalItems,
+            onChange: (p) => setpage(p),
+            showSizeChanger: false,
+            position: ["bottomCenter"],
+          }}
           bordered
           style={{
             borderRadius: "12px",
             border: "1px solid #d0d0d0ff",
             overflow: "hidden",
-            marginTop:"10px"
-          }}/>
-        {productsLoading && filteredProducts.length === 0 && (
+            marginTop: "10px",
+          }}
+        />
+        {productsLoading && data.length === 0 && (
           <div style={{ textAlign: "center", marginTop: 20 }}>
             <Spin t="Fetching data..." />
           </div>
