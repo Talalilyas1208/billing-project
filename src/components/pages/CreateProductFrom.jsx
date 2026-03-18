@@ -30,9 +30,7 @@ export default function CreateProductForm(props) {
     } finally {
       setLoadingSubmit(false);
     }
-  };
-
-
+  }
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
   const {data:vat} =useFetch("/api/vat")

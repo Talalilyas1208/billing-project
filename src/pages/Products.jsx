@@ -6,7 +6,7 @@ import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
 import CreateProductForm from "../components/pages/CreateProductFrom";
- import { useMemo } from "react";
+import { useMemo } from "react";
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -56,48 +56,50 @@ export default function Products() {
   //   }
   // ];
 
-
-
-const productColumns = useMemo(() => [
-  {
-    title: "Name",
-    key: "name_group",
-    render: (_, record) => (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <span style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}>
-          {record.productname}
-        </span>
-        <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-          {record.productNumber}
-        </span>
-      </div>
-    ),
-  },
-  {
-    title: "Account",
-    dataIndex: "revenueCategory",
-    key: "revenueCategory",
-    render: (text) => (
-      <span style={{ color: "#1f1f1f" }}>{text || "Sales"}</span>
-    ),
-  },
-  {
-    title: "Price",
-    key: "price",
-    align: "right",
-    render: (_, record) => (
-      <span style={{ color: "#1f1f1f" }}>
-        {record.price
-          ? `${Number(record.price).toFixed(2)} ${record.currency}`
-          : ""}
-      </span>
-    ),
-  },
-], []); 
-  const data =   useMemo(() => {
-  return Array.isArray(products.data) ? products.data : [] 
-
-  },[products.data])
+  const productColumns = useMemo(
+    () => [
+      {
+        title: "Name",
+        key: "name_group",
+        render: (_, record) => (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
+            >
+              {record.productname}
+            </span>
+            <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
+              {record.productNumber}
+            </span>
+          </div>
+        ),
+      },
+      {
+        title: "Account",
+        dataIndex: "revenueCategory",
+        key: "revenueCategory",
+        render: (text) => (
+          <span style={{ color: "#1f1f1f" }}>{text || "Sales"}</span>
+        ),
+      },
+      {
+        title: "Price",
+        key: "price",
+        align: "right",
+        render: (_, record) => (
+          <span style={{ color: "#1f1f1f" }}>
+            {record.price
+              ? `${Number(record.price).toFixed(2)} ${record.currency}`
+              : ""}
+          </span>
+        ),
+      },
+    ],
+    [],
+  );
+  const data = useMemo(() => {
+    return Array.isArray(products.data) ? products.data : [];
+  }, [products.data]);
 
   return (
     <Config>
@@ -156,7 +158,7 @@ const productColumns = useMemo(() => [
             total: products.totalItems,
             onChange: (p) => setpage(p),
             showSizeChanger: false,
-            position: ["bottomCenter"],
+            position: ["bottomright"],
           }}
           bordered
           style={{

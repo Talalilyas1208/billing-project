@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./Routes/Publicroutes";
 import PrivateRoute from "./Routes/Privateroutes";
@@ -24,12 +19,12 @@ export default function App() {
           <Route path="/register" element={<Register />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} >
-        <Route path="products" element={<Produts />} />
-        <Route path="invoices" element={<Invoice />} >
-           <Route path="empty" element = {<EmptyInvoicePage/>} />
-            <Route path="NEW" element = {<Newinvoice/>} />
-        </Route>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="products" element={<Produts />} />
+            <Route path="invoices" element={<Invoice />}>
+              <Route path="empty" element={<EmptyInvoicePage />} />
+              <Route path="NEW" element={<Newinvoice />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
