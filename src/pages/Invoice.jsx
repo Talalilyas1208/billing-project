@@ -7,7 +7,7 @@ export default function Invoice () {
     return(
         <>
        
- <EmptyInvoicePage/>
+     <EmptyInvoicePage/>
 
         </>
     )
