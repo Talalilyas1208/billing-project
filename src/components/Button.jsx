@@ -1,6 +1,6 @@
 
 export default function Button(props) {
-  const { variant, children, onClick, type, disabled, className = "" } = props;
+  const { variant, children, onClick, type, disabled, className = "" ,style } = props;
 
   const variants = {
   login:
@@ -35,6 +35,7 @@ export default function Button(props) {
       type={type || "button"} 
       onClick={onClick}
       disabled={disabled}
+      {...style}
     >
       {children}
     </button>
