@@ -40,7 +40,7 @@ export default function Sidebar({ activeUser, onLogout }) {
   return (
     <Config>
     <Sider
-      width={260}
+      width={230}
       style={{
         background: "#f5f5f5",
         borderRight: "1px solid #e5e5e5",
