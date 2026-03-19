@@ -1,14 +1,16 @@
  import Button from "../components/Button"
 import EmptyInvoicePage from "./Emptyinvoicepage"
  
-
+import { Outlet } from "react-router-dom"
 export default function Invoice () {
 
     return(
         <>
        
-     <EmptyInvoicePage/>
+    <div className="invoice-wrapper">
 
+      <Outlet /> 
+    </div>
         </>
     )
 }
