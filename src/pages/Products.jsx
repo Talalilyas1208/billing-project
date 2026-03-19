@@ -157,7 +157,6 @@ export default function Products() {
             pageSize: limit,
             total: products.totalItems,
             onChange: (p) => setpage(p),
-            showSizeChanger: false,
             position: ["bottomright"],
           }}
           bordered

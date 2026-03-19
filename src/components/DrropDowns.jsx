@@ -27,7 +27,6 @@ export default function DropDowns(props) {
     </div>
   );
 
-  // SIDEBAR VARIANT
   if (variant === "sidebar") {
     return (
       <div className={`relative w-full ${className}`} {...rest}>

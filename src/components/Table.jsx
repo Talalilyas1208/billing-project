@@ -20,7 +20,6 @@ export default function Table({ data, columns, loading,style ,pagination}) {
       rowKey="id"
       pagination={pagination}
       bordered
-     
       scroll={{ y: 600 }}
       style={{...style}}
       tableLayout="fixed"
