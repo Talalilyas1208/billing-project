@@ -7,7 +7,6 @@ function Modals(props) {
 
   const { width, top, title } = style;
 
-  
   const handleCloseAndReset = () => {
     onClose();
     if (form) {
@@ -16,12 +15,10 @@ function Modals(props) {
   };
 
   const alert = () => {
-   
     if (!form?.isFieldsTouched()) {
       handleCloseAndReset();
       return;
     }
-
     confirm({
       title: "Confirm navigation",
       style: { top: 300 },
@@ -45,7 +42,6 @@ function Modals(props) {
       footer={null}
       width={width}
       style={{ top }}
-     
     >
       {children}
     </Modal>
