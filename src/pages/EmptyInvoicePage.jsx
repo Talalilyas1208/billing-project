@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function EmptyInvoicePage() {
   const navigate = useNavigate()
   const handleclick = () => {
-   navigate("/dashboard/invoices/new");
+    navigate("/dashboard/invoices/new");
   };
 
   return (
