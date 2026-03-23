@@ -23,7 +23,7 @@ export default function App() {
             <Route path="products" element={<Produts />} />
             <Route path="invoices" element={<Invoice />}>
             <Route index element={<EmptyInvoicePage />} /> 
-            <Route path="NEW" element={<Newinvoice />} />
+            <Route path="new" element={<Newinvoice />} />
           
             </Route>
           </Route>
