@@ -9,12 +9,11 @@ const Select = ({
   showSearch = false,
 }) => {
   return (
-    <div className="flex flex-col"> 
-     
+    <div className="flex flex-col">
       {label && <label className="text-gray-400 ">{label}</label>}
-      
+
       <AntSelect
-        value={value || undefined} 
+        value={value || undefined}
         onChange={onChange}
         placeholder={placeholder}
         options={options}
