@@ -9,6 +9,7 @@ import Produts from "./pages/Products";
 import Invoice from "./pages/Invoice";
 import EmptyInvoicePage from "./pages/Emptyinvoicepage";
 import Newinvoice from "./pages/Newinvoice";
+import Offers from "./pages/Offer";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="new" element={<Newinvoice />} />
           
             </Route>
+            <Route path="offers" element={<Offers/>} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
