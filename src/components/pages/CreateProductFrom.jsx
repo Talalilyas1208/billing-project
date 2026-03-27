@@ -41,13 +41,13 @@ const currencyOptions = Array.isArray(currencies.data)
     }))
   : [];
 
-const revenueOptions = Array.isArray(revenueCategory.data)
+const revenueOptions = usememo(()=>{ Array.isArray(revenueCategory.data)
   ? revenueCategory.data.map((item) => ({
       value: String(item.key || item.code || ""),
       label: item.name || item.code || "Select Category",
     }))
   : [];
-
+  } ,[])
 const vatoptions = Array.isArray(vat.data)
   ? vat.data.map((item) => ({
       value: item.code,
