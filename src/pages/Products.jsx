@@ -7,12 +7,14 @@ import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
 import CreateProductForm from "../components/pages/CreateProductFrom";
 import { useMemo } from "react";
+import { useEffect } from "react";
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
   const [page, setpage] = useState(1);
   const [limit] = useState(5);
+
   const {
     data: products,
     loading: productsLoading,
@@ -148,29 +150,30 @@ export default function Products() {
             />
           </Col>
         </Row>
-        <Table
-          data={data}
-          columns={productColumns}
-          loading={productsLoading}
-          pagination={{
-            current: page,
-            pageSize: limit,
-            total: products.totalItems,
-            onChange: (p) => setpage(p),
-            position: ["bottomright"],
-          }}
-          bordered
-          style={{
-            borderRadius: "12px",
-            border: "1px solid #d0d0d0ff",
-            overflow: "hidden",
-            marginTop: "10px",
-          }}
-        />
-        {productsLoading && data.length === 0 && (
-          <div style={{ textAlign: "center", marginTop: 20 }}>
-            <Spin t="Fetching data..." />
+
+        {productsLoading ? (
+          <div style={{ textAlign: "center", marginTop: 50, padding: "50px" }}>
+            <Spin size="large" tip="Fetching products..." />
           </div>
+        ) : (
+          <Table
+            data={data}
+            columns={productColumns}
+            pagination={{
+              current: page,
+              pageSize: limit,
+              total: products?.totalItems || 0,
+              onChange: (p) => setpage(p),
+              position: ["bottomRight"],
+            }}
+            bordered
+            style={{
+              borderRadius: "12px",
+              border: "1px solid #d0d0d0",
+              overflow: "hidden",
+              marginTop: "20px",
+            }}
+          />
         )}
       </div>
     </Config>
