@@ -13,12 +13,10 @@ export default function EmptyInvoicePage() {
       <Flex
         justify="center"
         align="center"
-        style={{ width: "100%", height: "100vh" }}
-      >
+        style={{ width: "100%", height: "100vh" }}>
         <Button
           onClick={handleclick}
-          style={{ width: "100%", height: "100vh" }}
-        >
+          style={{ width: "100%", height: "100vh" }} >
           create product{" "}
         </Button>
       </Flex>
