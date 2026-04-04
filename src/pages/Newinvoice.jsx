@@ -13,7 +13,7 @@ export default function Newinvoice() {
     <>
       <Row>
         <CardComponent style={{width:1300}}>
-          <Header> </Header>
+          <Header> Create invoice </Header>
           <Col span={4}>
             <Input antUI={{ size: "large" }} />
           </Col>
