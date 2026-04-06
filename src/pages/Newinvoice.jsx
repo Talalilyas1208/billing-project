@@ -11,10 +11,24 @@ export default function Newinvoice() {
 
   return (
     <>
-      <Row>
+      <Row gutter={16}>
         <CardComponent style={{width:1300}}>
           <Header> Create invoice </Header>
           <Col span={4}>
+            <Input antUI={{ size: "large" }} />
+          </Col>
+           <Col span={4}>
+            <Input antUI={{ size: "large" }} />
+          </Col> <Col span={4}>
+            <Input antUI={{ size: "large" }} />
+          </Col>
+           <Col span={4}>
+            <Input antUI={{ size: "large" }} />
+          </Col>
+           <Col span={4}>
+            <Input antUI={{ size: "large" }} />
+          </Col>
+           <Col span={4}>
             <Input antUI={{ size: "large" }} />
           </Col>
         </CardComponent>
