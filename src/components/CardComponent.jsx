@@ -7,7 +7,7 @@ const {style = {},children} =props;
         <>
       <Card   style= {{...style}}>
     
-{children}
+     {children}
       </Card>
         
         </>
