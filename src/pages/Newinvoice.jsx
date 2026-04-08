@@ -14,7 +14,6 @@ export default function Newinvoice() {
     <>
     <Config>
       <Row gutter={16}>
-
         <CardComponent style={{width:1300}}>
           <Header> Create invoice </Header>
           <Col span={4}>
