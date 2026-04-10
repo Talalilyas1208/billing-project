@@ -23,6 +23,9 @@ export default function Newinvoice() {
            <Col span={4}>
             <Input antUI={{ size: "large" }} />
           </Col>
+          <Col span={4}offset={6}>
+            <Input antUI={{ size: "large" }} />
+          </Col>
         </CardComponent>
       </Row>
       </Config>
