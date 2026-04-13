@@ -10,6 +10,16 @@ export default function Newinvoice() {
 
   const { Header } = Layout;
 
+ function mini ( arr) {
+    let mini= arr[0]
+    for(let i = 1 ; i < arr.length; i++){
+        if (arr[i] < mini){
+            arr[i] = mini
+        }
+        return mini
+    }
+ }
+ console.log(mini(arr))
   return (
     <>
     <Config>
