@@ -10,7 +10,7 @@ export default function Newinvoice() {
 
   const { Header } = Layout;
 
- console.log(mini(arr))
+
   return (
     <>
     <Config>
