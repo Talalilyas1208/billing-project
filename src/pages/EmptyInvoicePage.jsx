@@ -17,7 +17,7 @@ export default function EmptyInvoicePage() {
         <Button
           onClick={handleclick}
           style={{ width: "100%", height: "100vh" }} >
-          create product{" "}
+          create product
         </Button>
       </Flex>
     </>
