@@ -48,8 +48,7 @@ const revenueOptions = Array.isArray(revenueCategory.data)
     }))
   : [];
 
-const vatoptions = Array.isArray(vat.data)
-  ? vat.data.map((item) => ({
+const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
       value: item.code,
       label: (
         <div style={{ display: "flex", flexDirection: "column" }}>
