@@ -7,10 +7,11 @@ export default function Button(props) {
     disabled,
     className = "",
     style,
+    antUI
   } = props;
 
   const variants = {
-    login: "w-full bg-green-600 hover:bg-green-700 text-white justify-center",
+  
 
     google:
       "w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 justify-center gap-2",
@@ -33,11 +34,12 @@ export default function Button(props) {
 
   return (
     <button
-      className={`p-2.5 rounded-lg transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${className}`}
+      className={`p-2.5 rounded-lg transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${className} ${antUI}`} 
       type={type || "button"}
       onClick={onClick}
       disabled={disabled}
       {...style}
+ 
     >
       {children}
     </button>
