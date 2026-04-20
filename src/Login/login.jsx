@@ -74,6 +74,7 @@
           errors = {errors}/>
           <Button
           variant="login"
+          antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"}
             onClick={handleLogin}
             disabled={loading}>
             Login
