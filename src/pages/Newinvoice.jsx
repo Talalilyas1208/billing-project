@@ -17,15 +17,15 @@ export default function Newinvoice() {
       <Row gutter={16}>
         <CardComponent style={{width:1300}}>
           <Header> Create invoice </Header>
-          <Col span={4}>
-            <Input antUI={{ size: "large" }} />
+          <Col span={4} style={{}} >
+            <Input antUI={{ size: "large" }} style={{marginTop:"10px"}}  />
           </Col>
            
            <Col span={4}>
-            <Input antUI={{ size: "large" }} />
+            <Input antUI={{ size: "large", }}style={{marginTop:"10px"}} />
           </Col>
-          <Col span={4}offset={6}>
-            <Input antUI={{ size: "large" }} />
+          <Col span={4}>
+            <Input antUI={{ size: "large" }} style={{marginTop:"10px"}} />
           </Col>
         </CardComponent>
       </Row>
