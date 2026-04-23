@@ -5,9 +5,9 @@ const {style = {},children} =props;
 
     return(
         <>
-      <Card   style= {{...style}}>
+      <Card style= {{...style}}>
     
-     {children}
+        {children}
       </Card>
         
         </>
