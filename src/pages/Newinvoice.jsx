@@ -10,27 +10,32 @@ export default function Newinvoice() {
 
   const { Header } = Layout;
 
-
   return (
     <>
-    <Config>
-      <Row gutter={16}>
-        <CardComponent style={{width:1300 , borderRadius: '20px', borderColor: '#c7c2c2ff'} }>
-          <Header> Create invoice </Header>
-          <Col span={4} style={{}} >
-            <Input antUI={{ size: "large" }} style={{marginTop:"10px"}}  />
-          </Col>
-           <Col span={4}>
-            <Input antUI={{ size: "large", }}style={{marginTop:"10px"}} />
-          </Col>
-          <Col span={4}>
-            <Input antUI={{ size: "large" }} style={{marginTop:"10px"}} />
-          </Col>
+      <Config>
+        <Row gutter={16}>
+          <CardComponent
+            style={{
+              width: 1300,
+              borderRadius: "20px",
+              borderColor: "#c7c2c2ff",
+            }}
+          >
+            <Header> Create invoice </Header>
+            <Col span={4} style={{}}>
+              <Input antUI={{ size: "large" }} style={{ marginTop: "10px" }} />
+            </Col>
+            <Col span={4}>
+              <Input antUI={{ size: "large" }} style={{ marginTop: "10px" }} />
+            </Col>
+            <Col span={4}>
+              <Input antUI={{ size: "large" }} style={{ marginTop: "10px" }} />
+            </Col>
             <Col span={4} offset={20}>
-            <Input antUI={{ size: "large" }} style={{marginTop:"10px"}} />
-          </Col>
-        </CardComponent>
-      </Row>
+              <Input antUI={{ size: "large" }} style={{ marginTop: "10px" }} />
+            </Col>
+          </CardComponent>
+        </Row>
       </Config>
     </>
   );
