@@ -73,7 +73,7 @@
              antUI = {{size:"large"}}
           errors = {errors}/>
           <Button
-          variant="login"
+        x
           antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"}
             onClick={handleLogin}
             disabled={loading}>
@@ -99,9 +99,9 @@
             <div className="flex-grow border-t border-gray-200"></div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <Button variant="google"
+            <Button antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
               onClick={() => handleSocial("google")}
-              className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+             
             >
               Google
             </Button>

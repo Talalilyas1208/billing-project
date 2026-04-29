@@ -119,11 +119,11 @@ const [time,setTime] =useState()
           onChange={handleChange}
           antUI={{ size: "large" }}
         />
-        <Button variant="login" onClick={handleRegister} disabled={loading}>
+        <Button antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"} onClick={handleRegister} disabled={loading}>
           Register
         </Button>
         <Button
-          variant="google"
+         antUI={"w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 justify-center gap-2"}
           onClick={() => handlelogin("google")}
           className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
         >
