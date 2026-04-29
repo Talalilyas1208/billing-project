@@ -154,9 +154,6 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
           </Col>
         </Row>
 
-{/* <Button onClick={handleCancelRequest} type="secondary">
-            Cancel
-          </Button> */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
           <Button onClick={() => form.submit()} disabled={loadingSubmit}>
             {loadingSubmit ? "Saving..." : "Save"}
