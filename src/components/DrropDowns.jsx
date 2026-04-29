@@ -46,7 +46,7 @@ export default function DropDowns(props) {
     );
   }
 
-  // POPOVER VARIANT
+
   return (
     <Popover
       open={isOpen}

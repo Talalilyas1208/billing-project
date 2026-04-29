@@ -13,8 +13,7 @@ export default function Button(props) {
   const variants = {
   
 
-    google:
-      "w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 justify-center gap-2",
+   
 
     signout:
       "bg-red-50 text-red-600 border border-red-200 hover:bg-red-600 hover:text-white transition font-medium",
