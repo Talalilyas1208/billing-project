@@ -72,8 +72,7 @@
           onChange={handleChange}
              antUI = {{size:"large"}}
           errors = {errors}/>
-          <Button
-        x
+          <Button 
           antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"}
             onClick={handleLogin}
             disabled={loading}>
