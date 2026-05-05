@@ -123,9 +123,9 @@ const [time,setTime] =useState()
           Register
         </Button>
         <Button
-         antUI={"w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 justify-center gap-2"}
+antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
           onClick={() => handlelogin("google")}
-          className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
+        
         >
           Google
         </Button>
