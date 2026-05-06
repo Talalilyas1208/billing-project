@@ -3,8 +3,8 @@ import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./Routes/Publicroutes";
 import PrivateRoute from "./Routes/Privateroutes";
 
-import Register from "./register/Register";
-import Login from "./login/login";
+import Register from "./Register/Register";
+import Login from "./Login/login";
 import Produts from "./pages/Products";
 import Invoice from "./pages/Invoice";
 import EmptyInvoicePage from "./pages/Emptyinvoicepage";
