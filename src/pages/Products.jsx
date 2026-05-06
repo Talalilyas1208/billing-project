@@ -116,7 +116,7 @@ export default function Products() {
           </Col>
 
           <Col>
-            <Button onClick={() => setIsOpen(true)} variant="product">
+            <Button onClick={() => setIsOpen(true)}  antUI={"bg-black text-white py-3 px-6 rounded"}>
               Create Product
             </Button>
           </Col>
