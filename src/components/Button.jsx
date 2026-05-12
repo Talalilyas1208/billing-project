@@ -3,29 +3,32 @@ export default function Button(props) {
     variant,
     children,
     onClick,
-    type,
+    type = "button",
     disabled,
     className = "",
     style,
-    antUI
+    antUI = ""   
   } = props;
 
   const variants = {
     default: "bg-black-600 text-white",
-    addbutton: "bg-transparent hover:bg-gray-100 text-gray  rounded-md p-2",
+    addbutton: "bg-transparent hover:bg-gray-100 text-gray-600 rounded-md p-2",
+    facebook: "bg-[#1877F2] text-white", 
+   
   };
-  const variantClass = variants[variant] || variants.default;
+
+
+  const variantClass = variant ? (variants[variant] || variants.default) : "";
 
   return (
-    <Button
-      className={`p-2.5 rounded-lg transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${className} ${antUI}`} 
-      type={type || "button"}
+    <button
+      style={style}
+      type={type}
       onClick={onClick}
       disabled={disabled}
-      {...style}
- 
+      className={`p-2.5 rounded-lg transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${antUI} ${className}`} 
     >
       {children}
-    </Button>
+    </button>
   );
 }
