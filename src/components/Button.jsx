@@ -16,8 +16,6 @@ export default function Button(props) {
     facebook: "bg-[#1877F2] text-white", 
    
   };
-
-
   const variantClass = variant ? (variants[variant] || variants.default) : "";
 
   return (

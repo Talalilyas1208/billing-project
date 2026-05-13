@@ -98,32 +98,35 @@ const [time,setTime] =useState()
           name="displayName"
           placeholder="Full Name"
           onChange={handleChange}
+          rules={[{ required: true  ,message: 'enter your name' }]}
           antUI={{ size: "large" }}
         />
         <Input
           name="phonenumber"
           placeholder="Phone Number"
           onChange={handleChange}
+          rules={[{ required: true }]}
           size={"large"}
         />
         <Input
           name="email"
           placeholder="Email"
           onChange={handleChange}
+          rules={[{ required: true }]}
           antUI={{ size: "large" }}
         />
         <Input
           name="password"
           type="password"
           placeholder="Password"
+          rules={[{ required: true }]}
           onChange={handleChange}
           antUI={{ size: "large" }}
         />
         <Button antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"} onClick={handleRegister} disabled={loading}>
           Register
         </Button>
-        <Button
-antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
+        <Button antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
           onClick={() => handlelogin("google")}
         
         >
