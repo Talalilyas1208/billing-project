@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashborad";
-import PublicRoute from "./Routes/Publicroutes";
+import PublicRoute from "./routes/Publicroutes"
 import PrivateRoute from "./Routes/Privateroutes";
 
 import Register from "./Register/Register";
