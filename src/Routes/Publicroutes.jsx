@@ -1,7 +1,8 @@
+import useLocalStorage from "use-local-storage"; 
 import { Outlet, Navigate } from "react-router-dom";
 
 const PublicRoute = () => {
-  const activeUser = JSON.parse(localStorage.getItem("activeUser"));
+  const [activeUser] = useLocalStorage("activeUser", null);
 
   return !activeUser ? <Outlet /> : <Navigate to="/dashboard" />;
 };
