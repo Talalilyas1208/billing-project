@@ -37,11 +37,18 @@
   const handleLogin = () => {
     const valError = validation(formData, true);
     if (valError) return setError(valError);
+   
     
     
     handleAuth(() => loginWithEmail(formData.email, formData.password));
   };
-
+ const handlekeydown =(event)=> {
+      const valErrors = validation(formData,true);
+       if (valErrors) return setError(valError);
+       if (event.key === 'Enter'){
+         handleAuth(() => loginWithEmail(formData.email, formData.password));
+       }
+    }
   const handleSocial = (type) => {
     handleAuth(() => loginWithSocial(type));
   };
@@ -75,6 +82,7 @@
           <Button 
           antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"}
             onClick={handleLogin}
+           onSubmit={handleLogin}
             disabled={loading}>
             Login
         </Button>
