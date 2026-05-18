@@ -9,7 +9,7 @@ import Button from "../components/Button";
 export default function Login() {
   const navigate = useNavigate();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
-  const [, setTime] = useLocalStorage("settime", null); // Added missing assignment placeholder
+  const [, setTime] = useLocalStorage("settime", null); 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   const handleLoginSubmit = (e) => {
-    // Prevent the browser from reloading the page on form submission
+
     e.preventDefault();
 
     const valError = validation(formData, true);
@@ -62,8 +62,6 @@ export default function Login() {
             {errors}
           </p>
         )}
-
-        {/* Form wrapper handles both clicks and Enter keys automatically */}
         <form onSubmit={handleLoginSubmit} className="space-y-4">
           <Input
             name="email"
@@ -81,12 +79,10 @@ export default function Login() {
             antUI={{ size: "large" }}
             errors={errors}
           />
-
           <Button
-            type="submit" /* Changes button to submit the form */
+            type="submit"
             antUI="w-full bg-green-600 hover:bg-green-700 text-white justify-center"
-            disabled={loading}
-          >
+            disabled={loading}>
             Login
           </Button>
         </form>
