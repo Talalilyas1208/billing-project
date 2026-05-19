@@ -5,11 +5,16 @@ import { validation } from "../utils/validation";
 import { loginWithEmail, loginWithSocial } from "../services/auth";
 import Input from '../components/Input';
 import Button from "../components/Button";
+import { getAuth } from "firebase/auth";
 
 export default function Login() {
+  const auth = getAuth();
   const navigate = useNavigate();
+  
   const [, setActiveUser] = useLocalStorage("activeUser", null);
   const [, setTime] = useLocalStorage("settime", null); 
+  const [, setAuthToken] = useLocalStorage("authToken", null); 
+  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,12 +28,21 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const user = await authMethod();
-      if (user?.metadata?.lastSignInTime) {
-        setTime(user.metadata.lastSignInTime);
+      const user = await authMethod(); 
+
+      if (user) {
+        if (user.token) {
+          setAuthToken(user.token); 
+          console.log("Firebase Token:", user.token);
+        }
+
+        if (user?.metadata?.lastSignInTime) {
+          setTime(user.metadata.lastSignInTime);
+        }
+       
+        setActiveUser(user);
+        navigate("/dashboard");
       }
-      setActiveUser(user);
-      navigate("/dashboard");
     } catch (err) {
       setError(err.message || "An unexpected error occurred");
     } finally {
@@ -37,7 +51,6 @@ export default function Login() {
   };
 
   const handleLoginSubmit = (e) => {
-
     e.preventDefault();
 
     const valError = validation(formData, true);
