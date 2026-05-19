@@ -153,7 +153,7 @@ export default function Products() {
 
         {productsLoading ? (
           <div style={{ textAlign: "center", marginTop: 50, padding: "50px" }}>
-            <Spin size="large" tip="Fetching products..." />
+            <Spin size="large" description="Fetching products..." />
           </div>
         ) : (
           <Table
