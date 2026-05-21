@@ -80,14 +80,6 @@ export default function Sidebar({ activeUser, onLogout }) {
             </p>
             <p className="text-xs">{activeUser?.email}</p>
           </div>
-
-          <div
-            className="cursor-pointer p-1 hover:bg-gray-100 rounded"
-            onClick={() => navigate("/account")}
-          >
-            Account Settings
-          </div>
-
           <div
             className="cursor-pointer p-1 text-red-500 hover:bg-gray-100 rounded"
             onClick={onLogout}
@@ -96,7 +88,7 @@ export default function Sidebar({ activeUser, onLogout }) {
           </div>
         </DropDowns>
       </div>
-      <div style={{ flex: 1, overflowY: "auto" }}>
+      <div style={{ flex:2, overflowY: "auto" }}>
         <Menu
           mode="inline"
           items={menuItems}
