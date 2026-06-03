@@ -106,7 +106,7 @@ const [time,setTime] =useState()
           placeholder="Phone Number"
           onChange={handleChange}
           rules={[{ required: true }]}
-          size={"large"}
+            antUI={{size:"large"}}
         />
         <Input
           name="email"
