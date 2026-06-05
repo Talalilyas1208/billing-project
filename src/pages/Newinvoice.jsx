@@ -15,13 +15,24 @@ export default function Newinvoice() {
   const onNameChange = event => {
     setName(event.target.value);
   };
-  const addItem = e => {
-    e.preventDefault();
-    setItems([...items, name || `New item`]);
+const addItem = e => {
+  e.preventDefault();
+  
+
+  const trimmedName = name.trim();
+
+
+  if (trimmedName && !items.includes(trimmedName)) {
+    setItems([...items, trimmedName]);
     setName('');
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);}
+  } else if (items.includes(trimmedName)) {
+    alert("This item already exists!"); // Optional: alert the user
+  }
+
+  setTimeout(() => {
+    inputRef.current?.focus();
+  }, 0);
+};
   const { Header } = Layout;
 
   return (
