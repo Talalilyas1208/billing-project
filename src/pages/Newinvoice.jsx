@@ -23,13 +23,8 @@ export default function Newinvoice() {
     if (trimmedName && !items.includes(trimmedName)) {
       setItems([...items, trimmedName]);
       setName("");
-    } else if (items.includes(trimmedName)) {
-      alert("This item already exists!");
     }
-
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 0);
+ 
   };
   const { Header } = Layout;
 
