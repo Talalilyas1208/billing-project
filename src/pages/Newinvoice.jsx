@@ -15,17 +15,22 @@ export default function Newinvoice() {
   const onNameChange = (event) => {
     setName(event.target.value);
   };
-  const addItem = (e) => {
+ const addItem = async (e) => {
     e.preventDefault();
 
     const trimmedName = name.trim();
 
     if (trimmedName && !items.includes(trimmedName)) {
-      setItems([...items, trimmedName]);
-      setName("");
+     
+      await Promise.all([
+        setItems([...items, trimmedName]),
+        setName("")
+      ]);
+      
+      
     }
- 
-  };
+ };
+
   const { Header } = Layout;
 
   return (
