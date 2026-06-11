@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Form ,useNavigate } from "react-router-dom";
+import { Link, Form, useNavigate } from "react-router-dom";
 import { validation } from "../utils/validation";
 import { loginWithSocial, registerWithEmail } from "../services/auth";
 import useLocalStorage from "use-local-storage";
@@ -13,12 +13,12 @@ export default function Register() {
     displayName: "",
     phonenumber: "",
   });
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [activeUser, setActiveUser] = useLocalStorage("sginuser", null);
-const [time,setTime] =useState()
+  const [time, setTime] = useState();
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -98,7 +98,7 @@ const [time,setTime] =useState()
           name="displayName"
           placeholder="Full Name"
           onChange={handleChange}
-          rules={[{ required: true  ,message: 'enter your name' }]}
+          rules={[{ required: true, message: "enter your name" }]}
           antUI={{ size: "large" }}
         />
         <Input
@@ -106,7 +106,7 @@ const [time,setTime] =useState()
           placeholder="Phone Number"
           onChange={handleChange}
           rules={[{ required: true }]}
-            antUI={{size:"large"}}
+          antUI={{ size: "large" }}
         />
         <Input
           name="email"
@@ -123,12 +123,18 @@ const [time,setTime] =useState()
           onChange={handleChange}
           antUI={{ size: "large" }}
         />
-        <Button antUI={"w-full bg-green-600 hover:bg-green-700 text-white justify-center"} onClick={handleRegister} disabled={loading}>
+        <Button
+          antUI={
+            "w-full bg-green-600 hover:bg-green-700 text-white justify-center"
+          }
+          onClick={handleRegister}
+          disabled={loading}
+        >
           Register
         </Button>
-        <Button antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
+        <Button
+          antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
           onClick={() => handlelogin("google")}
-        
         >
           Google
         </Button>

@@ -15,22 +15,15 @@ export default function Newinvoice() {
   const onNameChange = (event) => {
     setName(event.target.value);
   };
- const addItem = async (e) => {
+  const addItem = async (e) => {
     e.preventDefault();
 
     const trimmedName = name.trim();
 
     if (trimmedName && !items.includes(trimmedName)) {
-     
-      await Promise.all([
-        setItems([...items, trimmedName]),
-        setName("")
-      ]);
-      
-      
+      await Promise.all([setItems([...items, trimmedName]), setName("")]);
     }
- };
-
+  };
   const { Header } = Layout;
 
   return (
@@ -44,7 +37,6 @@ export default function Newinvoice() {
           }}
         >
           <Header>Create Invoice</Header>
-
           <Row
             justify="space-between"
             style={{ marginTop: "10px", padding: "0 16px" }}
