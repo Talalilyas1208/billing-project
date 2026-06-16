@@ -9,21 +9,17 @@ const usefetch = (url = null) => {
     async (customUrl = url, method = "GET", body = null) => {
       setLoading(true);
       setError(null);
-
       try {
         const response = await fetch(customUrl, {
           method,
           headers: { "Content-Type": "application/json" },
           body: body ? JSON.stringify(body) : null,
         });
-
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-
         const result = await response.json();
         if (method === "GET") {
           setData(result);
         }
-
         return result;
       } catch (err) {
         setError(err.message);
@@ -34,7 +30,6 @@ const usefetch = (url = null) => {
     },
     [url]
   );
-
   useEffect(() => {
     if (url) {
       request(url, "GET");
@@ -44,7 +39,6 @@ const usefetch = (url = null) => {
   const refetch = useCallback(() => {
     if (url) request(url, "GET");
   }, [url, request]);
-
   return { data, loading, error, request, refetch };
 };
 
