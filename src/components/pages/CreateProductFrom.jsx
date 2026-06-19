@@ -71,47 +71,36 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
         onFinish={onFinish}
         initialValues={{
           currency: "PKR",
-          
-        }}
-      >
+        }}>
         <Row gutter={16}>
-        
           <Col span={14}>
             <Form.Item
               name="productname"
               label="Name"
-              rules={[{ required: true, message: "Please enter product name" }]}
-            >
+              rules={[{ required: true, message: "Please enter product name" }]}>
               <Input
                 antUI={{ size: "large" }}
-                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" ,width:"100%" }}
-              />
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" ,width:"100%" }}/>
             </Form.Item>
-
             <Form.Item name="description" label="Description">
               <InputTextAreas
                 placeholder="None"
                 antUI={{ minRows: 2, maxRows: 2, size: "large" }}
-                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}
-              />
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}/>
             </Form.Item>
-
             <Form.Item 
               name="revenueCategory" 
               label="Revenue Category"
-              rules={[{ required: true }]}
-            >
+              rules={[{ required: true }]}>
               <Select showSearch options={revenueOptions} />
             </Form.Item>
             <Form.Item 
               name="vat" 
               label="VAT"
-              rules={[{ required: true }]}
-            >
+              rules={[{ required: true }]}>
               <Select showSearch options={vatoptions} />
             </Form.Item>
           </Col>
-
           <Col span={1}><Space /></Col>
           <Col span={9}>
             <Row gutter={12}>
@@ -119,12 +108,10 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
                 <Form.Item 
                   name="price" 
                   label="Price"
-                  rules={[{ required: true, message: '' }]}
-                >
+                  rules={[{ required: true, message: '' }]}>
                   <NumbersInput
                     antUI={{ size: "large", precision: 2 }}
-                    style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem", width : "100%"}}
-                  />
+                    style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem", width : "100%"}}/>
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -133,29 +120,23 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
                 </Form.Item>
               </Col>
             </Row>
-
             <Form.Item
               name="productNumber"
               label="Product Number"
-              rules={[{ required: true, message: "Required" }]}
-            >
+              rules={[{ required: true, message: "Required" }]}>
               <Input
                 antUI={{ size: "large" }}
-                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}
-              />
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}/>
             </Form.Item>
-
             <Form.Item name="supplier" label="Supplier Product Number">
               <Input
                 antUI={{ size: "large" }}
-                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}
-              />
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.1)", borderRadius: "0.5rem" }}/>
             </Form.Item>
           </Col>
         </Row>
-
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
-          <Button onClick={() => form.submit()} disabled={loadingSubmit}>
+          <Button onClick={() => form.submit()} disabled={loadingSubmit} type="primary">
             {loadingSubmit ? "Saving..." : "Save"}
           </Button>
         </div>
