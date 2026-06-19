@@ -9,12 +9,10 @@ export default function Button(props) {
     style,
     antUI = ""   
   } = props;
-
   const variants = {
     default: "bg-black-600 text-white",
     addbutton: "bg-transparent hover:bg-gray-100 text-gray-600 rounded-md p-2",
     facebook: "bg-[#1877F2] text-white", 
-   
   };
   const variantClass = variant ? (variants[variant] || variants.default) : "";
 
