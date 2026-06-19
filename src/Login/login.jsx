@@ -10,11 +10,9 @@ import { getAuth } from "firebase/auth";
 export default function Login() {
   const auth = getAuth();
   const navigate = useNavigate();
-  
   const [, setActiveUser] = useLocalStorage("activeUser", null);
   const [, setTime] = useLocalStorage("settime", null); 
   const [, setAuthToken] = useLocalStorage("authToken", null); 
-  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setError] = useState("");
   const [loading, setLoading] = useState(false);
