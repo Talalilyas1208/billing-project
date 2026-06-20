@@ -11,7 +11,7 @@ const { Sider } = Layout;
 export default function Sidebar({ activeUser, onLogout }) {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [collapsed , setcollapsed] = useState(false)
+  const [collapsed, setcollapsed] = useState(false);
 
   const { loading, error, data } = usefetch("/api/sidebar");
 
@@ -19,85 +19,88 @@ export default function Sidebar({ activeUser, onLogout }) {
   if (error) return <p>Error: {error}</p>;
 
   const menuItems = Array.isArray(data.data)
-  ? data.data.map((section) => {
-      if (section.children) {
+    ? data.data.map((section) => {
+        if (section.children) {
+          return {
+            key: section.label,
+            label: section.label,
+            children: section.children.map((child) => ({
+              key: child.link,
+              label: child.name,
+              onClick: () => navigate(child.link),
+            })),
+          };
+        }
+
         return {
           key: section.label,
           label: section.label,
-          children: section.children.map((child) => ({
-            key: child.link,
-            label: child.name,
-            onClick: () => navigate(child.link),
-          })),
         };
-      }
-
-    return {
-      key: section.label,
-      label: section.label,
-    };
-  }) :[];
+      })
+    : [];
 
   return (
     <Config>
-    <Sider
-      width={230}
-      breakpoint="md"
-      style={{
-        background: "#f5f5f5",
-        borderRight: "1px solid #e5e5e5",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div style={{ padding: 16, borderTop: "1px solid #e5e5e5" }}>
-        <DropDowns
-          trigger={
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                cursor: "pointer",
-              }}
-            >
-              <Avatar style={{ backgroundColor: "#1677ff" }}>
-                {activeUser?.displayName?.charAt(0).toUpperCase() || "U"}
-              </Avatar>
-
-              <span style={{ flex: 1 }}>
-                {activeUser?.displayName || "User"}
-              </span>
-
-              <DownOutlined />
-            </div>
-          }
-          isOpen={isProfileOpen}
-          onToggle={setIsProfileOpen}
-        >
-          <div>
-            <p className="text-[10px] text-gray-400 font-bold uppercase">
-              Logged in as
-            </p>
-            <p className="text-xs">{activeUser?.email}</p>
-          </div>
-          <div
-            className="cursor-pointer p-1 text-red-500 hover:bg-gray-100 rounded"
-            onClick={onLogout}
+      <Sider
+        width={230}
+        breakpoint="md"
+        collapsed={collapsed}
+        onCollapse={(value) => setcollapsed(value)}
+        style={{
+          background: "#f5f5f5",
+          borderRight: "1px solid #e5e5e5",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ padding: 16, borderTop: "1px solid #e5e5e5" }}>
+          <DropDowns
+            trigger={
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar style={{ backgroundColor: "#1677ff" }}>
+                  {activeUser?.displayName?.charAt(0).toUpperCase() || "U"}
+                </Avatar>
+                {!collapsed && (
+                  <span style={{ flex: 1 }}>
+                    {activeUser?.displayName || "User"}
+                  </span>
+                )}
+                {!collapsed && <DownOutlined />}
+              </div>
+            }
+            isOpen={isProfileOpen}
+            onToggle={setIsProfileOpen}
           >
-            Sign Out
-          </div>
-        </DropDowns>
-      </div>
-      <div style={{ flex:2, overflowY: "auto" }}>
-        <Menu
-          mode="inline"
-          items={menuItems}
-          style={{ borderRight: "none", background: "transparent" }}
-        />
-      </div>
-    </Sider>
+            <div>
+              <p className="text-[10px] text-gray-400 font-bold uppercase">
+                Logged in as
+              </p>
+              <p className="text-xs">{activeUser?.email}</p>
+            </div>
+            <div
+              className="cursor-pointer p-1 text-red-500 hover:bg-gray-100 rounded"
+              onClick={onLogout}
+            >
+              Sign Out
+            </div>
+          </DropDowns>
+        </div>
+        <div style={{ flex: 2, overflowY: "auto" }}>
+          <Menu
+            mode="inline"
+            items={menuItems}
+            style={{ borderRight: "none", background: "transparent" }}
+          />
+        </div>
+      </Sider>
     </Config>
   );
 }
