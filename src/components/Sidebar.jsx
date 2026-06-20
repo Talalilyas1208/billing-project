@@ -11,6 +11,7 @@ const { Sider } = Layout;
 export default function Sidebar({ activeUser, onLogout }) {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [collapsed , setcollapsed] = useState(false)
 
   const { loading, error, data } = usefetch("/api/sidebar");
 
@@ -41,6 +42,7 @@ export default function Sidebar({ activeUser, onLogout }) {
     <Config>
     <Sider
       width={230}
+      breakpoint="md"
       style={{
         background: "#f5f5f5",
         borderRight: "1px solid #e5e5e5",
