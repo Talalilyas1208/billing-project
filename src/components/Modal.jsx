@@ -4,9 +4,7 @@ const { confirm } = Modal;
 
 function Modals(props) {
   const { isOpen, onClose, children, style, form } = props;
-
   const { width, top, title } = style;
-
   const handleCloseAndReset = () => {
     onClose();
     if (form) {
@@ -41,8 +39,7 @@ function Modals(props) {
       onCancel={alert}
       footer={null}
       width={width}
-      style={{ top }}
-    >
+      style={{ top }}>
       {children}
     </Modal>
   );

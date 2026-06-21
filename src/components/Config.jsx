@@ -1,6 +1,5 @@
 import React from "react";
 import { ConfigProvider } from "antd";
-
 const Config = ({ children }) => (
   <ConfigProvider
     theme={{
@@ -20,27 +19,19 @@ const Config = ({ children }) => (
           headerBg: "#ffffffff",
           headerColor: "#1f1f1fff",
         },
-
         Menu: {
           containerBg: "#f5f5f5",
-
           itemSelectedBg: "#e6e6e6ff",
-
           itemSelectedColor: "#000000ff",
-
           itemHoverColor: "#000000ff",
-
           itemHoverBg: "#c5c3c3ff",
-
           itemActiveBg: "#c5c3c3ff",
-
           itemSelectedBorderFontSize: 0,
           activeBarBorderWidth: 4,
           itemBorderRadius: 4,
         },
       },
-    }}
-  >
+    }} >
     {children}
   </ConfigProvider>
 );

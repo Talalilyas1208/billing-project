@@ -1,5 +1,4 @@
 import { Input } from "antd";
-// for description
 export default function InputTextAreas(props) {
   const {
     placeholder,

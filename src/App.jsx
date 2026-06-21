@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashborad";
 import PublicRoute from "./routes/Publicroutes";
 import PrivateRoute from "./routes/Privateroutes";
-import Register from "./Register/Register";
+import Register from "./register/Register";
 import Login from "./login/Login";
 import Produts from "./pages/Products";
 import Invoice from "./pages/Invoice";
