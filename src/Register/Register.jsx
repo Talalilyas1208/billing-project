@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, Form, useNavigate } from "react-router-dom";
-import { validation } from "../utils/validation";
+import { Link, useNavigate } from "react-router-dom";
+import { Form } from "antd";
+import { GoogleOutlined } from "@ant-design/icons";
 import { loginWithSocial, registerWithEmail } from "../services/auth";
 import useLocalStorage from "use-local-storage";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
 export default function Register() {
+  const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,12 +21,17 @@ export default function Register() {
   const [verificationSent, setVerificationSent] = useState(false);
   const [activeUser, setActiveUser] = useLocalStorage("sginuser", null);
   const [time, setTime] = useState();
+
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleRegister = async () => {
-    const valError = validation(formData, false);
-    if (valError) return setError(valError);
+    setError("");
+    try {
+      await form.validateFields();
+    } catch {
+      return;
+    }
 
     setLoading(true);
     try {
@@ -42,6 +49,7 @@ export default function Register() {
       setLoading(false);
     }
   };
+
   const handleAuth = async (authMethod) => {
     setError("");
     setLoading(true);
@@ -59,6 +67,7 @@ export default function Register() {
       setLoading(false);
     }
   };
+
   const handlelogin = async (type) => {
     handleAuth(() => loginWithSocial(type));
   };
@@ -83,6 +92,7 @@ export default function Register() {
       </div>
     );
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 font-sans text-gray-800">
       <div className="bg-white p-12 rounded-xl shadow-lg w-full max-w-md space-y-4 border border-gray-200">
@@ -94,48 +104,83 @@ export default function Register() {
             {error}
           </p>
         )}
-        <Input
-          name="displayName"
-          placeholder="Full Name"
-          onChange={handleChange}
-          rules={[{ required: true, message: "enter your name" }]}
-          antUI={{ size: "large" }}
-        />
-        <Input
-          name="phonenumber"
-          placeholder="Phone Number"
-          onChange={handleChange}
-          rules={[{ required: true }]}
-          antUI={{ size: "large" }}
-        />
-        <Input
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          rules={[{ required: true }]}
-          antUI={{ size: "large" }}
-        />
-        <Input
-          name="password"
-          type="password"
-          placeholder="Password"
-          rules={[{ required: true }]}
-          onChange={handleChange}
-          antUI={{ size: "large" }}
-        />
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={formData}
+          onFinish={handleRegister}
+          requiredMark={false}
+        >
+          <Form.Item
+            name="displayName"
+            rules={[{ required: true, message: "Please enter your name" }]}
+          >
+            <Input
+              name="displayName"
+              placeholder="Full Name"
+              value={formData.displayName}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="phonenumber"
+            rules={[
+              { required: true, message: "Please enter your phone number" },
+            ]}
+          >
+            <Input
+              name="phonenumber"
+              placeholder="Phone Number"
+              value={formData.phonenumber}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <Input
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please enter a password" }]}
+          >
+            <Input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              antUI="w-full bg-green-600 hover:bg-green-700 text-white justify-center"
+              type="submit"
+              disabled={loading}
+            >
+              Register
+            </Button>
+          </Form.Item>
+        </Form>
         <Button
-          antUI={
-            "w-full bg-green-600 hover:bg-green-700 text-white justify-center"
-          }
-          onClick={handleRegister}
+          antUI="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 justify-center gap-2"
+          onClick={() => handlelogin("google")}
           disabled={loading}
         >
-          Register
-        </Button>
-        <Button
-          antUI={"w-full bg-purple-300  hover:bg-gray-300 justify-center gap-2"}
-          onClick={() => handlelogin("google")}
-        >
+          <GoogleOutlined />
           Google
         </Button>
 
