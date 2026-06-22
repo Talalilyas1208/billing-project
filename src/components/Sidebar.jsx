@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, Menu, Dropdown, Avatar } from "antd";
+import { Layout, Menu, Dropdown, Avatar,Spin } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import usefetch from "../hooks/Usefetch";
 import DropDowns from "./DrropDowns";
@@ -11,14 +11,11 @@ const { Sider } = Layout;
 export default function Sidebar({ activeUser, onLogout }) {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [collapsed, setcollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const { loading, error, data } = usefetch("/api/sidebar");
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  const menuItems = Array.isArray(data.data)
+  const menuItems = Array.isArray(data?.data)
     ? data.data.map((section) => {
         if (section.children) {
           return {
@@ -31,11 +28,7 @@ export default function Sidebar({ activeUser, onLogout }) {
             })),
           };
         }
-
-        return {
-          key: section.label,
-          label: section.label,
-        };
+        return { key: section.label, label: section.label };
       })
     : [];
 
@@ -45,7 +38,7 @@ export default function Sidebar({ activeUser, onLogout }) {
         width={230}
         breakpoint="md"
         collapsed={collapsed}
-        onCollapse={(value) => setcollapsed(value)}
+        onCollapse={(value) => setCollapsed(value)}
         style={{
           background: "#f5f5f5",
           borderRight: "1px solid #e5e5e5",
@@ -93,12 +86,21 @@ export default function Sidebar({ activeUser, onLogout }) {
             </div>
           </DropDowns>
         </div>
+
         <div style={{ flex: 2, overflowY: "auto" }}>
-          <Menu
-            mode="inline"
-            items={menuItems}
-            style={{ borderRight: "none", background: "transparent" }}
-          />
+          {loading ? (
+           <div style={{ textAlign: "center", marginTop: 50, padding: "50px" }}>
+            <Spin size="large" description="Loading sidebar" />
+          </div>
+          ) : error ? (
+            <p style={{ padding: 16, color: "red" }}>Error: {error}</p>
+          ) : (
+            <Menu
+              mode="inline"
+              items={menuItems}
+              style={{ borderRight: "none", background: "transparent" }}
+            />
+          )}
         </div>
       </Sider>
     </Config>
