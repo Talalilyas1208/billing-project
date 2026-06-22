@@ -10,7 +10,7 @@ export default function Button(props) {
     antUI = ""   
   } = props;
   const variants = {
-    default: "bg-black-600 text-white",
+    
     addbutton: "bg-transparent hover:bg-gray-100 text-gray-600 rounded-md p-2",
     facebook: "bg-[#1877F2] text-white", 
   };
@@ -22,8 +22,7 @@ export default function Button(props) {
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`p-2.5 rounded-lg transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${antUI} ${className}`} 
-    >
+      className={`p-2.5  transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center ${variantClass} ${antUI} ${className}`} >
       {children}
     </button>
   );

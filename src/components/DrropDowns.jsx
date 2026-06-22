@@ -13,30 +13,24 @@ export default function DropDowns(props) {
     width = 224,
     ...rest
   } = props;
-
   const handleToggle = () => {
     onToggle?.(!isOpen);
   };
-
   const menu = (
     <div
       style={{ width }}
-      className="p-2 space-y-2 bg-white rounded-xl shadow-2xl"
-    >
+      className="p-2 space-y-2 bg-white rounded-xl shadow-2xl">
       {children}
     </div>
   );
-
   if (variant === "sidebar") {
     return (
       <div className={`relative w-full ${className}`} {...rest}>
         <div
           onClick={handleToggle}
-          className="cursor-pointer"
-        >
+          className="cursor-pointer">
           {trigger}
         </div>
-
         {isOpen && (
           <div className="relative w-full mt-1">
             {menu}
@@ -45,8 +39,6 @@ export default function DropDowns(props) {
       </div>
     );
   }
-
-
   return (
     <Popover
       open={isOpen}
@@ -57,13 +49,11 @@ export default function DropDowns(props) {
           onToggle?.(open);
         }
       }}
-      content={menu}
-    >
+      content={menu}>
       <div
         className={`cursor-pointer ${className}`}
         onClick={handleToggle}
-        {...rest}
-      >
+        {...rest}>
         {trigger}
       </div>
     </Popover>
