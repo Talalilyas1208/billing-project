@@ -115,8 +115,23 @@ export default function Products() {
           </Col>
 
           <Col>
-            <Button onClick={() => setIsOpen(true)}  antUI={"bg-black text-white py-2 px-1 rounded-full w-35 h-14"} >
-              Create Product
+            <Button
+              onClick={() => setIsOpen(true)}
+              antUI={"bg-black text-white py-2 px-1 rounded-full w-35 h-14"}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                
+                stroke="currentColor"
+                className="w-5 h-5 mr-1"
+              >
+                <path
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <span>Create Product</span>
             </Button>
           </Col>
         </Row>
@@ -136,9 +151,9 @@ export default function Products() {
           )}
         </Modals>
         <Row justify="end">
-          <Col span={8}>
+          <Col span={4}>
             <Input.Search
-              placeholder="products..."
+              placeholder="Search"
               allowClear
               enterButton
               onSearch={(value) => {
@@ -167,10 +182,10 @@ export default function Products() {
             }}
             bordered
             style={{
-              borderRadius: "12px",
-              border: "1px solid #d0d0d0",
-              overflow: "hidden",
-              marginTop: "20px",
+              borderRadius: "10px",
+              border: "1px solid #d9d9d9ff",
+              overflow: "scroll",
+              marginTop: "18px",
             }}
           />
         )}

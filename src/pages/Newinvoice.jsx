@@ -1,13 +1,13 @@
 import Table from "../components/Table";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Row, Col, Layout, Select, Divider, Space, Button } from "antd";
+import { Row, Col, Layout, Divider, Space, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef } from "react";
-import { Card } from "antd";
+import Select from "../components/Select";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
-
+import {LeftOutlined} from "@ant-design/icons"
 export default function Newinvoice() {
   const [items, setItems] = useState(["jack", "lucy"]);
   const [name, setName] = useState("");
@@ -29,34 +29,28 @@ export default function Newinvoice() {
   return (
     <>
       <Config>
+        <Button icon={<LeftOutlined/>}></Button>
         <CardComponent
           style={{
-            width: 1300,
-            borderRadius: "20px",
-            borderColor: "#c7c2c2ff",
+            width: 1400,
+            borderRadius: "10px",
+            borderColor: "#b9adadff",
           }}
         >
-          <Header>Create Invoice</Header>
+         <h1>create invoice</h1>
           <Row
             justify="space-between"
             style={{ marginTop: "10px", padding: "0 16px" }}
           >
             <Col span={4}>
               <Select
-                style={{ width: 300 }}
-                placeholder="custom dropdown render"
-                popupRender={(menu) => (
+                
+                placeholder="Select customer"  popupRender={(menu) => (
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
                     <Space style={{ padding: "0 8px 4px" }}>
-                      <Input
-                        placeholder="Please enter item"
-                        ref={inputRef}
-                        value={name}
-                        onChange={onNameChange}
-                        onKeyDown={(e) => e.stopPropagation()}
-                      />
+                     
                       <Button
                         type="text"
                         icon={<PlusOutlined />}
@@ -71,20 +65,14 @@ export default function Newinvoice() {
               />
               <Input
                 antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
+                style={{ marginBottom: "16px",marginTop:"5px" }}
               />
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}
               />
-              <Input
-                antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
-              />
-              <Input
-                antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
-              />
+            
+            
             </Col>
 
             <Col
@@ -95,14 +83,14 @@ export default function Newinvoice() {
                 alignItems: "flex-end",
               }}
             >
+              <Col>
+            
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}
               />
-              <Input
-                antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
-              />
+              </Col>
+              
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}

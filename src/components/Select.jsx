@@ -1,5 +1,4 @@
 import { Select as AntSelect } from "antd";
-
 const Select = ({
   value,
   options = [],
@@ -11,7 +10,6 @@ const Select = ({
   return (
     <div className="flex flex-col">
       {label && <label className="text-gray-400 ">{label}</label>}
-
       <AntSelect
         value={value || undefined}
         onChange={onChange}
@@ -24,5 +22,4 @@ const Select = ({
     </div>
   );
 };
-
 export default Select;

@@ -35,7 +35,7 @@ export default function Sidebar({ activeUser, onLogout }) {
   return (
     <Config>
       <Sider
-        width={230}
+        width={270}
         breakpoint="md"
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
@@ -56,8 +56,7 @@ export default function Sidebar({ activeUser, onLogout }) {
                   alignItems: "center",
                   gap: 12,
                   cursor: "pointer",
-                }}
-              >
+                }}>
                 <Avatar style={{ backgroundColor: "#1677ff" }}>
                   {activeUser?.displayName?.charAt(0).toUpperCase() || "U"}
                 </Avatar>

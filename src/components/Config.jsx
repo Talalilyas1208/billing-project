@@ -17,7 +17,7 @@ const Config = ({ children }) => (
         },
         Table: {
           headerBg: "#ffffffff",
-          headerColor: "#1f1f1fff",
+          headerColor: "#2b2b2bff",
         },
         Menu: {
           containerBg: "#f5f5f5",
