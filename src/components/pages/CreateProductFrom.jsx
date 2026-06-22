@@ -6,10 +6,8 @@ import Select from "../Select";
 import NumbersInput from "../Numbersinput";    
 import useFetch from "../../hooks/Usefetch";   
 import InputTextAreas from "../InputTextAreas";
-
 export default function CreateProductForm(props) {
   const { refetchProducts, onClose,form } = props ;
-
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const onFinish = async (values) => {
     setLoadingSubmit(true);
@@ -40,14 +38,12 @@ const currencyOptions = Array.isArray(currencies.data)
       label: item.code,
     }))
   : [];
-
 const revenueOptions = Array.isArray(revenueCategory.data)
   ? revenueCategory.data.map((item) => ({
       value: String(item.key || item.code || ""),
       label: item.name || item.code || "Select Category",
     }))
   : [];
-
 const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
       value: item.code,
       label: (
@@ -62,7 +58,6 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
       ),
     }))
   : [];
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>    
       <Form
@@ -136,7 +131,7 @@ const vatoptions = Array.isArray(vat.data)? vat.data.map((item) => ({
           </Col>
         </Row>
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
-          <Button onClick={() => form.submit()} disabled={loadingSubmit} type="primary">
+          <Button onClick={() => form.submit()} disabled={loadingSubmit}  antUI={"bg-black text-white py-3 px-8 rounded-md"}>
             {loadingSubmit ? "Saving..." : "Save"}
           </Button>
         </div>

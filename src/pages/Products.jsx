@@ -7,7 +7,6 @@ import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
 import CreateProductForm from "../components/pages/CreateProductFrom";
 import { useMemo } from "react";
-import { useEffect } from "react";
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -116,7 +115,7 @@ export default function Products() {
           </Col>
 
           <Col>
-            <Button onClick={() => setIsOpen(true)}  antUI={"bg-black text-white py-3 px-6 rounded"}>
+            <Button onClick={() => setIsOpen(true)}  antUI={"bg-black text-white py-2 px-1 rounded-full w-35 h-14"} >
               Create Product
             </Button>
           </Col>
