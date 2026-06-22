@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Form } from "antd";
 import useLocalStorage from "use-local-storage";
-import { validation } from "../utils/validation";
 import { loginWithEmail, loginWithSocial } from "../services/auth";
-import Input from '../components/Input';
+import Input from "../components/Input";
 import Button from "../components/Button";
 import { getAuth } from "firebase/auth";
 
 export default function Login() {
   const auth = getAuth();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
-  const [, setTime] = useLocalStorage("settime", null); 
-  const [, setAuthToken] = useLocalStorage("authToken", null); 
+  const [, setTime] = useLocalStorage("settime", null);
+  const [, setAuthToken] = useLocalStorage("authToken", null);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,18 +27,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const user = await authMethod(); 
+      const user = await authMethod();
 
       if (user) {
         if (user.token) {
-          setAuthToken(user.token); 
+          setAuthToken(user.token);
           console.log("Firebase Token:", user.token);
         }
 
         if (user?.metadata?.lastSignInTime) {
           setTime(user.metadata.lastSignInTime);
         }
-       
+
         setActiveUser(user);
         navigate("/dashboard");
       }
@@ -48,11 +49,13 @@ export default function Login() {
     }
   };
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-
-    const valError = validation(formData, true);
-    if (valError) return setError(valError);
+  const handleLoginSubmit = async () => {
+    setError("");
+    try {
+      await form.validateFields();
+    } catch {
+      return;
+    }
 
     handleAuth(() => loginWithEmail(formData.email, formData.password));
   };
@@ -73,30 +76,55 @@ export default function Login() {
             {errors}
           </p>
         )}
-        <form onSubmit={handleLoginSubmit} className="space-y-4">
-          <Input
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={formData}
+          onFinish={handleLoginSubmit}
+          requiredMark={false}
+          className="space-y-4"
+        >
+          <Form.Item
             name="email"
-            type="email"
-            placeholder="Email"
-            onChange={handleChange}
-            antUI={{ size: "large" }}
-          />
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <Input
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
 
-          <Input
+          <Form.Item
             name="password"
-            type="password"
-            placeholder="Password"
-            onChange={handleChange}
-            antUI={{ size: "large" }}
-            errors={errors}
-          />
-          <Button
-            type="submit"
-            antUI="w-full bg-green-600 hover:bg-green-700 text-white justify-center"
-            disabled={loading}>
-            Login
-          </Button>
-        </form>
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
+            <Input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              antUI={{ size: "large" }}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="submit"
+              antUI="w-full bg-green-600 hover:bg-green-700 text-white justify-center"
+              disabled={loading}
+            >
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
 
         <div className="text-center">
           <p className="text-sm text-gray-600">
@@ -122,12 +150,14 @@ export default function Login() {
           <Button
             antUI="w-full bg-purple-300 hover:bg-gray-300 justify-center gap-2"
             onClick={() => handleSocial("google")}
+            disabled={loading}
           >
             Google
           </Button>
           <Button
             variant="facebook"
             onClick={() => handleSocial("facebook")}
+            disabled={loading}
             className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
           >
             Facebook
