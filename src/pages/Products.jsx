@@ -119,18 +119,7 @@ export default function Products() {
               onClick={() => setIsOpen(true)}
               antUI={"bg-black text-white py-2 px-1 rounded-full w-35 h-14"}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                
-                stroke="currentColor"
-                className="w-5 h-5 mr-1"
-              >
-                <path
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
+             
               <span>Create Product</span>
             </Button>
           </Col>

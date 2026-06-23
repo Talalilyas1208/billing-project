@@ -1,6 +1,8 @@
 import { DateTime } from "luxon";
+import useLocalStorage from "use-local-storage";
 
 export const getTimeLabel = (lastSignIn) => {
+  const [time,settime] = useLocalStorage("settime")
   if (!lastSignIn) return "Never";
 
   const lastDate = DateTime.fromISO(lastSignIn);
