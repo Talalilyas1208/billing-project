@@ -21,7 +21,9 @@ export default function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="products" element={<Produts />} />
+            <Route path="products" element={<Produts />}>
+              <Route path="createproduct" element={null} />
+            </Route>
             <Route path="invoices" element={<Invoice />}>
               <Route index element={<EmptyInvoicePage />} />
               <Route path="new" element={<Newinvoice />} />

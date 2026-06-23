@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Row, Col, Space, Form } from "antd";
+import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import Input from "../Input";
 import Select from "../Select";
@@ -8,7 +9,8 @@ import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
 export default function CreateProductForm(props) {
-  const { refetchProducts, onClose, form } = props;
+  const { form, onClose } = props;
+  const navigate = useNavigate();
 
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const onFinish = async (values) => {
@@ -22,9 +24,12 @@ export default function CreateProductForm(props) {
 
       if (response.ok) {
         form.resetFields();
-        onClose();
-        if (refetchProducts) refetchProducts();
-      }
+        if (onClose) {
+          onClose();
+        } else {
+          navigate("/dashboard/products");
+        }
+      } 
     } catch (err) {
       console.error("Save failed:", err);
     } finally {
@@ -34,19 +39,19 @@ export default function CreateProductForm(props) {
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
   const { data: vat } = useFetch("/api/vat");
-  const currencyOptions = Array.isArray(currencies.data)
+  const currencyOptions = Array.isArray(currencies?.data)
     ? currencies.data.map((item) => ({
         value: item.code,
         label: item.code,
       }))
     : [];
-  const revenueOptions = Array.isArray(revenueCategory.data)
+  const revenueOptions = Array.isArray(revenueCategory?.data)
     ? revenueCategory.data.map((item) => ({
         value: String(item.key || item.code || ""),
         label: item.name || item.code || "Select Category",
       }))
     : [];
-  const vatoptions = Array.isArray(vat.data)
+  const vatoptions = Array.isArray(vat?.data)
     ? vat.data.map((item) => ({
         value: item.code,
         label: (
@@ -124,7 +129,7 @@ export default function CreateProductForm(props) {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item name="currency" label="Currency">
+                <Form.Item name="currency" label="Currency " rules={[{ required: true, message: "choose currency" }]}>
                   <Select showSearch options={currencyOptions} />
                 </Form.Item>
               </Col>
