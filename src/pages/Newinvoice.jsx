@@ -1,56 +1,57 @@
 import Table from "../components/Table";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Row, Col, Layout, Divider, Space, Button } from "antd";
+import { Row, Col, Layout, Divider, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef } from "react";
 import Select from "../components/Select";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
-import {LeftOutlined} from "@ant-design/icons"
+import { LeftOutlined } from "@ant-design/icons";
+import Button from "../components/Button";
 export default function Newinvoice() {
   const [items, setItems] = useState(["jack", "lucy"]);
   const [name, setName] = useState("");
-  const inputRef = useRef(null);
-  const onNameChange = (event) => {
-    setName(event.target.value);
-  };
+
   const addItem = async (e) => {
     e.preventDefault();
-
     const trimmedName = name.trim();
-
     if (trimmedName && !items.includes(trimmedName)) {
       await Promise.all([setItems([...items, trimmedName]), setName("")]);
     }
   };
-  const { Header } = Layout;
-
   return (
     <>
       <Config>
-        <Button icon={<LeftOutlined/>}></Button>
+        <Row>
+          <Col span={2}>
+            <Button  type="text" ><LeftOutlined /></Button>
+          </Col>
+          <Col span={2} offset={12}>
+            <Button
+              antUI={"bg-black text-white py-3 px-8 rounded-md "}> 
+            </Button>
+          </Col>
+        </Row>
         <CardComponent
           style={{
             width: 1400,
             borderRadius: "10px",
+            marginTop: "10px ",
             borderColor: "#b9adadff",
-          }}
-        >
-         <h1>create invoice</h1>
+          }}>
+          <h1>create invoice</h1>
           <Row
             justify="space-between"
-            style={{ marginTop: "10px", padding: "0 16px" }}
-          >
+            style={{ marginTop: "10px", padding: "0 16px" }}>
             <Col span={4}>
               <Select
-                
-                placeholder="Select customer"  popupRender={(menu) => (
+                placeholder="Select customer"
+                popupRender={(menu) => (
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
                     <Space style={{ padding: "0 8px 4px" }}>
-                     
                       <Button
                         type="text"
                         icon={<PlusOutlined />}
@@ -65,14 +66,12 @@ export default function Newinvoice() {
               />
               <Input
                 antUI={{ size: "large" }}
-                style={{ marginBottom: "16px",marginTop:"5px" }}
+                style={{ marginBottom: "16px", marginTop: "5px" }}
               />
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}
               />
-            
-            
             </Col>
 
             <Col
@@ -84,13 +83,12 @@ export default function Newinvoice() {
               }}
             >
               <Col>
-            
-              <Input
-                antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
-              />
+                <Input
+                  antUI={{ size: "large" }}
+                  style={{ marginBottom: "16px" }}
+                />
               </Col>
-              
+
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}
