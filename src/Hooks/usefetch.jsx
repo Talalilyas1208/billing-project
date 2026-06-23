@@ -36,10 +36,8 @@ const usefetch = (url = null) => {
     }
   }, [url, request]);
 
-  const refetch = useCallback(() => {
-    if (url) request(url, "GET");
-  }, [url, request]);
-  return { data, loading, error, request, refetch };
+  
+  return { data, loading, error, request};
 };
 
 export default usefetch;

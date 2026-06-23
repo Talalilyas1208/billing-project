@@ -3,7 +3,6 @@ import Input from "../components/Input";
 import { useState } from "react";
 import { Row, Col, Layout, Divider, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useRef } from "react";
 import Select from "../components/Select";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
@@ -23,23 +22,40 @@ export default function Newinvoice() {
   return (
     <>
       <Config>
-        <Row>
+        <Row> 
           <Col span={2}>
             <Button
               type="text"
               icon={<LeftOutlined />}
               antUI={{ size: "large" }}
-              style={{ backgroundColor: "#fefefe" }}
-            />
+              style={{ backgroundColor: "#fefefe" }}/>
           </Col>
-          <Col span={2} offset={12}>
+          <Col span={2} offset={11}>
             <Button
               type="primary"
               antUI={{ size: "large" }}
-              style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" }}
-              className="py-3 px-8"
-            >
-              Save
+              style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" ,borderRadius: "9999px",
+                height: 48 }}
+              className="py-3 px-8" >
+            Approve and send
+            </Button>
+          </Col>
+           <Col span={2} offset={1}>
+            <Button
+              type="primary"
+              antUI={{ size: "large" }}
+              style={{ backgroundColor: "#ffffffff", color: "#000000ff", borderRadius: "0.5rem" ,borderRadius: "800px",
+                height: 48 }}
+              className="py-3 px-8" >
+            Approve and send
+            </Button>
+          </Col> <Col span={2} offset={1}>
+            <Button
+             
+              antUI={{ size: "large",shape:"round" ,color:"black  "}}
+              style={{ backgroundColor: "#f8f8f8ff", color: "#080808ff",borderColor:"#d0ceceff" }}
+              >
+            Approve and send
             </Button>
           </Col>
         </Row>
@@ -48,14 +64,11 @@ export default function Newinvoice() {
             width: 1400,
             borderRadius: "10px",
             marginTop: "10px ",
-            borderColor: "#b9adadff",
-          }}
-        >
+            borderColor: "#b9adadff",}} >
           <h1>create invoice</h1>
           <Row
             justify="space-between"
-            style={{ marginTop: "10px", padding: "0 16px" }}
-          >
+            style={{ marginTop: "10px", padding: "0 16px" }}>
             <Col span={4}>
               <Select
                 placeholder="Select customer"
@@ -67,48 +80,38 @@ export default function Newinvoice() {
                       <Button
                         type="text"
                         icon={<PlusOutlined />}
-                        onClick={addItem}
-                      >
+                        onClick={addItem} >
                         Add item
                       </Button>
                     </Space>
                   </>
                 )}
-                options={items.map((item) => ({ label: item, value: item }))}
-              />
+                options={items.map((item) => ({ label: item, value: item }))}/>
               <Input
                 antUI={{ size: "large" }}
-                style={{ marginBottom: "16px", marginTop: "5px" }}
-              />
+                style={{ marginBottom: "16px", marginTop: "5px" }}/>
               <Input
                 antUI={{ size: "large" }}
                 style={{ marginBottom: "16px" }}
               />
             </Col>
-
             <Col
               span={5}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "flex-end",
-              }}
-            >
+                alignItems: "flex-end",}}>
               <Col>
                 <Input
                   antUI={{ size: "large" }}
-                  style={{ marginBottom: "16px" }}
-                />
+                  style={{ marginBottom: "16px" }}/>
               </Col>
-
               <Input
                 antUI={{ size: "large" }}
-                style={{ marginBottom: "16px" }}
-              />
+                style={{ marginBottom: "16px" }}/>
               <Input
                 antUI={{ size: "large" }}
-                style={{ marginBottom: "16px", width: "100%" }}
-              />
+                style={{ marginBottom: "16px", width: "100%" }}/>
             </Col>
           </Row>
         </CardComponent>
