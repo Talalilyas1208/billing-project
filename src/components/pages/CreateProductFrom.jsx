@@ -157,9 +157,13 @@ export default function CreateProductForm(props) {
           style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}
         >
           <Button
-            onClick={() => form.submit()}
+            type="primary"
+            htmlType="submit"
             disabled={loadingSubmit}
-            antUI={"bg-black text-white py-3 px-8 rounded-md"}
+            loading={loadingSubmit}
+            antUI={{ size: "large" }}
+            style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" }}
+            className="py-3 px-8"
           >
             {loadingSubmit ? "Saving..." : "Save"}
           </Button>

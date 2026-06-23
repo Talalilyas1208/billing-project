@@ -117,9 +117,12 @@ export default function Login() {
 
           <Form.Item>
             <Button
-              type="submit"
-              antUI="w-full bg-green-600 hover:bg-green-700 text-white justify-center"
+              type="primary"
+              htmlType="submit"
+              antUI={{ size: "large", block: true }}
+              style={{ backgroundColor: "#16a34a" }}
               disabled={loading}
+              loading={loading}
             >
               Login
             </Button>
@@ -148,17 +151,18 @@ export default function Login() {
 
         <div className="grid grid-cols-2 gap-3">
           <Button
-            antUI="w-full bg-purple-300 hover:bg-gray-300 justify-center gap-2"
+            antUI={{ size: "large", block: true }}
+            style={{ backgroundColor: "#d8b4fe" }}
             onClick={() => handleSocial("google")}
             disabled={loading}
           >
             Google
           </Button>
           <Button
-            variant="facebook"
+            antUI={{ size: "large", block: true }}
+            style={{ backgroundColor: "#1877F2", color: "#fff" }}
             onClick={() => handleSocial("facebook")}
             disabled={loading}
-            className="border border-gray-300 p-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm font-medium transition"
           >
             Facebook
           </Button>
