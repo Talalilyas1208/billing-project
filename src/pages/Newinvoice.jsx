@@ -25,11 +25,21 @@ export default function Newinvoice() {
       <Config>
         <Row>
           <Col span={2}>
-            <Button  type="text" ><LeftOutlined /></Button>
+            <Button
+              type="text"
+              icon={<LeftOutlined />}
+              antUI={{ size: "large" }}
+              style={{ backgroundColor: "#fefefe" }}
+            />
           </Col>
           <Col span={2} offset={12}>
             <Button
-              antUI={"bg-black text-white py-3 px-8 rounded-md "}> 
+              type="primary"
+              antUI={{ size: "large" }}
+              style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" }}
+              className="py-3 px-8"
+            >
+              Save
             </Button>
           </Col>
         </Row>
@@ -39,11 +49,13 @@ export default function Newinvoice() {
             borderRadius: "10px",
             marginTop: "10px ",
             borderColor: "#b9adadff",
-          }}>
+          }}
+        >
           <h1>create invoice</h1>
           <Row
             justify="space-between"
-            style={{ marginTop: "10px", padding: "0 16px" }}>
+            style={{ marginTop: "10px", padding: "0 16px" }}
+          >
             <Col span={4}>
               <Select
                 placeholder="Select customer"

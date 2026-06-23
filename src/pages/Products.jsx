@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Row, Col, Spin, Form, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
@@ -21,41 +22,6 @@ export default function Products() {
   } = usefetch(
     `/api/products?page=${page}&limit=${limit}&search=${searchText}`,
   );
-  //   const productColumns = [
-  //   {
-  //     title: "Product Name",
-  //     dataIndex: "productname",
-  //     key: "productname",
-  //   },
-
-  //   {
-  //     title: "Price",
-  //     dataIndex: "price",
-  //     key: "price",
-  //     render: (_, record) => `${record.price} ${record.currency}`,
-  //   },
-  //   {
-  //     title: "Product Number",
-  //     dataIndex: "productNumber",
-  //     key: "productNumber",
-  //   },
-  //   {
-  //     title: "Supplier",
-  //     dataIndex: "supplier",
-  //     key: "supplier",
-  //   },
-  //   {
-  //     title:"Revenue Category",
-  //         dataIndex:"revenueCategory" ,
-  //         key:"revenueCategory"
-
-  //   },
-  //   {
-  //     dataIndex:"currency",
-  //     title:"Currency",
-  //     key:"currency"
-  //   }
-  // ];
 
   const productColumns = useMemo(
     () => [
@@ -117,10 +83,18 @@ export default function Products() {
           <Col>
             <Button
               onClick={() => setIsOpen(true)}
-              antUI={"bg-black text-white py-2 px-1 rounded-full w-35 h-14"}
+              icon={<PlusOutlined />}
+              type="primary"
+              antUI={{ size: "large" }}
+              style={{
+                backgroundColor: "#000",
+                color: "#fff",
+                borderRadius: "9999px",
+                height: 48,
+              }}
+              className="px-6"
             >
-             
-              <span>Create Product</span>
+              Create Product
             </Button>
           </Col>
         </Row>
