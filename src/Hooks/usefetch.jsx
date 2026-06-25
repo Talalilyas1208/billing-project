@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-
 const usefetch = (url = null) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const request = useCallback(
     async (customUrl = url, method = "GET", body = null) => {
       setLoading(true);
@@ -28,7 +26,7 @@ const usefetch = (url = null) => {
         setLoading(false);
       }
     },
-    [url]
+    [url],
   );
   useEffect(() => {
     if (url) {
@@ -36,8 +34,7 @@ const usefetch = (url = null) => {
     }
   }, [url, request]);
 
-  
-  return { data, loading, error, request};
+  return { data, loading, error, request };
 };
 
 export default usefetch;
