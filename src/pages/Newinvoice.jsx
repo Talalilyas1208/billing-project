@@ -1,7 +1,7 @@
 import Table from "../components/Table";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Row, Col, Layout, Divider, Space } from "antd";
+import { Row, Col, Layout, Divider, Space ,Tooltip} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "../components/Select";
 import CardComponent from "../components/CardComponent";
@@ -34,21 +34,22 @@ export default function Newinvoice() {
             <Button
               type="primary"
               antUI={{ size: "large" }}
-              style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" ,borderRadius: "9999px",
-                height: 48 }}
+              style={{ backgroundColor: "#000", color: "#fff",borderRadius: "9999px",}}
               className="py-3 px-8" >
             Approve and send
             </Button>
           </Col>
            <Col span={2} offset={1}>
+           <Tooltip title="This is a simple text hint" trigger="hover">
             <Button
-              type="primary"
-              antUI={{ size: "large" }}
-              style={{ backgroundColor: "#ffffffff", color: "#000000ff", borderRadius: "0.5rem" ,borderRadius: "800px",
-                height: 48 }}
+             type="default"
+              antUI={{ size: "large" ,shape:"round" }}
+              style={{ backgroundColor: "#f8f8f8ff", color: "#000000ff",borderColor:"#d0ceceff ",    colorPrimaryHover: '#40a9ff', 
+                }}
               className="py-3 px-8" >
             Approve and send
             </Button>
+            </Tooltip>
           </Col> <Col span={2} offset={1}>
             <Button
              
