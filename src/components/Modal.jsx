@@ -11,7 +11,6 @@ function Modals(props) {
       form.resetFields();
     }
   };
-
   const alert = () => {
     if (!form?.isFieldsTouched()) {
       handleCloseAndReset();
@@ -31,7 +30,6 @@ function Modals(props) {
       },
     });
   };
-
   return (
     <Modal
       title={title}
