@@ -10,6 +10,8 @@ import EmptyInvoicePage from "./pages/Emptyinvoicepage";
 import Newinvoice from "./pages/Newinvoice";
 import Offers from "./pages/Offer";
 import Contact from "./pages/Contact";
+import Newcustomer from "./components/newcustomer";
+import CreateProductForm from "./components/pages/CreateProductFrom";
 
 export default function App() {
   return (
@@ -22,11 +24,12 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="products" element={<Produts />}>
-              <Route path="createproduct" element={null} />
+              <Route path="createproduct" element={CreateProductForm} />
             </Route>
             <Route path="invoices" element={<Invoice />}>
               <Route index element={<EmptyInvoicePage />} />
               <Route path="new" element={<Newinvoice />} />
+              <Route path="createnewcustomer" element= {<Newcustomer/>} />
             </Route>
             <Route path="offers" element={<Offers />} />
             <Route path="contact" element={<Contact />} />
