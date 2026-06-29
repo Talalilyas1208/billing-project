@@ -19,10 +19,11 @@ export default function Table({ data, columns, loading, style, pagination }) {
         columns={columns}
         rowKey="id"
         bordered
-        scroll={{y: 600}}
+        scroll={{ y: 600 }}
         style={{ ...style }}
         tableLayout="fixed"
         loading={loading}
+        pagination={pagination}
       />
     </Config>
   );
