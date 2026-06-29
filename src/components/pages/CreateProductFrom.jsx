@@ -12,7 +12,57 @@ export default function CreateProductForm(props) {
   const { form, onClose } = props;
   const navigate = useNavigate();
 
+ 
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const { data: revenueCategory } = useFetch("/api/revnue");
+  const { data: currencies } = useFetch("/api/currency");
+  const { data: vat } = useFetch("/api/vat");
+  const [currencyOptions, setCurrencyOptions] = useState([]);
+  const [revenueOptions, setRevenueOptions] = useState([]);
+  const [vatoptions, setVatoptions] = useState([]);
+
+  useEffect(() => {
+    if (Array.isArray(currencies?.data)) {
+      setCurrencyOptions(
+        currencies.data.map((item) => ({
+          value: item.code,
+          label: item.code,
+        }))
+      );
+    }
+  }, [currencies]);
+
+  useEffect(() => {
+    if (Array.isArray(revenueCategory?.data)) {
+      setRevenueOptions(
+        revenueCategory.data.map((item) => ({
+          value: String(item.key || item.code || ""),
+          label: item.name || item.code || "Select Category",
+        }))
+      );
+    }
+  }, [revenueCategory]);
+
+  useEffect(() => {
+    if (Array.isArray(vat?.data)) {
+      setVatoptions(
+        vat.data.map((item) => ({
+          value: item.code,
+          label: (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span>{item.code}</span>
+              {item.description && (
+                <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
+                  {item.description}
+                </span>
+              )}
+            </div>
+          ),
+        }))
+      );
+    }
+  }, [vat]);
+  
   const onFinish = async (values) => {
     setLoadingSubmit(true);
     try {
@@ -36,39 +86,9 @@ export default function CreateProductForm(props) {
       setLoadingSubmit(false);
     }
   };
-  const { data: revenueCategory } = useFetch("/api/revnue");
-  const { data: currencies } = useFetch("/api/currency");
-  const { data: vat } = useFetch("/api/vat");
-  const currencyOptions = Array.isArray(currencies?.data)
-    ? currencies.data.map((item) => ({
-        value: item.code,
-        label: item.code,
-      }))
-    : [];
-  const revenueOptions = Array.isArray(revenueCategory?.data)
-    ? revenueCategory.data.map((item) => ({
-        value: String(item.key || item.code || ""),
-        label: item.name || item.code || "Select Category",
-      }))
-    : [];
-  const vatoptions = Array.isArray(vat?.data)
-    ? vat.data.map((item) => ({
-        value: item.code,
-        label: (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <span>{item.code}</span>
-            {item.description && (
-              <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-                {item.description}
-              </span>
-            )}
-          </div>
-        ),
-      }))
-    : [];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <Form form={form} layout="vertical" onFinish={onFinish}>
         <Row gutter={16}>
           <Col span={14}>
