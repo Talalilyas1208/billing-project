@@ -9,18 +9,15 @@ function Modals(props) {
     onClose();
     if (form) {
       form.resetFields();
-    }
-  };
+    }};
   const alert = () => {
     if (!form?.isFieldsTouched()) {
       handleCloseAndReset();
-      return;
-    }
+      return;}
     confirm({
       title: "Confirm navigation",
       style: { top: 300 },
-      content:
-        "Your changes have not been saved yet. Are you sure you want to leave this page?",
+      content:"Your changes have not been saved yet. Are you sure you want to leave this page?",
       okText: "Leave this page",
       okType: "danger",
       cancelText: "No, stay",

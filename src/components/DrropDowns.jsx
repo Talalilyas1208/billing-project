@@ -47,8 +47,7 @@ export default function DropDowns(props) {
       onOpenChange={(open) => {
         if (closeOnOutsideClick) {
           onToggle?.(open);
-        }
-      }}
+        }}}
       content={menu}>
       <div
         className={`cursor-pointer ${className}`}
