@@ -2,18 +2,13 @@ import { Table as AntTable } from "antd";
 import Config from "./Config";
 
 export default function Table({ data, columns, loading, style, pagination }) {
-  if (!data || data.length === 0) {
-    return (
-      <div className="mt-32 text-center">
-        <p className="text-xl text-gray-400 font-medium">
-          No data available
-        </p>
-      </div>
-    );
-  }
+
 
   return (
     <Config>
+       {!data ? (
+            <Spin size="large" description="Fetching products..." />
+        ) : (
       <AntTable
         dataSource={data}
         columns={columns}
@@ -25,6 +20,8 @@ export default function Table({ data, columns, loading, style, pagination }) {
         loading={loading}
         pagination={pagination}
       />
+        )
+}
     </Config>
   );
 }
