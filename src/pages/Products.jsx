@@ -1,37 +1,44 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Row, Col, Spin, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate, useLocation } from "react-router-dom";
-
 import Button from "../components/Button";
+import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import Config from "../components/Config";
-import Modal from "../components/Modal";
 import CreateProductForm from "../components/pages/CreateProductFrom";
-
+import { useMemo } from "react";
 export default function Products() {
+  const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [page, setpage] = useState(1);
-  const [limit] = useState(5);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [editingproduct, seteditingproduct] = useState(null);
+  const [deleted ,setdeleted] =useState(null)
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const test = useRef(false);
-  const opens = location.pathname.endsWith("/createproduct");
-  useEffect(() => {
-    if (test.current && !opens) {
-      setRefreshKey((k) => k + 1);
-      console.log(refreshKey, "----1-");
-    }
-    console.log(test.current)
-    test.current = opens;
-  }, [opens]);
+  const {
+    data: products,
+    loading: productsLoading,
+    refetch: refetchProducts,
+    page,
+    setPage,
+    limit,
+  } = usefetch(`/api/products?search=${searchText}`);
+  const handleopencreate = () => {
+    seteditingproduct(null);
+    setIsOpen(true);
+  };
+  const handleOpenEdit = (record) => {
+    seteditingproduct(record);
+    console.log(record)
+    setIsOpen(true);
+  };
+  const handleclose = () => {
+    setIsOpen(false);
+    seteditingproduct(null);
+  };
+  const handledelete = (record) => {
+   setdeleted(record)
 
-  const { data: products, loading: productsLoading } = usefetch(
-    `/api/products?page=${page}&limit=${limit}&search=${searchText}&_r=${refreshKey}`,
-  );
+  }
   const productColumns = useMemo(
     () => [
       {
@@ -67,25 +74,32 @@ export default function Products() {
             {record.price
               ? `${Number(record.price).toFixed(2)} ${record.currency}`
               : ""}
+            <Button
+              type="link"
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenEdit(record);
+              }}
+            >
+              Edit
+            </Button>
+             <Button
+              type="link"
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+               handledelete(record)
+              }}
+            >
+             Delete
+            </Button>
           </span>
         ),
       },
     ],
     [],
   );
-
-  const handleCreateProduct = () => {
-    navigate("/dashboard/products/createproduct");
-  };
-
-  const handleclose = () => {
-    navigate("/dashboard/products");
-  };
-  const handledone = () => {
-    form.resetFields();
-    navigate("/dashboard/products");
-  };
-
   const data = useMemo(() => {
     return Array.isArray(products?.data) ? products.data : [];
   }, [products]);
@@ -103,7 +117,7 @@ export default function Products() {
           </Col>
           <Col>
             <Button
-              onClick={handleCreateProduct}
+              onClick={handleopencreate}
               icon={<PlusOutlined />}
               type="primary"
               antUI={{ size: "large" }}
@@ -115,11 +129,30 @@ export default function Products() {
               }}
               className="px-6"
             >
-              Create Product
+              <span>Create Product</span>
             </Button>
           </Col>
         </Row>
-
+        <Modals
+          isOpen={isOpen}
+          onClose={handleclose}
+          form={form}
+          style={{
+            width: 900,
+            top: 170,
+            title: editingproduct ? "correct product" : "Create product",
+          }}
+        >
+          {isOpen && (
+            <CreateProductForm
+              refetchProducts={refetchProducts}
+              onClose={handleclose}
+              form={form}
+              deleted={deleted}
+              editingProduct={editingproduct}
+            />
+          )}
+        </Modals>
         <Row justify="end">
           <Col span={4}>
             <Input.Search
@@ -128,46 +161,31 @@ export default function Products() {
               enterButton
               onSearch={(value) => {
                 setSearchText(value);
-                setpage(1);
               }}
               style={{ width: "100%" }}
             />
           </Col>
         </Row>
-
-        {productsLoading ? (
-          <div style={{ textAlign: "center", marginTop: 50, padding: "50px" }}>
-            <Spin size="large" description="Fetching products..." />
-          </div>
-        ) : (
-          <Table
-            data={data}
-            columns={productColumns}
-            pagination={{
-              current: page,
-              pageSize: limit,
-              total: products?.totalItems || 0,
-              onChange: (p) => setpage(p),
-              position: ["bottomRight"],}}
-            bordered
-            style={{
-              borderRadius: "10px",
-              border: "1px solid #d9d9d9ff",
-              overflow: "scroll",
-              marginTop: "18px",
-            }}
-          />
-        )}
+        <Table
+          data={data}
+          columns={productColumns}
+          loading={productsLoading}
+          pagination={{
+            current: page,
+            pageSize: limit,
+            total: products?.totalItems || 0,
+            onChange: (p) => setPage(p),
+            placement: ["bottomLeft"],
+          }}
+          bordered
+          style={{
+            borderRadius: "10px",
+            border: "1px solid #d9d9d9ff",
+            overflow: "scroll",
+            marginTop: "18px",
+          }}
+        />
       </div>
-
-      <Modal
-        isOpen={opens}
-        onClose={handleclose}
-        form={form}
-        style={{ width: 900, top: 40, title: "Create Product" }}
-      >
-        <CreateProductForm form={form} onClose={handledone} />
-      </Modal>
     </Config>
   );
 }

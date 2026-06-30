@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Row, Col, Space, Form } from "antd";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
@@ -9,25 +9,26 @@ import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
 export default function CreateProductForm(props) {
-  const { form, onClose } = props;
+  const { form, onClose, editingProduct, refetchProducts  ,deleted} = props;
   const navigate = useNavigate();
 
- 
-  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
   const { data: vat } = useFetch("/api/vat");
+  const { request, loading: loadingSubmit } = useFetch();
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
 
+  const isEditing = Boolean(editingProduct);
+const deleteds = Boolean(deleted)
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
       setCurrencyOptions(
         currencies.data.map((item) => ({
           value: item.code,
           label: item.code,
-        }))
+        })),
       );
     }
   }, [currencies]);
@@ -38,7 +39,7 @@ export default function CreateProductForm(props) {
         revenueCategory.data.map((item) => ({
           value: String(item.key || item.code || ""),
           label: item.name || item.code || "Select Category",
-        }))
+        })),
       );
     }
   }, [revenueCategory]);
@@ -58,35 +59,49 @@ export default function CreateProductForm(props) {
               )}
             </div>
           ),
-        }))
+        })),
       );
     }
   }, [vat]);
-  
-  const onFinish = async (values) => {
-    setLoadingSubmit(true);
-    try {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
 
-      if (response.ok) {
-        form.resetFields();
-        if (onClose) {
-          onClose();
-        } else {
-          navigate("/dashboard/products");
-        }
-      } 
+
+  useEffect(() => {
+    if (editingProduct) {
+      form.setFieldsValue({
+        productname: editingProduct.productname,
+        description: editingProduct.description,
+        revenueCategory: editingProduct.revenueCategory,
+        vat: editingProduct.vat,
+        price: editingProduct.price,
+        currency: editingProduct.currency,
+        productNumber: editingProduct.productNumber,
+        supplier: editingProduct.supplier,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [editingProduct, form]);
+
+  const onFinish = async (values) => {
+    try {
+      const url = isEditing
+        ? `/api/products/${editingProduct.id}`
+        : "/api/products";
+      const method = isEditing ? "PUT" : "POST" ?deleteds :"no method here "
+      await request(url, method, values);
+      form.resetFields();
+      if (refetchProducts) {
+        refetchProducts();
+      }
+      if (onClose) {
+        onClose();
+      } else {
+        navigate("/dashboard/products");
+      }
     } catch (err) {
       console.error("Save failed:", err);
-    } finally {
-      setLoadingSubmit(false);
     }
   };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -149,7 +164,11 @@ export default function CreateProductForm(props) {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item name="currency" label="Currency " rules={[{ required: true, message: "choose currency" }]}>
+                <Form.Item
+                  name="currency"
+                  label="Currency "
+                  rules={[{ required: true, message: "choose currency" }]}
+                >
                   <Select showSearch options={currencyOptions} />
                 </Form.Item>
               </Col>
@@ -187,10 +206,18 @@ export default function CreateProductForm(props) {
             disabled={loadingSubmit}
             loading={loadingSubmit}
             antUI={{ size: "large" }}
-            style={{ backgroundColor: "#000", color: "#fff", borderRadius: "0.5rem" }}
+            style={{
+              backgroundColor: "#000",
+              color: "#fff",
+              borderRadius: "0.5rem",
+            }}
             className="py-3 px-8"
           >
-            {loadingSubmit ? "Saving..." : "Save"}
+            {loadingSubmit
+              ? "Saving..."
+              : isEditing
+              ? "Update"
+              : "Save"}
           </Button>
         </div>
       </Form>
