@@ -1,5 +1,6 @@
 import React from "react";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntdApp } from "antd";
+
 const Config = ({ children }) => (
   <ConfigProvider
     theme={{
@@ -31,8 +32,9 @@ const Config = ({ children }) => (
           itemBorderRadius: 4,
         },
       },
-    }} >
-    {children}
+    }}
+  >
+    <AntdApp>{children}</AntdApp>
   </ConfigProvider>
 );
 

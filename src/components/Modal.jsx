@@ -1,10 +1,11 @@
 import { Modal } from "antd";
-
+import { App } from 'antd';
 const { confirm } = Modal;
 
 function Modals(props) {
   const { isOpen, onClose, children, style, form } = props;
   const { width, top, title } = style;
+   const { modal } = App.useApp(); 
   const handleCloseAndReset = () => {
     onClose();
     if (form) {
@@ -14,7 +15,7 @@ function Modals(props) {
     if (!form?.isFieldsTouched()) {
       handleCloseAndReset();
       return;}
-    confirm({
+    modal.confirm({
       title: "Confirm navigation",
       style: { top: 300 },
       content:"Your changes have not been saved yet. Are you sure you want to leave this page?",
