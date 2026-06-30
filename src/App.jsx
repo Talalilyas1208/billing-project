@@ -24,7 +24,6 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="products" element={<Produts />}>
-              <Route path="createproduct" element={CreateProductForm} />
             </Route>
             <Route path="invoices" element={<Invoice />}>
               <Route index element={<EmptyInvoicePage />} />
