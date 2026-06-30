@@ -1,14 +1,28 @@
 import { useState, useEffect, useCallback } from "react";
-const usefetch = (url = null) => {
-  const [data, setData] = useState([]);
+
+const usefetch = (baseUrl = null, limits= 6 ,pages = 1) => {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(pages);
+  const [limit, setLimit] = useState(limits);
+
+  const testing = useCallback(
+    (url) => {
+      if (!url) return url;
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}page=${page}&limit=${limit}`;
+    },
+    [page, limit],
+  );
+
   const request = useCallback(
-    async (customUrl = url, method = "GET", body = null) => {
+    async (customUrl = baseUrl, method = "GET", body = null) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(customUrl, {
+        const results = method === "GET" ? testing(customUrl) : customUrl;
+        const response = await fetch(results, {
           method,
           headers: { "Content-Type": "application/json" },
           body: body ? JSON.stringify(body) : null,
@@ -26,15 +40,30 @@ const usefetch = (url = null) => {
         setLoading(false);
       }
     },
-    [url],
+    [baseUrl, testing],
   );
-  useEffect(() => {
-    if (url) {
-      request(url, "GET");
-    }
-  }, [url, request]);
 
-  return { data, loading, error, request };
+  useEffect(() => {
+    if (baseUrl) {
+      request(baseUrl, "GET");
+    }
+  }, [baseUrl, page, limit, request]);
+
+  const refetch = useCallback(() => {
+    if (baseUrl) request(baseUrl, "GET");
+  }, [baseUrl, request]);
+
+  return {
+    data,
+    loading,
+    error,
+    request,
+    refetch,
+    page,
+    setPage,
+    limit,
+
+  };
 };
 
 export default usefetch;
