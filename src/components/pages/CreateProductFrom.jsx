@@ -20,7 +20,7 @@ export default function CreateProductForm(props) {
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
 
-  const isEditing = Boolean(editingProduct);
+  const isediting = Boolean(editingProduct);
 
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
@@ -32,7 +32,6 @@ export default function CreateProductForm(props) {
       );
     }
   }, [currencies]);
-
   useEffect(() => {
     if (Array.isArray(revenueCategory?.data)) {
       setRevenueOptions(
@@ -43,7 +42,6 @@ export default function CreateProductForm(props) {
       );
     }
   }, [revenueCategory]);
-
   useEffect(() => {
     if (Array.isArray(vat?.data)) {
       setVatoptions(
@@ -63,8 +61,6 @@ export default function CreateProductForm(props) {
       );
     }
   }, [vat]);
-
-
   useEffect(() => {
     if (editingProduct) {
       form.setFieldsValue({
@@ -84,10 +80,10 @@ export default function CreateProductForm(props) {
 
   const onFinish = async (values) => {
     try {
-      const url = isEditing
+      const url = isediting
         ? `/api/products/${editingProduct.id}`
         : "/api/products";
-      const method = isEditing ? "PUT" : "POST"
+      const method = isediting ? "PUT" : "POST"
       await request(url, method, values);
       form.resetFields();
       if (refetchProducts) {
@@ -215,7 +211,7 @@ export default function CreateProductForm(props) {
           >
             {loadingSubmit
               ? "Saving..."
-              : isEditing
+              : isediting
               ? "Update"
               : "Save"}
           </Button>

@@ -8,6 +8,7 @@ const Select = ({
   label,
   showSearch = false,
   popupRender,
+  open,
   ...rest      
 }) => {
   return (
@@ -16,6 +17,7 @@ const Select = ({
       <AntSelect
         value={value || undefined}
         onChange={onChange}
+        open={open}
         placeholder={placeholder}
         options={options}
         showSearch={showSearch}
