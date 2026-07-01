@@ -9,7 +9,7 @@ import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
 export default function CreateProductForm(props) {
-  const { form, onClose, editingProduct, refetchProducts  ,deleted} = props;
+  const { form, onClose, editingProduct, refetchProducts  } = props;
   const navigate = useNavigate();
 
   const { data: revenueCategory } = useFetch("/api/revnue");
@@ -21,7 +21,7 @@ export default function CreateProductForm(props) {
   const [vatoptions, setVatoptions] = useState([]);
 
   const isEditing = Boolean(editingProduct);
-const deleteds = Boolean(deleted)
+
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
       setCurrencyOptions(
@@ -87,7 +87,7 @@ const deleteds = Boolean(deleted)
       const url = isEditing
         ? `/api/products/${editingProduct.id}`
         : "/api/products";
-      const method = isEditing ? "PUT" : "POST" ?deleteds :"no method here "
+      const method = isEditing ? "PUT" : "POST"
       await request(url, method, values);
       form.resetFields();
       if (refetchProducts) {
