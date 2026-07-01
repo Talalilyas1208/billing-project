@@ -10,11 +10,11 @@ import EmptyInvoicePage from "./pages/Emptyinvoicepage";
 import Newinvoice from "./pages/Newinvoice";
 import Offers from "./pages/Offer";
 import Contact from "./pages/Contact";
-import Newcustomer from "./components/newcustomer";
-import CreateProductForm from "./components/pages/CreateProductFrom";
+import Config from "./components/Config";
 
 export default function App() {
   return (
+     <Config>
     <BrowserRouter>
       <Routes>
         <Route element={<PublicRoute />}>
@@ -25,11 +25,10 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="products" element={<Produts />}>
             </Route>
-            <Route path="invoices" element={<Invoice />}>
-              <Route index element={<EmptyInvoicePage />} />
-              <Route path="new" element={<Newinvoice />} />
-              <Route path="createnewcustomer" element= {<Newcustomer/>} />
-            </Route>
+           <Route path="invoices" element={<Invoice />}>
+  <Route index element={<EmptyInvoicePage />} />
+  <Route path="new" element={<Newinvoice />} />
+</Route>
             <Route path="offers" element={<Offers />} />
             <Route path="contact" element={<Contact />} />
           </Route>
@@ -37,5 +36,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
+  </Config>
   );
 }
