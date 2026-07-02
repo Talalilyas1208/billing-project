@@ -9,9 +9,9 @@ import Button from "./Button";
 export default function Newcustomers(props) {
   const { form, onFinish, loadingSubmit } = props;
 
-  // Watch dynamic custom fields array so the UI updates when types change
-  const customFields = Form.useWatch("customFields", form) || [];
 
+  const customFields = Form.useWatch("customFields", form) || [];
+console.log(customFields)
   const addFieldMenu = (add) => ({
     items: [
       { key: "input", label: "Text Input" },
@@ -57,12 +57,12 @@ export default function Newcustomers(props) {
             <Form.Item
               name="revenueCategory"
               label="Revenue Category"
-              rules={[{ required: true }]}
+             
             >
               <Select showSearch />
             </Form.Item>
 
-            <Form.Item name="vat" label="VAT" rules={[{ required: true }]}>
+            <Form.Item name="vat" label="VAT" >
               <Select showSearch />
             </Form.Item>
           </Col>
@@ -110,8 +110,6 @@ export default function Newcustomers(props) {
                 }}
               />
             </Form.Item>
-
-            {/* ---- Dynamic custom fields ---- */}
             <Form.List name="customFields">
               {(fields, { add, remove }) => (
                 <>
@@ -163,14 +161,12 @@ export default function Newcustomers(props) {
                             style={{ color: "#999", cursor: "pointer" }}
                           />
                         </Col>
-
                         <Form.Item {...restField} name={[field.name, "type"]} hidden>
                           <input type="hidden" />
                         </Form.Item>
                       </Row>
                     );
                   })}
-
                   <Form.Item>
                     <Dropdown menu={addFieldMenu(add)} trigger={["click"]}>
                       <AntButton
@@ -186,10 +182,7 @@ export default function Newcustomers(props) {
             </Form.List>
           </Col>
         </Row>
-
-        <div
-          style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}
-        >
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
           <Button
             type="primary"
             htmlType="submit"
@@ -201,8 +194,7 @@ export default function Newcustomers(props) {
               color: "#fff",
               borderRadius: "0.5rem",
             }}
-            className="py-3 px-8"
-          >
+            className="py-3 px-8">
             Update
           </Button>
         </div>
