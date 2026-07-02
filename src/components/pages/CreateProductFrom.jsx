@@ -12,10 +12,10 @@ export default function CreateProductForm(props) {
   const { form, onClose, editingProduct, refetchProducts  } = props;
   const navigate = useNavigate();
 
-  const { data: revenueCategory } = useFetch("/api/revnue");
-  const { data: currencies } = useFetch("/api/currency");
-  const { data: vat } = useFetch("/api/vat");
-  const { request, loading: loadingSubmit } = useFetch();
+  const {data: revenueCategory } = useFetch("/api/revnue");
+  const {data: currencies } = useFetch("/api/currency");
+  const {data: vat } = useFetch("/api/vat");
+  const {request, loading: loadingSubmit } = useFetch();
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
@@ -73,8 +73,6 @@ export default function CreateProductForm(props) {
         productNumber: editingProduct.productNumber,
         supplier: editingProduct.supplier,
       });
-    } else {
-      form.resetFields();
     }
   }, [editingProduct, form]);
 
