@@ -148,21 +148,21 @@ export default function Products() {
       <Modals
         isOpen={isOpen}
         onClose={handleclose}
-        form={form}
+        destroyOnHidden={true}
         style={{
           width: 900,
           top: 170,
           title: editingproduct ? "Update product" : "Create product",
         }}
       >
-        {isOpen && (
+      
           <CreateProductForm
             refetchProducts={refetchProducts}
             onClose={handleclose}
             form={form}
             editingProduct={editingproduct}
           />
-        )}
+       
       </Modals>
 
       <Row justify="end">
