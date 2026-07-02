@@ -30,9 +30,30 @@ export default function Products() {
     seteditingproduct(record);
     setIsOpen(true);
   };
-  const handleclose = () => {
-    setIsOpen(false);
-    seteditingproduct(null);
+ const handleclose = () => {
+  setIsOpen(false);
+  if (!editingproduct) {
+    form.resetFields();     
+  }
+  seteditingproduct(null);
+}
+  
+   const alert = () => {
+    if (!form?.isFieldsTouched()) {
+      handleclose();
+      return;}
+    modal.confirm({
+      title: "Confirm navigation",
+      style: { top: 300 },
+      content:"Your changes have not been saved yet. Are you sure you want to leave this page?",
+      okText: "Leave this page",
+      okType: "danger",
+      cancelText: "No, stay",
+      width: "40%",
+      onOk() {
+        handleclose();
+      },
+    });
   };
   const handledelete = (record) => {
     modal.confirm({
@@ -147,22 +168,20 @@ export default function Products() {
 
       <Modals
         isOpen={isOpen}
+        form={form}
+        alert={alert}
         onClose={handleclose}
         destroyOnHidden={true}
         style={{
           width: 900,
           top: 170,
           title: editingproduct ? "Update product" : "Create product",
-        }}
-      >
-      
+        }}>
           <CreateProductForm
             refetchProducts={refetchProducts}
             onClose={handleclose}
             form={form}
-            editingProduct={editingproduct}
-          />
-       
+            editingProduct={editingproduct}/>    
       </Modals>
 
       <Row justify="end">
