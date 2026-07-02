@@ -35,35 +35,16 @@ console.log(customFields)
             >
               <Input
                 antUI={{ size: "large" }}
-                style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                  borderRadius: "0.5rem",
-                  width: "100%",
-                }}
+               
               />
             </Form.Item>
 
-            <Form.Item name="description" label="Description">
-              <InputTextAreas
+            <Form.Item name="CvR" label="CvR no">
+              <Input
                 placeholder="None"
-                antUI={{ minRows: 2, maxRows: 2, size: "large" }}
-                style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                  borderRadius: "0.5rem",
-                }}
+                antUI={{size: "large" }}
+               
               />
-            </Form.Item>
-
-            <Form.Item
-              name="revenueCategory"
-              label="Revenue Category"
-             
-            >
-              <Select showSearch />
-            </Form.Item>
-
-            <Form.Item name="vat" label="VAT" >
-              <Select showSearch />
             </Form.Item>
           </Col>
 
@@ -79,11 +60,7 @@ console.log(customFields)
             >
               <Input
                 antUI={{ size: "large", precision: 2 }}
-                style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                  borderRadius: "0.5rem",
-                  width: "100%",
-                }}
+               
               />
             </Form.Item>
 
@@ -94,20 +71,12 @@ console.log(customFields)
             >
               <Input
                 antUI={{ size: "large" }}
-                style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                  borderRadius: "0.5rem",
-                }}
               />
             </Form.Item>
 
             <Form.Item name="supplier" label="Supplier Product Number">
               <Input
                 antUI={{ size: "large" }}
-                style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                  borderRadius: "0.5rem",
-                }}
               />
             </Form.Item>
             <Form.List name="customFields">
