@@ -1,7 +1,6 @@
-
 import Input from "../components/Input";
-import { useState, useRef } from "react";
-import { Row, Col, Divider, Space, Form } from "antd";
+import { useState } from "react";
+import { Row, Col, Divider, Space, Form, App } from "antd";
 import Modals from "../components/Modal";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "../components/Select";
@@ -13,23 +12,44 @@ import Newcustomers from "../components/Newcustomers";
 import { useNavigate } from "react-router-dom";
 
 export default function Newinvoice() {
-
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);
 
-
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { modal } = App.useApp();
+
   const handleOpen = () => {
     setIsOpen(true);
     setSelectOpen(false);
   };
   const handleClose = () => {
     setIsOpen(false);
+    form.resetFields();
+  };
+  const alert = () => {
+    if (!form?.isFieldsTouched()) {
+      handleClose();
+      return;
+    }
+    modal.confirm({
+      title: "Confirm navigation",
+      style: { top: 300 },
+      content:
+        "Your changes have not been saved yet. Are you sure you want to leave this page?",
+      okText: "Leave this page",
+      okType: "danger",
+      cancelText: "No, stay",
+      width: "40%",
+      onOk() {
+        handleClose();
+      },
+    });
   };
   const handleclick = () => {
     navigate("/dashboard/invoices");
   };
+
   return (
     <>
       <Config>
@@ -83,11 +103,10 @@ export default function Newinvoice() {
         </Row>
         <Modals
           isOpen={isOpen}
-          onClose={handleClose}
-          style={{ width: 840, top: 170, title: "Create product" , }}
-        >
-          <p>Modal content goes here...</p>
-          <Newcustomers  form={form} />
+          form={form}
+          alert={alert}
+          style={{ width: 840, top: 170, title: "Create Contact" }}>
+          <Newcustomers form={form} />
         </Modals>
         <CardComponent
           style={{
@@ -106,7 +125,7 @@ export default function Newinvoice() {
               <Select
                 placeholder="Select customer"
                 open={selectOpen}
-               onOpenChange={setSelectOpen}
+                onOpenChange={setSelectOpen}
                 popupRender={(menu) => (
                   <>
                     {menu}
