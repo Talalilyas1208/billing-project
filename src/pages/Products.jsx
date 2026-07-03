@@ -14,7 +14,6 @@ export default function Products() {
   const [deletingId, setDeletingId] = useState(null);
   const [form] = Form.useForm();
   const { modal } = App.useApp();
-
   const {data: products,loading: productsLoading,
     refetch: refetchProducts,
     request,
@@ -36,8 +35,7 @@ export default function Products() {
     form.resetFields();     
   }
   seteditingproduct(null);
-}
-  
+} 
    const alert = () => {
     if (!form?.isFieldsTouched()) {
       handleclose();
@@ -136,11 +134,9 @@ export default function Products() {
     ],
     [deletingId],
   );
-
   const data = useMemo(() => {
     return Array.isArray(products?.data) ? products.data : [];
   }, [products]);
-
   return (
     <div style={{ padding: "0 24px" }}>
       <Row justify="space-between" align="middle" style={{ marginBottom: 40 }}>
@@ -159,13 +155,11 @@ export default function Products() {
               borderRadius: "9999px",
               height: 48,
             }}
-            className="px-6"
-          >
+            className="px-6">
             <span>Create Product</span>
           </Button>
         </Col>
       </Row>
-
       <Modals
         isOpen={isOpen}
         form={form}
@@ -175,15 +169,13 @@ export default function Products() {
         style={{
           width: 900,
           top: 170,
-          title: editingproduct ? "Update product" : "Create product",
-        }}>
+          title: editingproduct ? "Update product" : "Create product", }}>
           <CreateProductForm
             refetchProducts={refetchProducts}
             onClose={handleclose}
             form={form}
             editingProduct={editingproduct}/>    
       </Modals>
-
       <Row justify="end">
         <Col span={4}>
           <Input.Search
@@ -191,11 +183,9 @@ export default function Products() {
             allowClear
             enterButton
             onSearch={(value) => setSearchText(value)}
-            style={{ width: "100%" }}
-          />
+            style={{ width: "100%" }}/>
         </Col>
       </Row>
-
       <Table
         data={data}
         columns={productColumns}
