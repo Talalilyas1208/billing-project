@@ -14,11 +14,9 @@ import { useNavigate } from "react-router-dom";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);
-
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { modal } = App.useApp();
-
   const handleOpen = () => {
     setIsOpen(true);
     setSelectOpen(false);
@@ -114,13 +112,11 @@ export default function Newinvoice() {
             borderRadius: "10px",
             marginTop: "10px",
             borderColor: "#b9adadff",
-          }}
-        >
+          }}>
           <h1>create invoice</h1>
           <Row
             justify="space-between"
-            style={{ marginTop: "10px", padding: "0 16px" }}
-          >
+            style={{ marginTop: "10px", padding: "0 16px" }} >
             <Col span={4}>
               <Select
                 placeholder="Select customer"
