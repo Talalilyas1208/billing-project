@@ -9,7 +9,7 @@ import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
 export default function CreateProductForm(props) {
-  const { form, onClose, editingProduct, refetchProducts  } = props;
+  const { form, onClose, editingProduct, refetchProducts ,onTouch } = props;
   const navigate = useNavigate();
 
   const {data: revenueCategory } = useFetch("/api/revnue");
@@ -61,21 +61,6 @@ export default function CreateProductForm(props) {
       );
     }
   }, [vat]);
-  useEffect(() => {
-    if (editingProduct) {
-      form.setFieldsValue({
-        productname: editingProduct.productname,
-        description: editingProduct.description,
-        revenueCategory: editingProduct.revenueCategory,
-        vat: editingProduct.vat,
-        price: editingProduct.price,
-        currency: editingProduct.currency,
-        productNumber: editingProduct.productNumber,
-        supplier: editingProduct.supplier,
-      });
-    }
-  }, [editingProduct, form]);
-
   const onFinish = async (values) => {
     try {
       const url = isediting
@@ -98,7 +83,7 @@ export default function CreateProductForm(props) {
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form form={form} layout="vertical" onFinish={onFinish}   onValuesChange={() => onTouch && onTouch()}>
         <Row gutter={16}>
           <Col span={14}>
             <Form.Item
