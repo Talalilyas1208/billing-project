@@ -13,6 +13,7 @@ export default function Products() {
   const [editingproduct, seteditingproduct] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [form] = Form.useForm();
+  const [statetouch ,settouch] =useState(false)
   const { modal } = App.useApp();
   const {data: products,loading: productsLoading,
     refetch: refetchProducts,
@@ -21,23 +22,37 @@ export default function Products() {
     setPage,
     limit,
   } = usefetch(`/api/products?search=${searchText}`);
-  const handleopencreate = () => {
-    seteditingproduct(null);
-    setIsOpen(true);
-  };
-  const handleOpenEdit = (record) => {
-    seteditingproduct(record);
-    setIsOpen(true);
-  };
- const handleclose = () => {
-  setIsOpen(false);
-  if (!editingproduct) {
-    form.resetFields();     
-  }
+ 
+const handleopencreate = () => {
   seteditingproduct(null);
-} 
+  form.resetFields();       
+  setIsOpen(true);
+};
+
+const handleOpenEdit = (record) => {
+  seteditingproduct(record);
+  form.setFieldsValue({   
+    productname: record.productname,
+    description: record.description,
+    revenueCategory: record.revenueCategory,
+    vat: record.vat,
+    price: record.price,
+    currency: record.currency,
+    productNumber: record.productNumber,
+    supplier: record.supplier,
+  });
+  settouch(false)
+  setIsOpen(true);
+};
+
+const handleclose = () => {
+  setIsOpen(false);
+  settouch(false)
+ 
+  seteditingproduct(null);
+};
    const alert = () => {
-    if (!form?.isFieldsTouched()) {
+    if (!statetouch) {
       handleclose();
       return;}
     modal.confirm({
@@ -174,6 +189,7 @@ export default function Products() {
             refetchProducts={refetchProducts}
             onClose={handleclose}
             form={form}
+            onTouch={() => settouch(true)}
             editingProduct={editingproduct}/>    
       </Modals>
       <Row justify="end">
