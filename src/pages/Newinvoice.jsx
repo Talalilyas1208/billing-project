@@ -47,7 +47,6 @@ export default function Newinvoice() {
   const handleclick = () => {
     navigate("/dashboard/invoices");
   };
-
   return (
     <>
       <Config>
@@ -58,16 +57,14 @@ export default function Newinvoice() {
               icon={<LeftOutlined />}
               antUI={{ size: "large" }}
               style={{ backgroundColor: "#fefefe" }}
-              onClick={handleclick}
-            />
+              onClick={handleclick}/>
           </Col>
           <Col span={2} offset={11}>
             <Button
               type="primary"
               antUI={{ size: "large", shape: "round" }}
               style={{ backgroundColor: "#000", color: "#fff" }}
-              className="py-3 px-8"
-            >
+              className="py-3 px-8">
               Approve and send
             </Button>
           </Col>
