@@ -31,6 +31,9 @@ const Config = ({ children }) => (
           activeBarBorderWidth: 4,
           itemBorderRadius: 4,
         },
+        Form: {
+          labelColor: '#8f8f8fff', 
+        },
       },
     }}
   >
