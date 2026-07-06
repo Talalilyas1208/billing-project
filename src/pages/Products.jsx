@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
-import CreateProductForm from "../components/pages/CreateProductFrom";
+import MangeProductForm from "../components/pages/MangeProductFrom";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -185,7 +185,7 @@ const handleclose = () => {
           width: 900,
           top: 170,
           title: editingproduct ? "Update product" : "Create product", }}>
-          <CreateProductForm
+          <MangeProductForm
             refetchProducts={refetchProducts}
             onClose={handleclose}
             form={form}

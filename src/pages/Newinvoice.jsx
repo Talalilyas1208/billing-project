@@ -17,7 +17,7 @@ export default function Newinvoice() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { modal } = App.useApp();
-  const handleOpen = () => {
+  const   handleOpen = () => {
     setIsOpen(true);
     setSelectOpen(false);
   };
@@ -137,7 +137,6 @@ export default function Newinvoice() {
                   </>
                 )}
               />
-
               <Input
                 size="large"
                 style={{ marginBottom: "16px", marginTop: "5px" }}

@@ -8,7 +8,7 @@ import NumbersInput from "../Numbersinput";
 import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
-export default function CreateProductForm(props) {
+export default function MangeProductForm(props) {
   const { form, onClose, editingProduct, refetchProducts ,onTouch } = props;
   const navigate = useNavigate();
 
