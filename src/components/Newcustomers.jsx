@@ -1,15 +1,12 @@
 import { Form, Row, Col, Space, Dropdown, Button as AntButton } from "antd";
 import { PlusOutlined, DeleteOutlined, DownOutlined } from "@ant-design/icons";
 import Input from "./Input";
-import InputTextAreas from "./InputTextAreas";
-import Select from "./Select";
 import Numbersinput from "./Numbersinput";
+import Select from "./Select";
 import Button from "./Button";
 
 export default function Newcustomers(props) {
   const { form, onFinish, loadingSubmit } = props;
-
-
   const customFields = Form.useWatch("customFields", form) || [];
 console.log(customFields)
   const addFieldMenu = (add) => ({
@@ -46,6 +43,23 @@ console.log(customFields)
                
               />
             </Form.Item>
+
+            <Form.Item name="CvR" label="contact person">
+              <Input
+                placeholder="None"
+                antUI={{size: "large" }}
+               
+              />
+              
+            </Form.Item>
+               <Form.Item name="CvR">
+              <Input
+                placeholder="None"
+                antUI={{size: "large" }}
+               
+              />
+              
+            </Form.Item>
           </Col>
 
           <Col span={1}>
@@ -56,22 +70,16 @@ console.log(customFields)
             <Form.Item
               name="price"
               label="Price"
-              rules={[{ required: true, message: "" }]}
-            >
-              <Input
-                antUI={{ size: "large", precision: 2 }}
-               
-              />
+              rules={[{ required: true, message: "" }]} >
+              <Numbersinput
+                antUI={{ size: "large", precision: 2 }}/>
             </Form.Item>
-
             <Form.Item
               name="productNumber"
               label="Product Number"
-              rules={[{ required: true, message: "Required" }]}
-            >
+              rules={[{ required: true, message: "Required" }]}>
               <Input
-                antUI={{ size: "large" }}
-              />
+                antUI={{ size: "large" }}/>
             </Form.Item>
 
             <Form.Item name="supplier" label="Supplier Product Number">
@@ -85,7 +93,6 @@ console.log(customFields)
                   {fields.map((field) => {
                     const { key, ...restField } = field;
                     const fieldType = customFields?.[field.name]?.type;
-
                     return (
                       <Row key={key} gutter={8} align="middle">
                         <Col span={10}>

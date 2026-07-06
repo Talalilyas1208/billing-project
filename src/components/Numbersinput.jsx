@@ -16,15 +16,11 @@ export default function Numbersinput(props) {
       onChange({
         target: {
           name: name,
-          value: newValue,
-        },
-      });
-    }
+          value: newValue,},});}
   };
   return (
     <div className={ className}>
       {label && <label className={className}>{label}</label>}
-
       <AntInputNumber
         style={{ ...style }}
         name={name}
