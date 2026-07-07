@@ -9,11 +9,11 @@ const Select = ({
   showSearch = false,
   popupRender,
   open,
+  antUI,
   ...rest      
 }) => {
   return (
-    <div className="flex flex-col">
-      {label && <label className="text-gray-400 ">{label}</label>}
+  
       <AntSelect
         value={value || undefined}
         onChange={onChange}
@@ -24,9 +24,10 @@ const Select = ({
         popupRender={popupRender} 
         style={{ width: "100%", height: 42 }}
         allowClear
+        {...antUI}
         {...rest} 
       />
-    </div>
+   
   );
 };
 
