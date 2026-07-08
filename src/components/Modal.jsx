@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 
 function Modals(props) {
-  const { isOpen, children, style, alert } = props;
+  const { isOpen, children, style, alert, footer } = props;
   const { width, top, title, height } = style;
 
   return (
@@ -16,7 +16,7 @@ function Modals(props) {
       }}
       height={height}
       onCancel={alert}
-      footer={null}
+      footer={footer || null}
       width={width}
       style={{ top }}
     >
