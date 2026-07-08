@@ -5,7 +5,6 @@ import Numbersinput from "./Numbersinput";
 import Select from "./Select";
 import Button from "./Button";
 import Config from "./Config";
-
 export default function Newcustomers(props) {
   const { form, onFinish, loadingSubmit } = props;
   const customFields = Form.useWatch("users", form) || [];
@@ -16,13 +15,17 @@ export default function Newcustomers(props) {
       { key: "number", label: "Number Input" },
       { key: "select", label: "Select / Dropdown" },
     ],
-    onClick: ({ key }) => {
-      add({ type: key, label: "" });
+    onClick: ({ key, item }) => {
+      // item.props.children holds the visible label text of the clicked menu item
+      const label = item?.props?.children ?? key;
+      add({ type: key, label });
     },
   });
-  const renderFieldByType = (type, index) => {
+
+  const renderFieldByType = (type, index, label) => {
     const commonProps = {
       name: [index, "value"],
+      label,
       style: { width: "100%" },
     };
 
@@ -145,6 +148,7 @@ export default function Newcustomers(props) {
                   <>
                     {fields.map(({ key, name, ...restField }) => {
                       const fieldType = customFields[name]?.type;
+                      const fieldLabel = customFields[name]?.label;
                       return (
                         <Row
                           key={key}
@@ -153,7 +157,6 @@ export default function Newcustomers(props) {
                           style={{ marginBottom: 10 }}
                         >
                           <Col span={22}>
-                            {/* register "type" as a real field so useWatch/customFields sees it */}
                             <Form.Item
                               {...restField}
                               name={[name, "type"]}
@@ -164,13 +167,21 @@ export default function Newcustomers(props) {
 
                             <Form.Item
                               {...restField}
+                              name={[name, "label"]}
+                              hidden
+                            >
+                              <Input />
+                            </Form.Item>
+
+                            <Form.Item
+                              {...restField}
                               name={[name, "value"]}
-                              label="Currency"
+                              label={fieldLabel}
                               rules={[
                                 { required: true, message: "Missing value" },
                               ]}
                             >
-                              {renderFieldByType(fieldType, restField, name)}
+                              {renderFieldByType(fieldType, name, fieldLabel)}
                             </Form.Item>
                           </Col>
 
@@ -202,7 +213,7 @@ export default function Newcustomers(props) {
               marginTop: 20,
               position: "sticky",
               bottom: 0,
-              background: "#fff", 
+              background: "#fff",
               padding: "12px 0",
               zIndex: 10,
             }}
