@@ -1,6 +1,6 @@
 import Input from "../components/Input";
 import { useState } from "react";
-import { Row, Col, Divider, Space, Form, App } from "antd";
+import { Row, Col, Divider, Space, Form, App, Typography } from "antd";
 import Modals from "../components/Modal";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "../components/Select";
@@ -17,7 +17,7 @@ export default function Newinvoice() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { modal } = App.useApp();
-
+  const { Title } = Typography;
   const handleOpen = () => {
     setIsOpen(true);
     setSelectOpen(false);
@@ -118,7 +118,6 @@ export default function Newinvoice() {
           form={form}
           alert={alert}
           style={{ width: 840, top: 170, title: "Create Contact" }}
-
           centered
         >
           <Newcustomers form={form} />
@@ -207,6 +206,25 @@ export default function Newinvoice() {
                     antUI={{ size: "large" }}
                     style={{ width: "100%", marginBottom: "16px" }}
                   />
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "80px" }}></Row>
+              <Row>
+                <Col span={4}>
+                  <Title level={5} type="secondary">
+                    Products
+                  </Title>
+                  <Divider />
+                </Col>
+                <Col span={4}>
+                  <Title level={5}>h5. Ant Design</Title>
+                  <Divider />
+                </Col>{" "}
+                <Col span={4}>
+                  <Title level={5}>h5. Ant Design</Title>
+                </Col>
+                <Col span={4}>
+                  <Title level={5}>h5. Ant Design</Title>
                 </Col>
               </Row>
             </CardComponent>
