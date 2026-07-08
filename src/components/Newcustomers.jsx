@@ -17,14 +17,12 @@ export default function Newcustomers(props) {
       { key: "select", label: "Select / Dropdown" },
     ],
     onClick: ({ key }) => {
-      add({ type: key, label: "", value: undefined });
+      add({ type: key, label: "" });
     },
   });
-
-  const renderFieldByType = (type, restField, name) => {
+  const renderFieldByType = (type, index) => {
     const commonProps = {
-      ...restField,
-      name: [name, "value"],
+      name: [index, "value"],
       style: { width: "100%" },
     };
 
@@ -33,11 +31,9 @@ export default function Newcustomers(props) {
         return (
           <Numbersinput
             {...commonProps}
-            antUI={{ size: "large" }}
+            antUI={{ size: "large", precision: 2 }}
             style={{
               ...commonProps.style,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-              borderRadius: "0.5rem",
             }}
           />
         );
@@ -148,15 +144,24 @@ export default function Newcustomers(props) {
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map(({ key, name, ...restField }) => {
-                      const fieldType = customFields[name]?.type || "input";
+                      const fieldType = customFields[name]?.type;
                       return (
-                         <Row
+                        <Row
                           key={key}
                           gutter={12}
                           align="middle"
                           style={{ marginBottom: 10 }}
                         >
                           <Col span={22}>
+                            {/* register "type" as a real field so useWatch/customFields sees it */}
+                            <Form.Item
+                              {...restField}
+                              name={[name, "type"]}
+                              hidden
+                            >
+                              <Input />
+                            </Form.Item>
+
                             <Form.Item
                               {...restField}
                               name={[name, "value"]}
@@ -195,6 +200,11 @@ export default function Newcustomers(props) {
               display: "flex",
               justifyContent: "flex-end",
               marginTop: 20,
+              position: "sticky",
+              bottom: 0,
+              background: "#fff", 
+              padding: "12px 0",
+              zIndex: 10,
             }}
           >
             <Button
