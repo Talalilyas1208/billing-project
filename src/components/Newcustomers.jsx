@@ -9,15 +9,17 @@ export default function Newcustomers(props) {
   const { form, onFinish, loadingSubmit } = props;
   const customFields = Form.useWatch("users", form) || [];
 
+  const fieldTypeOptions = [
+    { key: "input", label: "Text Input" },
+    { key: "number", label: "Number Input" },
+    { key: "select", label: "Select / Dropdown" },
+  ];
+
   const addFieldMenu = (add) => ({
-    items: [
-      { key: "input", label: "Text Input" },
-      { key: "number", label: "Number Input" },
-      { key: "select", label: "Select / Dropdown" },
-    ],
-    onClick: ({ key, item }) => {
-      // item.props.children holds the visible label text of the clicked menu item
-      const label = item?.props?.children ?? key;
+    items: fieldTypeOptions,
+    onClick: ({ key }) => {
+      const label =
+        fieldTypeOptions.find((option) => option.key === key)?.label ?? key;
       add({ type: key, label });
     },
   });
