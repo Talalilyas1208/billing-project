@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
-import MangeProductForm from "../components/pages/MangeProductFrom";
+import MangeProductForm from "../components/pages/MangeProductForm";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
