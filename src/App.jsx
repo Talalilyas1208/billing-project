@@ -11,31 +11,32 @@ import Newinvoice from "./pages/Newinvoice";
 import Offers from "./pages/Offer";
 import Contact from "./pages/Contact";
 import Config from "./components/Config";
+import Customer from "./pages/Customer";
 
 export default function App() {
   return (
-     <Config>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-        <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="products" element={<Produts />}>
-            </Route>
-           <Route path="invoices" element={<Invoice />}>
-  <Route index element={<EmptyInvoicePage />} />
-  <Route path="new" element={<Newinvoice />} />
-</Route>
-            <Route path="offers" element={<Offers />} />
-            <Route path="contact" element={<Contact />} />
+    <Config>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
-        </Route>
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </BrowserRouter>
-  </Config>
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="products" element={<Produts />}></Route>
+              <Route path="invoices" element={<Invoice />}>
+                <Route index element={<EmptyInvoicePage />} />
+                <Route path="new" element={<Newinvoice />} />
+              </Route>
+              <Route path="offers" element={<Offers />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="Customer" element={<Customer/>}/>
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    </Config>
   );
 }
