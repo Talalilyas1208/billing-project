@@ -47,7 +47,7 @@ const usefetch = (baseUrl = null, limits= 6 ,pages = 1) => {
     if (baseUrl) {
       request(baseUrl, "GET");
     }
-  }, [baseUrl, page, limit, request]);
+  }, [baseUrl, page, limit, request ]);
 
   const refetch = useCallback(() => {
     if (baseUrl) request(baseUrl, "GET");

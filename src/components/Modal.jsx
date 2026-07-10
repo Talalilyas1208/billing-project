@@ -2,11 +2,9 @@ import { Modal } from "antd";
 
 function Modals(props) {
   const { isOpen, children, style, alert, footer } = props;
-  const { width, top, title, height } = style;
 
   return (
     <Modal
-      title={title}
       open={isOpen}
       styles={{
         body: {
@@ -14,11 +12,9 @@ function Modals(props) {
           overflowY: "auto",
         },
       }}
-      height={height}
       onCancel={alert}
       footer={footer || null}
-      width={width}
-      style={{ top }}
+      {...style}
     >
       {children}
     </Modal>

@@ -1,13 +1,14 @@
 import { Table as AntTable } from "antd";
 import Config from "./Config";
 import { Flex, Spin } from 'antd';
-export default function Table({ data, columns, loading, style, pagination }) {
+export default function Table({ data, columns, loading, style, pagination  ,}) {
   return (
     <Config>
        {!data ? (
             <Spin size="large" description="Fetching products..." />
         ) : (
       <AntTable
+      
         dataSource={data}
         columns={columns}
         rowKey="id"
