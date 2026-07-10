@@ -5,7 +5,7 @@ export default function Table({ data, columns, loading, style, pagination  ,}) {
   return (
     <Config>
        {!data ? (
-            <Spin size="large" description="Fetching products..." />
+            <Spin size="large" description="Loading......." />
         ) : (
       <AntTable
       

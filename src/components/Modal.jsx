@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 
 function Modals(props) {
-  const { isOpen, children, style, alert, footer } = props;
+  const { isOpen, children, style, alert, footer} = props;
 
   return (
     <Modal
