@@ -9,13 +9,13 @@ import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
 
 export default function MangeProductForm(props) {
-  const { form, onClose, editingProduct, refetchProducts ,onTouch } = props;
+  const { form, onClose, editingProduct, refetchProducts, onTouch } = props;
   const navigate = useNavigate();
 
-  const {data: revenueCategory } = useFetch("/api/revnue");
-  const {data: currencies } = useFetch("/api/currency");
-  const {data: vat } = useFetch("/api/vat");
-  const {request, loading: loadingSubmit } = useFetch();
+  const { data: revenueCategory } = useFetch("/api/revnue");
+  const { data: currencies } = useFetch("/api/currency");
+  const { data: vat } = useFetch("/api/vat");
+  const { request, loading: loadingSubmit } = useFetch();
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
@@ -66,7 +66,7 @@ export default function MangeProductForm(props) {
       const url = isediting
         ? `/api/products/${editingProduct.id}`
         : "/api/products";
-      const method = isediting ? "PUT" : "POST"
+      const method = isediting ? "PUT" : "POST";
       await request(url, method, values);
       form.resetFields();
       if (refetchProducts) {
@@ -83,7 +83,12 @@ export default function MangeProductForm(props) {
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <Form form={form} layout="vertical" onFinish={onFinish}   onValuesChange={() => onTouch && onTouch()}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        onValuesChange={() => onTouch && onTouch()}
+      >
         <Row gutter={16}>
           <Col span={14}>
             <Form.Item
@@ -177,7 +182,16 @@ export default function MangeProductForm(props) {
           </Col>
         </Row>
         <div
-          style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 20,
+            position: "sticky",
+            bottom: 0,
+            background: "#fff",
+            padding: "12px 0",
+            zIndex: 10,
+          }}
         >
           <Button
             type="primary"
@@ -192,11 +206,7 @@ export default function MangeProductForm(props) {
             }}
             className="py-3 px-8"
           >
-            {loadingSubmit
-              ? "Saving..."
-              : isediting
-              ? "Update"
-              : "Save"}
+            Update
           </Button>
         </div>
       </Form>

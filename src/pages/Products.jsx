@@ -177,10 +177,8 @@ const handleclose = () => {
       </Row>
       <Modals
         isOpen={isOpen}
-        form={form}
         alert={alert}
         onClose={handleclose}
-        destroyOnHidden={true}
         style={{
           width: 900,
           top: 170,
