@@ -10,7 +10,7 @@ export default function Button(props) {
     className = "",
     style,
     icon,
-    antUI = {}, 
+    antUI = {size: "large"}, 
     htmlType = "button",
     ...rest
   } = props;

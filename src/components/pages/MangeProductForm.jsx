@@ -198,7 +198,6 @@ export default function MangeProductForm(props) {
             htmlType="submit"
             disabled={loadingSubmit}
             loading={loadingSubmit}
-            antUI={{ size: "large" }}
             style={{
               backgroundColor: "#000",
               color: "#fff",
