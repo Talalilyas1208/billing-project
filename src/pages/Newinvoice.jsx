@@ -1,6 +1,6 @@
 import Input from "../components/Input";
 import { useState } from "react";
-import { Row, Col, Divider, Space, Form, App, Typography, Table } from "antd";
+import { Row, Col, Divider, Space, Form, App, Typography } from "antd";
 import Modals from "../components/Modal";
 import {
   PlusOutlined,
@@ -9,13 +9,15 @@ import {
   UpOutlined,
   DownOutlined,
 } from "@ant-design/icons";
+import Table from "../components/Table";
 import Select from "../components/Select";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
 import { LeftOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
-import Newcustomers from "../components/Newcustomers";
+import NewCustomers from "../components/pages/NewCustomers";
 import { useNavigate } from "react-router-dom";
+import Invoicecol from "../components/ui/Invoicecol";
 
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +27,6 @@ export default function Newinvoice() {
   const { modal } = App.useApp();
   const { Title, Text } = Typography;
 
-  // line items for the products table
   const [items, setItems] = useState([
     { id: 1, product: "", description: "", number: "", unitPrice: "" },
   ]);
@@ -80,7 +81,7 @@ export default function Newinvoice() {
 
   const handleFieldChange = (id, field, value) => {
     setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     );
   };
 
@@ -100,9 +101,9 @@ export default function Newinvoice() {
       dataIndex: "drag",
       width: 70,
       render: (_, __, index) => (
-        <Space size={4}>
+        <Space size={2}>
           <HolderOutlined style={{ color: "#8c8c8c" }} />
-          <Space direction="vertical" size={0}>
+          <Space orientation="vertical" size={0}>
             <Button
               type="text"
               size="small"
@@ -200,7 +201,8 @@ export default function Newinvoice() {
       dataIndex: "total",
       width: 110,
       render: (_, record) => {
-        const total = Number(record.number || 0) * Number(record.unitPrice || 0);
+        const total =
+          Number(record.number || 0) * Number(record.unitPrice || 0);
         return <Text>{total ? total.toFixed(2) : "0.00"}</Text>;
       },
     },
@@ -221,29 +223,36 @@ export default function Newinvoice() {
   return (
     <>
       <Config>
-        {/* Top Header Row */}
         <Row
-          gutter={[16, 16]}
+          gutter={[12, 16]}
           justify="space-between"
           align="middle"
           style={{ padding: "0 8px", marginBottom: "16px" }}
         >
           <Col>
-            <Button
-              type="text"
-              icon={<LeftOutlined />}
-              antUI={{ size: "large" }}
-              style={{ backgroundColor: "#fefefe" }}
-              onClick={handleclick}
-            />
+            <Space align="center" size={12}>
+              <Button
+                type="text"
+                icon={<LeftOutlined />}
+                size="large"
+                style={{ backgroundColor: "#fefefe" }}
+                onClick={handleclick}
+              />
+              <Title
+                level={2}
+                style={{ textTransform: "capitalize", margin: 0 }}
+              >
+                create invoice
+              </Title>
+            </Space>
           </Col>
 
-          {/* Clean wrapping buttons */}
           <Col>
             <Row gutter={[8, 8]} justify="end">
               <Col>
                 <Button
-                  antUI={{ size: "large", shape: "round" }}
+                  size="large"
+                  shape="round"
                   style={{
                     backgroundColor: "#f8f8f8ff",
                     color: "#080808ff",
@@ -256,12 +265,12 @@ export default function Newinvoice() {
               <Col>
                 <Button
                   type="outlined"
-                  antUI={{ size: "large", shape: "round" }}
+                  size="large"
+                  shape="round"
                   style={{
                     backgroundColor: "#f8f8f8ff",
                     color: "#000000ff",
                     borderColor: "#d0ceceff",
-                    colorPrimaryHover: "#40a9ff",
                   }}
                 >
                   Approve and send
@@ -270,7 +279,8 @@ export default function Newinvoice() {
               <Col>
                 <Button
                   type="primary"
-                  antUI={{ size: "large", shape: "round" }}
+                  size="large"
+                  shape="round"
                   style={{ backgroundColor: "#000", color: "#fff" }}
                 >
                   Approve and send
@@ -284,13 +294,17 @@ export default function Newinvoice() {
           isOpen={isOpen}
           form={form}
           alert={alert}
-          style={{ width: "90%", maxWidth: 840, top: 170, title: "Create Contact" }}
+          style={{
+            width: "50%",
+            maxWidth: 840,
+            top: 170,
+            title: "Create Contact",
+          }}
           centered
         >
-          <Newcustomers form={form} />
+          <NewCustomers form={form} />
         </Modals>
 
-        {/* Main Content Form Card */}
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <CardComponent
@@ -300,15 +314,10 @@ export default function Newinvoice() {
                 borderColor: "#b9adadff",
               }}
             >
-              <Title level={2} style={{ textTransform: "capitalize", marginBottom: "24px" }}>
-                create invoice
-              </Title>
-
-              {/* Input section mapping dynamically with Row/Col */}
               <Row gutter={[24, 16]} justify="space-between">
                 <Col xs={24} sm={12} md={10} lg={8}>
                   <Row gutter={[0, 16]}>
-                    <Col span={24}>
+                    <Col span={20}>
                       <Select
                         style={{ width: "100%" }}
                         antUI={{ size: "large" }}
@@ -335,53 +344,42 @@ export default function Newinvoice() {
                         )}
                       />
                     </Col>
-                    <Col span={24}>
-                      <Input antUI={{ size: "large" }} style={{ width: "100%" }} />
-                    </Col>
-                    <Col span={24}>
-                      <Input antUI={{ size: "large" }} style={{ width: "100%" }} />
-                    </Col>
+
+                    <Invoicecol />
+                    <Invoicecol />
                   </Row>
                 </Col>
 
-                <Col xs={24} sm={12} md={10} lg={8}>
-                  <Row gutter={[0, 16]}>
-                    <Col span={24}>
-                      <Input antUI={{ size: "large" }} style={{ width: "100%" }} />
-                    </Col>
-                    <Col span={24}>
-                      <Input antUI={{ size: "large" }} style={{ width: "100%" }} />
-                    </Col>
-                    <Col span={24}>
-                      <Input antUI={{ size: "large" }} style={{ width: "100%" }} />
-                    </Col>
-                  </Row>
-                </Col>
+            
+                 <Col >
+                    <Invoicecol />
+                     
+                    <Invoicecol />
+                    
+                    <Invoicecol />
+                 </Col>
+               
               </Row>
 
-              {/* Dynamic spacing instead of a fixed empty row */}
-              <div style={{ margin: "40px 0" }} />
-
-              {/* Product table containing x-scroll constraint for mobile */}
               <Table
                 columns={columns}
-                dataSource={items}
+                data={items}
                 rowKey="id"
                 pagination={false}
                 bordered={false}
                 scroll={{ x: "max-content" }}
                 style={{ padding: "0 8px" }}
               />
-
               <Row style={{ padding: "16px 8px 0 8px" }}>
-                <Col span={24}>
+                <Col span={2}>
                   <Button
                     type="dashed"
+                    shape="circle"
                     icon={<PlusOutlined />}
                     onClick={handleAddItem}
                     block
                   >
-                    Add field
+                    Add
                   </Button>
                 </Col>
               </Row>
