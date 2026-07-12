@@ -6,6 +6,7 @@ import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import MangeProductForm from "../components/pages/MangeProductForm";
+import useConfirmNavigation from "../utils/useConfirmNavigation";
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,61 +14,48 @@ export default function Products() {
   const [editingproduct, seteditingproduct] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [form] = Form.useForm();
-  const [statetouch ,settouch] =useState(false)
+  const [statetouch, settouch] = useState(false);
   const { modal } = App.useApp();
-  const {data: products,loading: productsLoading,
+  const {
+    data: products,
+    loading: productsLoading,
     refetch: refetchProducts,
     request,
     page,
     setPage,
     limit,
   } = usefetch(`/api/products?search=${searchText}`);
- 
-const handleopencreate = () => {
-  seteditingproduct(null);
-  form.resetFields();       
-  setIsOpen(true);
-};
 
-const handleOpenEdit = (record) => {
-  seteditingproduct(record);
-  form.setFieldsValue({   
-    productname: record.productname,
-    description: record.description,
-    revenueCategory: record.revenueCategory,
-    vat: record.vat,
-    price: record.price,
-    currency: record.currency,
-    productNumber: record.productNumber,
-    supplier: record.supplier,
-  });
-  settouch(false)
-  setIsOpen(true);
-};
-
-const handleclose = () => {
-  setIsOpen(false);
-  settouch(false)
- 
-  seteditingproduct(null);
-};
-   const alert = () => {
-    if (!statetouch) {
-      handleclose();
-      return;}
-    modal.confirm({
-      title: "Confirm navigation",
-      style: { top: 300 },
-      content:"Your changes have not been saved yet. Are you sure you want to leave this page?",
-      okText: "Leave this page",
-      okType: "danger",
-      cancelText: "No, stay",
-      width: "40%",
-      onOk() {
-        handleclose();
-      },
-    });
+  const handleopencreate = () => {
+    seteditingproduct(null);
+    form.resetFields();
+    setIsOpen(true);
   };
+
+  const handleOpenEdit = (record) => {
+    seteditingproduct(record);
+    form.setFieldsValue({
+      productname: record.productname,
+      description: record.description,
+      revenueCategory: record.revenueCategory,
+      vat: record.vat,
+      price: record.price,
+      currency: record.currency,
+      productNumber: record.productNumber,
+      supplier: record.supplier,
+    });
+    settouch(false);
+    setIsOpen(true);
+  };
+
+  const handleclose = () => {
+    setIsOpen(false);
+    settouch(false);
+    seteditingproduct(null);
+  };
+
+  const confirmNavigation = useConfirmNavigation(statetouch);
+
   const handledelete = (record) => {
     modal.confirm({
       title: "Delete product",
@@ -88,6 +76,7 @@ const handleclose = () => {
       },
     });
   };
+
   const productColumns = useMemo(
     () => [
       {
@@ -149,9 +138,11 @@ const handleclose = () => {
     ],
     [deletingId],
   );
+
   const data = useMemo(() => {
     return Array.isArray(products?.data) ? products.data : [];
   }, [products]);
+
   return (
     <div style={{ padding: "0 24px" }}>
       <Row justify="space-between" align="middle" style={{ marginBottom: 40 }}>
@@ -170,25 +161,29 @@ const handleclose = () => {
               borderRadius: "9999px",
               height: 48,
             }}
-            className="px-6">
+            className="px-6"
+          >
             <span>Create Product</span>
           </Button>
         </Col>
       </Row>
       <Modals
         isOpen={isOpen}
-        alert={alert}
+        alert={() => confirmNavigation(handleclose)}
         onClose={handleclose}
         style={{
           width: 900,
           top: 170,
-          title: editingproduct ? "Update product" : "Create product", }}>
-          <MangeProductForm
-            refetchProducts={refetchProducts}
-            onClose={handleclose}
-            form={form}
-            onTouch={() => settouch(true)}
-            editingProduct={editingproduct}/>    
+          title: editingproduct ? "Update product" : "Create product",
+        }}
+      >
+        <MangeProductForm
+          refetchProducts={refetchProducts}
+          onClose={handleclose}
+          form={form}
+          onTouch={() => settouch(true)}
+          editingProduct={editingproduct}
+        />
       </Modals>
       <Row justify="end">
         <Col span={4}>
@@ -197,7 +192,8 @@ const handleclose = () => {
             allowClear
             enterButton
             onSearch={(value) => setSearchText(value)}
-            style={{ width: "100%" }}/>
+            style={{ width: "100%" }}
+          />
         </Col>
       </Row>
       <Table

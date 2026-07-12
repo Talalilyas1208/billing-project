@@ -1,20 +1,23 @@
 import { useState, useMemo } from "react";
-import { Row, Col, Form, Input, App } from "antd";
+import { Row, Col, Form, Input} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
-import MangeProductForm from "../components/pages/MangeProductForm";
+import useConfirmNavigation from "../utils/useConfirmNavigation";
 import NewCustomers from "../components/pages/NewCustomers";
 // import Testing from "../components/Testing";
-
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const { modal } = App.useApp();
-  const {data: products,loading: productsLoading,
+
+  const confirmNavigation = useConfirmNavigation(form);
+  const {
+    data: products,
+    loading: productsLoading,
+
     refetch: refetchCustomers,
     request,
     page,
@@ -22,36 +25,15 @@ export default function Products() {
     limit,
   } = usefetch(`/api/contact?search=${searchText}`);
   const handleopencreate = () => {
-  
     setIsOpen(true);
   };
 
- const handleclose = () => {
-  setIsOpen(false);
-  if (isOpen) {
-    form.resetFields();     
-  }
-  
-} 
-   const alert = () => {
-    if (!form?.isFieldsTouched()) {
-      handleclose();
-      return;}
-    modal.confirm({
-      title: "Confirm navigation",
-      style: { top: 300 },
-      content:"Your changes have not been saved yet. Are you sure you want to leave this page?",
-      okText: "Leave this page",
-      okType: "danger",
-      cancelText: "No, stay",
-      width: "40%",
-      onOk() {
-        handleclose();
-      },
-    });
+  const handleclose = () => {
+    setIsOpen(false);
+    if (isOpen) {
+      form.resetFields();
+    }
   };
-
-
   const productColumns = useMemo(
     () => [
       {
@@ -59,7 +41,9 @@ export default function Products() {
         key: "name_group",
         render: (_, record) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}>
+            <span
+              style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
+            >
               {record?.productname}
             </span>
             <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
@@ -107,7 +91,6 @@ export default function Products() {
             onClick={handleopencreate}
             icon={<PlusOutlined />}
             type="primary"
-           
             style={{
               backgroundColor: "#000",
               color: "#fff",
@@ -123,11 +106,11 @@ export default function Products() {
 
       <Modals
         isOpen={isOpen}
-        alert={alert}
         onClose={handleclose}
+        alert={() => confirmNavigation(handleclose)}
         rest={{
-            okText: "Done",
-            zIndex: 1000
+          okText: "Done",
+          zIndex: 1000,
         }}
       >
         <NewCustomers
