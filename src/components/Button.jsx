@@ -8,12 +8,13 @@ export default function Button(props) {
     type = "default", 
     disabled,
     className = "",
-    style,
+    // style,
     icon,
     antUI = {size: "large"}, 
     htmlType = "button",
     ...rest
   } = props;
+  const {style} = rest ; 
 
   return (
     <AntdButton
