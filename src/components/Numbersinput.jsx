@@ -6,23 +6,24 @@ export default function Numbersinput(props) {
     value,
     onChange,
     placeholder,
-    antUI = {},
+    antUI = { size: "large" },
     showControls = false,
     style,
     className,
   } = props;
+
   const handleChange = (newValue) => {
     if (onChange) {
-      onChange({
-        target: {
-          name: name,
-          value: newValue,},});}
+      onChange({ target: { name, value: newValue } });
+    }
   };
+
   return (
-    <div className={ className}>
-      {label && <label className={className}>{label}</label>}
+    <div className={className}>
+      {label && <label>{label}</label>}
       <AntInputNumber
-        style={{ ...style }}
+        style={{ width: "100%", ...style }}   
+        className={className}                 
         name={name}
         value={value}
         placeholder={placeholder}
