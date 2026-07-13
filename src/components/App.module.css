@@ -1,0 +1,52 @@
+.vatOptionWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.vatOptionDescription {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.formItemTight {
+  margin-bottom: 8px;
+}
+
+.formItemAddressLast {
+  margin-bottom: 5px;
+}
+
+.priceInput {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+.customFieldRow {
+  margin-bottom: 10px;
+}
+
+.removeFieldIcon {
+  margin-top: 38px;
+}
+
+.footerBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 12px 0;
+  z-index: 10;
+}
+
+.submitBtn {
+  background-color: #000;
+  color: #fff;
+  border-radius: 0.5rem;
+}
