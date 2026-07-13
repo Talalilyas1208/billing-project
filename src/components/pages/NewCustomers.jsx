@@ -8,55 +8,61 @@ import Button from "../Button";
 import { useEffect } from "react";
 import { useState } from "react";
 import Config from "../Config";
+import styles from "../App.module.css"
+
 export default function NewCustomers(props) {
-  const { form, onFinish,  } = props;
+  const { form, onFinish } = props;
   const customFields = Form.useWatch("users", form) || [];
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
   const { data: vat } = useFetch("/api/vat");
-    const { request, loading: loadingSubmit } = useFetch();
+  const { request, loading: loadingSubmit } = useFetch();
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
+
   useEffect(() => {
-      if (Array.isArray(currencies?.data)) {
-        setCurrencyOptions(
-          currencies.data.map((item) => ({
-            value: item.code,
-            label: item.code,
-          })),
-        );
-      }
-    }, [currencies]);
-    useEffect(() => {
-      if (Array.isArray(revenueCategory?.data)) {
-        setRevenueOptions(
-          revenueCategory.data.map((item) => ({
-            value: String(item.key || item.code || ""),
-            label: item.name || item.code || "Select Category",
-          })),
-        );
-      }
-    }, [revenueCategory]);
-    useEffect(() => {
-      if (Array.isArray(vat?.data)) {
-        setVatoptions(
-          vat.data.map((item) => ({
-            value: item.code,
-            label: (
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span>{item.code}</span>
-                {item.description && (
-                  <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-                    {item.description}
-                  </span>
-                )}
-              </div>
-            ),
-          })),
-        );
-      }
-    }, [vat]);
+    if (Array.isArray(currencies?.data)) {
+      setCurrencyOptions(
+        currencies.data.map((item) => ({
+          value: item.code,
+          label: item.code,
+        })),
+      );
+    }
+  }, [currencies]);
+
+  useEffect(() => {
+    if (Array.isArray(revenueCategory?.data)) {
+      setRevenueOptions(
+        revenueCategory.data.map((item) => ({
+          value: String(item.key || item.code || ""),
+          label: item.name || item.code || "Select Category",
+        })),
+      );
+    }
+  }, [revenueCategory]);
+
+  useEffect(() => {
+    if (Array.isArray(vat?.data)) {
+      setVatoptions(
+        vat.data.map((item) => ({
+          value: item.code,
+          label: (
+            <div className="vatOptionWrapper">
+              <span>{item.code}</span>
+              {item.description && (
+                <span className="vatOptionDescription">
+                  {item.description}
+                </span>
+              )}
+            </div>
+          ),
+        })),
+      );
+    }
+  }, [vat]);
+
   const fieldTypeOptions = [
     { key: "input", label: "Text Input" },
     { key: "number", label: "Number Input" },
@@ -76,7 +82,7 @@ export default function NewCustomers(props) {
     const commonProps = {
       name: [index, "value"],
       label,
-      style: { width: "100%" },
+      className: "fullWidth",
     };
 
     switch (type) {
@@ -85,9 +91,6 @@ export default function NewCustomers(props) {
           <Numbersinput
             {...commonProps}
             antUI={{ size: "large", precision: 2 }}
-            style={{
-              ...commonProps.style,
-            }}
           />
         );
       case "select":
@@ -119,43 +122,43 @@ export default function NewCustomers(props) {
               >
                 <Input antUI={{ size: "large" }} />
               </Form.Item>
-              <Form.Item name="CvR" label="CvR no" style={{ marginBottom: 8 }}>
+              <Form.Item name="CvR" label="CvR no" className="formItemTight">
                 <Input placeholder="None" antUI={{ size: "large" }} />
               </Form.Item>
               <Form.Item
-                name="contactPerson"
+                name="contactPersonFirstname"
                 label="Contact person"
-                style={{ marginBottom: 8 }}
+                className="formItemTight"
               >
                 <Input placeholder="Firstname" antUI={{ size: "large" }} />
               </Form.Item>
-              <Form.Item name="contactPhone" style={{ marginBottom: 8 }}>
+              <Form.Item name="contactPersonSurname" className="formItemTight">
                 <Input placeholder="Surname" antUI={{ size: "large" }} />
               </Form.Item>
-              <Form.Item name="contactPhone">
+              <Form.Item name="contactEmail">
                 <Input placeholder="Email" antUI={{ size: "large" }} />
               </Form.Item>
               <Form.Item name="Telephone" label="Telephone">
                 <Input placeholder="Telephone" antUI={{ size: "large" }} />
               </Form.Item>
               <Form.Item
-                name="adress"
+                name="address"
                 label="Address"
-                style={{ marginBottom: 5 }}
+                className="formItemAddressLast"
               >
                 <Input placeholder="way" antUI={{ size: "large" }} />
               </Form.Item>
               <Row>
                 <Col span={8}>
-                  <Form.Item name="adress">
-                   <Select showSearch options={currencyOptions} />
+                  <Form.Item name="addressCurrency">
+                    <Select showSearch options={currencyOptions} />
                   </Form.Item>
                 </Col>
                 <Col span={1}></Col>
                 <Col span={15}>
-                  <Form.Item name="adress">
+                  <Form.Item name="addressCountryOrRegion">
                     <Select
-                      style={{ width: "100%" }}
+                      className="fullWidth"
                       antUI={{ size: "large" }}
                     ></Select>
                   </Form.Item>
@@ -173,11 +176,7 @@ export default function NewCustomers(props) {
               >
                 <Numbersinput
                   antUI={{ size: "large", precision: 2 }}
-                  style={{
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                    borderRadius: "0.5rem",
-                    width: "100%",
-                  }}
+                  className="priceInput"
                 />
               </Form.Item>
               <Form.Item
@@ -201,7 +200,7 @@ export default function NewCustomers(props) {
                           key={key}
                           gutter={12}
                           align="middle"
-                          style={{ marginBottom: 10 }}
+                          className="customFieldRow"
                         >
                           <Col span={22}>
                             <Form.Item
@@ -234,7 +233,7 @@ export default function NewCustomers(props) {
 
                           <Col span={1}>
                             <MinusCircleOutlined
-                              style={{ marginTop: 38 }}
+                              className="removeFieldIcon"
                               onClick={() => remove(name)}
                             />
                           </Col>
@@ -253,30 +252,13 @@ export default function NewCustomers(props) {
               </Form.List>
             </Col>
           </Row>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginTop: 20,
-              position: "sticky",
-              bottom: 0,
-              background: "#fff",
-              padding: "12px 0",
-              zIndex: 10,
-            }}
-          >
+          <div className={styles.footerBar}>
             <Button
               type="primary"
               htmlType="submit"
               disabled={loadingSubmit}
               loading={loadingSubmit}
-              antUI={{ size: "large" }}
-              style={{
-                backgroundColor: "#000",
-                color: "#fff",
-                borderRadius: "0.5rem",
-              }}
-              className="py-3 px-8"
+              className={styles}
             >
               Update
             </Button>
