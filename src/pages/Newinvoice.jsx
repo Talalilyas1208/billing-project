@@ -18,15 +18,15 @@ import Button from "../components/Button";
 import NewCustomers from "../components/pages/NewCustomers";
 import { useNavigate } from "react-router-dom";
 import Invoicecol from "../components/ui/Invoicecol";
-
+import useConfirmNavigation from "../utils/useConfirmNavigation";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);
+  const [statetouch ,settouch ] = useState(false)
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { modal } = App.useApp();
   const { Title, Text } = Typography;
-
+ const confirmNavigation = useConfirmNavigation(statetouch);
   const [items, setItems] = useState([
     { id: 1, product: "", description: "", number: "", unitPrice: "" },
   ]);
@@ -35,29 +35,11 @@ export default function Newinvoice() {
     setIsOpen(true);
     setSelectOpen(false);
   };
-  const handleClose = () => {
+  const handleclose = () => {
     setIsOpen(false);
-    form.resetFields();
+    settouch(false)
   };
-  const alert = () => {
-    if (!form?.isFieldsTouched()) {
-      handleClose();
-      return;
-    }
-    modal.confirm({
-      title: "Confirm navigation",
-      style: { top: 300 },
-      content:
-        "Your changes have not been saved yet. Are you sure you want to leave this page?",
-      okText: "Leave this page",
-      okType: "danger",
-      cancelText: "No, stay",
-      width: "40%",
-      onOk() {
-        handleClose();
-      },
-    });
-  };
+
   const handleclick = () => {
     navigate("/dashboard/invoices");
   };
@@ -293,16 +275,22 @@ export default function Newinvoice() {
         <Modals
           isOpen={isOpen}
           form={form}
-          alert={alert}
-          style={{
-            width: "50%",
-            maxWidth: 840,
-            top: 170,
-            title: "Create Contact",
-          }}
-          centered
+           onCancel={()=>  confirmNavigation(handleclose)}
+          onclose= {handleclose}
+           destroyOnHidden
+          
+            rest={{
+          ...{
+            okText: "Done",
+            style: {
+              width: 900,
+              top: 170,
+              title: "Create New Customer ",
+            },
+          },
+        }}
         >
-          <NewCustomers form={form} />
+          <NewCustomers form={form}  onTouch={() => settouch(true)} />
         </Modals>
 
         <Row gutter={[16, 16]}>
