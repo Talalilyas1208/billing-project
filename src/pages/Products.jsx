@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Row, Col, Form, Input, App } from "antd";
+import { Row, Col, Form, Input, App, Flex, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
@@ -7,6 +7,9 @@ import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import MangeProductForm from "../components/pages/MangeProductForm";
 import useConfirmNavigation from "../utils/useConfirmNavigation";
+import styles from "../components/App.module.css";
+
+const { Title } = Typography;
 
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +31,7 @@ export default function Products() {
 
   const handleopencreate = () => {
     seteditingproduct(null);
-    form.resetFields();
+    // form.resetFields();
     setIsOpen(true);
   };
 
@@ -83,33 +86,25 @@ export default function Products() {
         title: "Name",
         key: "name_group",
         render: (_, record) => (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}>
-              {record?.productname}
-            </span>
-            <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-              {record?.productNumber}
-            </span>
-          </div>
+          <Flex vertical>
+            <span className={styles.productName}>{record?.productname}</span>
+            <span className={styles.productNumber}>{record?.productNumber}</span>
+          </Flex>
         ),
       },
       {
         title: "Account",
         dataIndex: "revenueCategory",
         key: "revenueCategory",
-        render: (text) => (
-          <span style={{ color: "#1f1f1f" }}>{text || "Sales"}</span>
-        ),
+        render: (text) => <span className={styles.priceCell}>{text || "Sales"}</span>,
       },
       {
         title: "Price",
         key: "price",
         align: "right",
         render: (_, record) => (
-          <span style={{ color: "#1f1f1f" }}>
-            {record.price
-              ? `${Number(record.price).toFixed(2)} ${record.currency}`
-              : ""}
+          <span className={styles.priceCell}>
+            {record.price ? `${Number(record.price).toFixed(2)} ${record.currency}` : ""}
             <Button
               type="link"
               size="small"
@@ -144,10 +139,12 @@ export default function Products() {
   }, [products]);
 
   return (
-    <div style={{ padding: "0 24px" }}>
-      <Row justify="space-between" align="middle" style={{ marginBottom: 40 }}>
+    <div className={styles.container}>
+      <Row justify="space-between" align="middle" className={styles.header}>
         <Col>
-          <h1 style={{ fontSize: 32, fontWeight: 600 }}>Products</h1>
+          <Title level={2} className={styles.title}>
+            Products
+          </Title>
         </Col>
         <Col>
           <Button
@@ -155,26 +152,26 @@ export default function Products() {
             icon={<PlusOutlined />}
             type="primary"
             antUI={{ size: "large" }}
-            style={{
-              backgroundColor: "#000",
-              color: "#fff",
-              borderRadius: "9999px",
-              height: 48,
-            }}
-            className="px-6"
+            className={`${styles.createBtn} px-6`}
           >
-            <span>Create Product</span>
+            Create Product
           </Button>
         </Col>
       </Row>
+
       <Modals
         isOpen={isOpen}
-        alert={() => confirmNavigation(handleclose)}
+        onCancel={() => confirmNavigation(handleclose)}
         onClose={handleclose}
-        style={{
-          width: 900,
-          top: 170,
-          title: editingproduct ? "Update product" : "Create product",
+       rest={{
+          ...{
+            okText: "Done",
+            style: {
+              width: 900,
+              top: 170,
+              title: "Create New Product ",
+            },
+          },
         }}
       >
         <MangeProductForm
@@ -185,6 +182,7 @@ export default function Products() {
           editingProduct={editingproduct}
         />
       </Modals>
+
       <Row justify="end">
         <Col span={4}>
           <Input.Search
@@ -196,22 +194,19 @@ export default function Products() {
           />
         </Col>
       </Row>
+
       <Table
         data={data}
         columns={productColumns}
         loading={productsLoading}
+        className={styles.table}
+        rowKey="id"
         pagination={{
           current: page,
           pageSize: limit,
           total: products?.totalItems || 0,
           onChange: (p) => setPage(p),
           placement: ["bottomLeft"],
-        }}
-        style={{
-          borderRadius: "10px",
-          border: "1px solid #d9d9d9ff",
-          overflow: "scroll",
-          marginTop: "18px",
         }}
       />
     </div>
