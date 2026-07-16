@@ -18,7 +18,7 @@ import Button from "../components/Button";
 import NewCustomers from "../components/pages/NewCustomers";
 import { useNavigate } from "react-router-dom";
 import Invoicecol from "../components/ui/Invoicecol";
-import useConfirmNavigation from "../utils/useConfirmNavigation";
+import useConfirmNavigation from "../hooks/useConfirmNavigation";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);

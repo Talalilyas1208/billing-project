@@ -6,7 +6,7 @@ import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import MangeProductForm from "../components/pages/MangeProductForm";
-import useConfirmNavigation from "../utils/useConfirmNavigation";
+import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import styles from "../components/App.module.css";
 
 const { Title } = Typography;

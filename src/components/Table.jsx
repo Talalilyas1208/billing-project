@@ -6,6 +6,7 @@ export default function Table({ data, columns, loading, style, pagination  ,rowK
     <Config>
        {!data ? (
             <Spin size="large" description="Loading......." />
+          
         ) : (
       <AntTable
         dataSource={data}
