@@ -10,7 +10,6 @@ import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import styles from "../components/App.module.css";
 
 const { Title } = Typography;
-
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -28,7 +27,6 @@ export default function Products() {
     setPage,
     limit,
   } = usefetch(`/api/products?search=${searchText}`);
-
   const handleopencreate = () => {
     seteditingproduct(null);
     // form.resetFields();
@@ -50,15 +48,12 @@ export default function Products() {
     settouch(false);
     setIsOpen(true);
   };
-
   const handleclose = () => {
     setIsOpen(false);
     settouch(false);
     seteditingproduct(null);
   };
-
   const confirmNavigation = useConfirmNavigation(statetouch);
-
   const handledelete = (record) => {
     modal.confirm({
       title: "Delete product",

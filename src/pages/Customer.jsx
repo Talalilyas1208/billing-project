@@ -5,19 +5,19 @@ import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
-import useConfirmNavigation from "../utils/useConfirmNavigation";
+import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import NewCustomers from "../components/pages/NewCustomers";
-// import Testing from "../components/Testing";
+import styles from "../components/App.module.css"
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
+    const [statetouch, settouch] = useState(false);
 
-  const confirmNavigation = useConfirmNavigation(form);
+  const confirmNavigation = useConfirmNavigation(statetouch);
   const {
     data: products,
     loading: productsLoading,
-
     refetch: refetchCustomers,
     request,
     page,
@@ -30,9 +30,10 @@ export default function Products() {
 
   const handleclose = () => {
     setIsOpen(false);
-    if (isOpen) {
-      form.resetFields();
-    }
+      settouch(false);
+    // if (isOpen) {
+    //   form.resetFields();
+    // }
   };
   const productColumns = useMemo(
     () => [
@@ -46,9 +47,7 @@ export default function Products() {
             >
               {record?.productname}
             </span>
-            <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-              {record?.productNumber}
-            </span>
+            
           </div>
         ),
       },
@@ -66,9 +65,7 @@ export default function Products() {
         align: "right",
         render: (_, record) => (
           <span style={{ color: "#1f1f1f" }}>
-            {record.price
-              ? `${Number(record.price).toFixed(2)} ${record.currency}`
-              : ""}
+            {record?.price}
           </span>
         ),
       },
@@ -107,15 +104,23 @@ export default function Products() {
       <Modals
         isOpen={isOpen}
         onClose={handleclose}
-        alert={() => confirmNavigation(handleclose)}
+        onCancel={() => confirmNavigation(handleclose)}
+         destroyOnHidden
         rest={{
-          okText: "Done",
-          zIndex: 1000,
+          ...{
+            okText: "Done",
+            style: {
+              width: 900,
+              top: 170,
+              title: "Create New Customer ",
+            },
+          },
         }}
       >
         <NewCustomers
           refetchCustomers={refetchCustomers}
           onClose={handleclose}
+           onTouch={() => settouch(true)}
           form={form}
         />
       </Modals>
@@ -131,25 +136,20 @@ export default function Products() {
           />
         </Col>
       </Row>
-      {/* <Testing/> */}
-      <Table
-        data={data}
-        columns={productColumns}
-        loading={productsLoading}
-        pagination={{
-          current: page,
-          pageSize: limit,
-          total: products?.totalItems || 0,
-          onChange: (p) => setPage(p),
-          placement: ["bottomLeft"],
-        }}
-        style={{
-          borderRadius: "10px",
-          border: "1px solid #d9d9d9ff",
-          overflow: "scroll",
-          marginTop: "18px",
-        }}
-      />
+     <Table
+            data={data}
+            columns={productColumns}
+            loading={productsLoading}
+            className={styles.table}
+            rowKey="id"
+            pagination={{
+              current: page,
+              pageSize: limit,
+              total: products?.totalItems || 0,
+              onChange: (p) => setPage(p),
+              placement: ["bottomLeft"],
+            }}
+          />
     </div>
   );
 }
