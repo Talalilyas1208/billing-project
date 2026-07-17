@@ -11,7 +11,7 @@ import Config from "../Config";
 import styles from "../App.module.css"
 
 export default function NewCustomers(props) {
-  const { form, onFinish } = props;
+  const { form, onFinish ,onTouch } = props;
   const customFields = Form.useWatch("users", form) || [];
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
@@ -34,6 +34,7 @@ export default function NewCustomers(props) {
 
   useEffect(() => {
     if (Array.isArray(revenueCategory?.data)) {
+ 
       setRevenueOptions(
         revenueCategory.data.map((item) => ({
           value: String(item.key || item.code || ""),
@@ -110,7 +111,7 @@ export default function NewCustomers(props) {
   return (
     <>
       <Config>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form form={form} layout="vertical" onFinish={onFinish}  onValuesChange={() => onTouch && onTouch()}   clearOnDestroy>
           <Row gutter={16}>
             <Col span={11}>
               <Form.Item
@@ -160,6 +161,7 @@ export default function NewCustomers(props) {
                     <Select
                       className="fullWidth"
                       antUI={{ size: "large" }}
+                      options={revenueOptions}
                     ></Select>
                   </Form.Item>
                 </Col>
