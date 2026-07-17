@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import Modals from "../components/Modal";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
-import NewCustomers from "../components/pages/NewCustomers";
+import NewCustomers from "../components/NewCustomers/NewCustomers";
 import { useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import Invoicecol from "../components/ui/Invoicecol";

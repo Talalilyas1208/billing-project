@@ -6,7 +6,7 @@ import Modals from "../components/Modal";
 import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
-import NewCustomers from "../components/pages/NewCustomers";
+import NewCustomers from "../components/NewCustomers/NewCustomers";
 import styles from "../components/App.module.css"
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,18 +23,17 @@ export default function Products() {
     page,
     setPage,
     limit,
-  } = usefetch(`/api/contact?search=${searchText}`);
+  } = usefetch(`/api/Customer?search=${searchText}`);
   const handleopencreate = () => {
     setIsOpen(true);
   };
-
   const handleclose = () => {
     setIsOpen(false);
       settouch(false);
-    // if (isOpen) {
-    //   form.resetFields();
-    // }
   };
+  
+
+
   const productColumns = useMemo(
     () => [
       {
