@@ -1,4 +1,5 @@
 import { Form, Row, Col } from "antd";
+
 import Input from "../Input";
 import Select from "../Select";
 
@@ -6,7 +7,7 @@ export default function CustomerBasicInfo({ currencyOptions, revenueOptions }) {
   return (
     <Col span={11}>
       <Form.Item
-        name="productname"
+        name="Company name"
         label="Name"
         rules={[
           {
@@ -15,37 +16,71 @@ export default function CustomerBasicInfo({ currencyOptions, revenueOptions }) {
           },
         ]}
       >
-        <Input antUI={{ size: "large" }} />
+        <Input
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="CvR" label="CvR no">
-        <Input placeholder="None" antUI={{ size: "large" }} />
+        <Input
+          placeholder="None"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="contactPersonFirstname" label="Contact person">
-        <Input placeholder="Firstname" antUI={{ size: "large" }} />
+        <Input
+          placeholder="Firstname"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="contactPersonSurname">
-        <Input placeholder="Surname" antUI={{ size: "large" }} />
+        <Input
+          placeholder="Surname"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="contactEmail">
-        <Input placeholder="Email" antUI={{ size: "large" }} />
+        <Input
+          placeholder="Email"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="Telephone" label="Telephone">
-        <Input placeholder="Telephone" antUI={{ size: "large" }} />
+        <Input
+          placeholder="Telephone"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="address" label="Address">
-        <Input placeholder="way" antUI={{ size: "large" }} />
+        <Input
+          placeholder="way"
+          antUI={{
+            size: "large",
+          }}
+        />
       </Form.Item>
 
       <Row gutter={12}>
         <Col span={8}>
           <Form.Item name="addressCurrency">
-            <Select options={currencyOptions} showSearch />
+            <Select showSearch options={currencyOptions} />
           </Form.Item>
         </Col>
 
@@ -53,7 +88,9 @@ export default function CustomerBasicInfo({ currencyOptions, revenueOptions }) {
           <Form.Item name="addressCountryOrRegion">
             <Select
               className="fullWidth"
-              antUI={{ size: "large" }}
+              antUI={{
+                size: "large",
+              }}
               options={revenueOptions}
             />
           </Form.Item>
