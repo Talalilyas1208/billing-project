@@ -1,28 +1,21 @@
-import { Form} from "antd";
-
+import { Form } from "antd";
 
 import Select from "../Select";
 import Numbersinput from "../Numbersinput";
 
-export default function ProductInfo() {
+export default function ProductInfo({Language}) {
   return (
     <>
       <Form.Item
-        name="country"
-        label="Country"
+        name="Language"
+        label="Languafe"
         rules={[
           {
             required: true,
           },
         ]}
       >
-        <Select
-        
-           
-             showSearch
-          
-        
-        />
+        <Select showSearch options={Language} />
       </Form.Item>
 
       <Form.Item
@@ -41,8 +34,6 @@ export default function ProductInfo() {
           }}
         />
       </Form.Item>
-
-     
     </>
   );
 }

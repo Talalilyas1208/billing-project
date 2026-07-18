@@ -3,7 +3,7 @@ import { Form, Row, Col } from "antd";
 import Input from "../Input";
 import Select from "../Select";
 
-export default function CustomerBasicInfo({ currencyOptions, revenueOptions }) {
+export default function CustomerBasicInfo({ currencyOptions, revenueOptions  }) {
   return (
     <Col span={11}>
       <Form.Item

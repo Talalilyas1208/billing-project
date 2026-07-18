@@ -20,9 +20,11 @@ export default function NewCustomers(props) {
   const { data: currencies } = useFetch("/api/currency");
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: fieldTypeOptions } = useFetch("/api/labelforfield");
+  const {data:Language} = useFetch("/api/Language")
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [fieldTypeMenuOptions, setFieldTypeMenuOptions] = useState([]);
+  const [Languageoptions ,setLanguage ] = useState([])
 
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
@@ -45,6 +47,16 @@ export default function NewCustomers(props) {
       );
     }
   }, [revenueCategory]);
+  useEffect(()=> {
+    if (Array.isArray (Language?.data)) {
+      setLanguage(
+        Language.data.map(( item) => ({
+          value:String(item.country_name || ""),
+          label : item.country_name || "select Country "
+        }))
+      )
+    }
+  } ,[Language])
 
   useEffect(() => {
     if (Array.isArray(fieldTypeOptions?.data)) {
@@ -96,10 +108,11 @@ export default function NewCustomers(props) {
           <CustomerBasicInfo
             currencyOptions={currencyOptions}
             revenueOptions={revenueOptions}
+   
           />
           <Col span={1} />
           <Col span={12}>
-            <ProductInfo />
+            <ProductInfo  Language={Languageoptions}/>
             <CustomFields
               customFields={customFields}
               fieldTypeMenuOptions={fieldTypeMenuOptions}
