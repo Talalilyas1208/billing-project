@@ -1,31 +1,33 @@
-import { Form } from "antd";
+import { Form} from "antd";
 
-import Input from "../Input";
+
+import Select from "../Select";
 import Numbersinput from "../Numbersinput";
 
 export default function ProductInfo() {
   return (
     <>
       <Form.Item
-        name="price"
-        label="Price"
+        name="country"
+        label="Country"
         rules={[
           {
             required: true,
           },
         ]}
       >
-        <Numbersinput
-          antUI={{
-            size: "large",
-            precision: 2,
-          }}
+        <Select
+        
+           
+             showSearch
+          
+        
         />
       </Form.Item>
 
       <Form.Item
-        name="productNumber"
-        label="Product Number"
+        name="EAN no"
+        label="EAN no"
         rules={[
           {
             required: true,
@@ -33,20 +35,14 @@ export default function ProductInfo() {
           },
         ]}
       >
-        <Input
+        <Numbersinput
           antUI={{
             size: "large",
           }}
         />
       </Form.Item>
 
-      <Form.Item name="supplier" label="Supplier Product Number">
-        <Input
-          antUI={{
-            size: "large",
-          }}
-        />
-      </Form.Item>
+     
     </>
   );
 }
