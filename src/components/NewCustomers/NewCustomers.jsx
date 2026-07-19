@@ -25,7 +25,21 @@ export default function NewCustomers(props) {
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [fieldTypeMenuOptions, setFieldTypeMenuOptions] = useState([]);
   const [Languageoptions ,setLanguage ] = useState([])
+const FIELD_TYPE_BY_LABEL = {
+  "Contact Number": "number",
+  "Payment terms": "select",
+  "Currency": "currency",
+  "Language": "select",
+  "Email delivery": "input",
+};
 
+const getFieldType = (label) => {
+  const normalized = String(label || "").trim().toLowerCase();
+  const match = Object.keys(FIELD_TYPE_BY_LABEL).find(
+    (key) => key.toLowerCase() === normalized
+  );
+  return match ? FIELD_TYPE_BY_LABEL[match] : "input";
+};
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
       setCurrencyOptions(
@@ -67,6 +81,7 @@ export default function NewCustomers(props) {
           label: item.label ?? item.name ?? item.code ?? "Field",
 
           type: item.type ?? item.fieldType ?? "input",
+          options: item.options ?? [],   
         })),
       );
     }
