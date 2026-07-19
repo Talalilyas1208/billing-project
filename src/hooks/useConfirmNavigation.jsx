@@ -16,8 +16,7 @@ export default function useConfirmNavigation(isTouched) {
       title: options.title || "Confirm navigation",
       style: { top: 300 },
       content:
-        options.content ||
-        "Your changes have not been saved yet. Are you sure you want to leave this page?",
+        options.content ||"Your changes have not been saved yet. Are you sure you want to leave this page?",
       okText: options.okText || "Leave this page",
       okType: options.okType || "danger",
       cancelText: options.cancelText || "No, stay",
