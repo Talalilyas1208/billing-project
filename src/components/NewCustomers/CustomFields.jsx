@@ -1,4 +1,5 @@
 import { Form, Row, Col, Dropdown } from "antd";
+
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 import Input from "../Input";
@@ -15,6 +16,7 @@ export default function CustomFields({
     const props = {
       name: [name, "value"],
       label,
+
       className: "fullWidth",
     };
 
@@ -36,7 +38,9 @@ export default function CustomFields({
           {...props}
           options={currencyOptions}
           showSearch
-          antUI={{ size: "large" }}
+          antUI={{
+            size: "large",
+          }}
         />
       );
     }
@@ -45,16 +49,19 @@ export default function CustomFields({
       return (
         <Select
           {...props}
-          antUI={{ size: "large" }}
+          antUI={{
+            size: "large",
+          }}
         />
       );
     }
-
     return (
       <Input
         {...props}
         placeholder="Value"
-        antUI={{ size: "large" }}
+        antUI={{
+          size: "large",
+        }}
       />
     );
   };
@@ -66,9 +73,7 @@ export default function CustomFields({
     })),
 
     onClick: ({ key }) => {
-      const selected = fieldTypeMenuOptions.find(
-        (item) => item.key === key
-      );
+      const selected = fieldTypeMenuOptions.find((item) => item.key === key);
 
       if (!selected) return;
 
@@ -85,31 +90,18 @@ export default function CustomFields({
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }) => {
+            console.log(name)
             const field = customFields[name];
 
             return (
-              <Row
-                key={key}
-                gutter={12}
-                align="middle"
-              >
+              <Row key={key} gutter={12} align="middle">
                 <Col span={22}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "type"]}
-                    hidden
-                  >
+                  <Form.Item {...restField} name={[name, "type"]} hidden>
                     <Input />
                   </Form.Item>
-
-                  <Form.Item
-                    {...restField}
-                    name={[name, "label"]}
-                    hidden
-                  >
+                  <Form.Item {...restField} name={[name, "label"]} hidden>
                     <Input />
                   </Form.Item>
-
                   <Form.Item
                     {...restField}
                     name={[name, "value"]}
@@ -120,33 +112,23 @@ export default function CustomFields({
                       },
                     ]}
                   >
-                    {renderField(
-                      field?.type,
-                      name,
-                      field?.label
-                    )}
+                    {renderField(field?.type, name, field?.label)}
                   </Form.Item>
                 </Col>
 
+
                 <Col span={1}>
                   <MinusCircleOutlined
+                    className="removeFieldIcon"
                     onClick={() => remove(name)}
                   />
                 </Col>
               </Row>
             );
           })}
-
           <Form.Item label="Additional information">
-            <Dropdown
-              menu={menu(add)}
-              trigger={["click"]}
-            >
-              <Button
-                type="dashed"
-                block
-                icon={<PlusOutlined />}
-              >
+            <Dropdown menu={menu(add)} trigger={["click"]}>
+              <Button type="dashed" block icon={<PlusOutlined />}>
                 Add field
               </Button>
             </Dropdown>
