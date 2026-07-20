@@ -17,9 +17,9 @@ export default function CustomFields({
       className: "fullWidth",
     };
 
-    const normalizedType = String(type || "").toLowerCase();
+    const Type = String(type || "").toLowerCase();
 
-    if (normalizedType === "number") {
+    if (Type === "number") {
       return (
         <Numbersinput
           {...props}
@@ -31,7 +31,7 @@ export default function CustomFields({
       );
     }
 
-    if (normalizedType === "currency") {
+    if (Type === "currency") {
       return (
         <Select
           {...props}
@@ -44,7 +44,7 @@ export default function CustomFields({
       );
     }
 
-    if (normalizedType === "select") {
+    if (Type === "select") {
       return (
         <Select
           {...props}
@@ -67,6 +67,7 @@ export default function CustomFields({
       />
     );
   };
+  console.log(fieldTypeMenuOptions,"test")
 
   const usedLabels = (customFields || []).map((item) => item?.label);
 
