@@ -16,30 +16,16 @@ export default function NewCustomers(props) {
 
   const customFields = Form.useWatch("users", form) || [];
 
-
   const { data: currencies } = useFetch("/api/currency");
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: fieldTypeOptions } = useFetch("/api/labelforfield");
-  const {data:Language} = useFetch("/api/Language")
+  const { data: Language } = useFetch("/api/Language");
+
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [fieldTypeMenuOptions, setFieldTypeMenuOptions] = useState([]);
-  const [Languageoptions ,setLanguage ] = useState([])
-const FIELD_TYPE_BY_LABEL = {
-  "Contact Number": "number",
-  "Payment terms": "select",
-  "Currency": "currency",
-  "Language": "select",
-  "Email delivery": "input",
-};
+  const [Languageoptions, setLanguage] = useState([]);
 
-const getFieldType = (label) => {
-  const normalized = String(label || "").trim().toLowerCase();
-  const match = Object.keys(FIELD_TYPE_BY_LABEL).find(
-    (key) => key.toLowerCase() === normalized
-  );
-  return match ? FIELD_TYPE_BY_LABEL[match] : "input";
-};
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
       setCurrencyOptions(
@@ -61,42 +47,41 @@ const getFieldType = (label) => {
       );
     }
   }, [revenueCategory]);
-  useEffect(()=> {
-    if (Array.isArray (Language?.data)) {
-      setLanguage(
-        Language.data.map(( item) => ({
-          value:String(item.country_name || ""),
-          label : item.country_name || "select Country "
-        }))
-      )
-    }
-  } ,[Language])
 
   useEffect(() => {
-    if (Array.isArray(fieldTypeOptions?.data)) {
-      setFieldTypeMenuOptions(
-        fieldTypeOptions.data.map((item) => ({
-          key: String(item.key ?? item.code ?? item.id),
-
-          label: item.label ?? item.name ?? item.code ?? "Field",
-
-          type: item.type ?? item.fieldType ?? "input",
-          options: item.options ?? [],   
+    if (Array.isArray(Language?.data)) {
+      setLanguage(
+        Language.data.map((item) => ({
+          value: String(item.country_name || ""),
+          label: item.country_name || "select Country",
         })),
       );
     }
-  }, [fieldTypeOptions]);
+  }, [Language]);
+
+useEffect(() => {
+  if (Array.isArray(fieldTypeOptions?.data)) {
+    console.log("---tyoe", fieldTypeOptions.data); 
+    setFieldTypeMenuOptions(
+      fieldTypeOptions.data.map((item) => ({
+        key: String(item.key ?? item.code ?? item.id),
+        label: item.label ?? item.name ?? item.code ?? "Field",
+        type: String(item.type ?? item.fieldType ?? "input").toLowerCase(),
+        options: Array.isArray(item.options) ? item.options : [],
+      })),
+    );
+  }
+}, [fieldTypeOptions]);
+
   const handleCreate = async () => {
     try {
       const values = await form.validateFields();
 
       const response = await fetch("/api/Customer", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify(values),
       });
 
@@ -123,11 +108,10 @@ const getFieldType = (label) => {
           <CustomerBasicInfo
             currencyOptions={currencyOptions}
             revenueOptions={revenueOptions}
-   
           />
           <Col span={1} />
           <Col span={12}>
-            <ProductInfo  Language={Languageoptions}/>
+            <ProductInfo Language={Languageoptions} />
             <CustomFields
               customFields={customFields}
               fieldTypeMenuOptions={fieldTypeMenuOptions}
