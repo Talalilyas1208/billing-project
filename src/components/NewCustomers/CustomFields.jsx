@@ -1,5 +1,4 @@
 import { Form, Row, Col, Dropdown } from "antd";
-
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 import Input from "../Input";
@@ -12,15 +11,15 @@ export default function CustomFields({
   fieldTypeMenuOptions,
   currencyOptions,
 }) {
-  const renderField = (type, name, label) => {
+  const renderField = (type, options, name) => {
     const props = {
       name: [name, "value"],
-      label,
-
       className: "fullWidth",
     };
 
-    if (type === "number") {
+    const normalizedType = String(type || "").toLowerCase();
+
+    if (normalizedType === "number") {
       return (
         <Numbersinput
           {...props}
@@ -32,7 +31,7 @@ export default function CustomFields({
       );
     }
 
-    if (type === "currency") {
+    if (normalizedType === "currency") {
       return (
         <Select
           {...props}
@@ -45,16 +44,19 @@ export default function CustomFields({
       );
     }
 
-    if (type === "select") {
+    if (normalizedType === "select") {
       return (
         <Select
           {...props}
+          options={options}
+          showSearch
           antUI={{
             size: "large",
           }}
         />
       );
     }
+
     return (
       <Input
         {...props}
@@ -66,20 +68,27 @@ export default function CustomFields({
     );
   };
 
+  const usedLabels = (customFields || []).map((item) => item?.label);
+
+  const availableMenuOptions = fieldTypeMenuOptions.filter(
+    (item) => !usedLabels.includes(item.label),
+  );
+
   const menu = (add) => ({
-    items: fieldTypeMenuOptions.map(({ key, label }) => ({
+    items: availableMenuOptions.map(({ key, label }) => ({
       key,
       label,
     })),
 
     onClick: ({ key }) => {
-      const selected = fieldTypeMenuOptions.find((item) => item.key === key);
+      const selected = availableMenuOptions.find((item) => item.key === key);
 
       if (!selected) return;
 
       add({
         type: selected.type,
         label: selected.label,
+        options: selected.options,
         value: undefined,
       });
     },
@@ -90,7 +99,6 @@ export default function CustomFields({
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }) => {
-            console.log(name)
             const field = customFields[name];
 
             return (
@@ -102,9 +110,13 @@ export default function CustomFields({
                   <Form.Item {...restField} name={[name, "label"]} hidden>
                     <Input />
                   </Form.Item>
+                  <Form.Item {...restField} name={[name, "options"]} hidden>
+                    <Input />
+                  </Form.Item>
                   <Form.Item
                     {...restField}
                     name={[name, "value"]}
+                    label={field?.label}
                     rules={[
                       {
                         required: true,
@@ -112,10 +124,9 @@ export default function CustomFields({
                       },
                     ]}
                   >
-                    {renderField(field?.type, name, field?.label)}
+                    {renderField(field?.type, field?.options, name)}
                   </Form.Item>
                 </Col>
-
 
                 <Col span={1}>
                   <MinusCircleOutlined
@@ -126,13 +137,15 @@ export default function CustomFields({
               </Row>
             );
           })}
-          <Form.Item label="Additional information">
-            <Dropdown menu={menu(add)} trigger={["click"]}>
-              <Button type="dashed" block icon={<PlusOutlined />}>
-                Add field
-              </Button>
-            </Dropdown>
-          </Form.Item>
+          {availableMenuOptions.length > 0 && (
+            <Form.Item label="Additional information">
+              <Dropdown menu={menu(add)} trigger={["click"]}>
+                <Button type="dashed" block icon={<PlusOutlined />}>
+                  Add field
+                </Button>
+              </Dropdown>
+            </Form.Item>
+          )}
         </>
       )}
     </Form.List>
