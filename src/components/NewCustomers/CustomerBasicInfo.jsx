@@ -7,7 +7,7 @@ export default function CustomerBasicInfo({ currencyOptions, revenueOptions  }) 
   return (
     <Col span={11}>
       <Form.Item
-        name="Company name"
+        name="Company_name"
         label="Name"
         rules={[
           {
