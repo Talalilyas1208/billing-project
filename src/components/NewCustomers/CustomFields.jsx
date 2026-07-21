@@ -9,16 +9,14 @@ import Button from "../Button";
 export default function CustomFields({
   customFields,
   fieldTypeMenuOptions,
-  currencyOptions,
+  currencyOptions,onchange
 }) {
   const renderField = (type, options, name) => {
     const props = {
       name: [name, "value"],
       className: "fullWidth",
     };
-
     const Type = String(type || "").toLowerCase();
-
     if (Type === "number") {
       return (
         <Numbersinput
@@ -30,7 +28,6 @@ export default function CustomFields({
         />
       );
     }
-
     if (Type === "currency") {
       return (
         <Select
@@ -43,13 +40,13 @@ export default function CustomFields({
         />
       );
     }
-
     if (Type === "select") {
       return (
         <Select
           {...props}
           options={options}
           showSearch
+          onChange={onchange}
           antUI={{
             size: "large",
           }}
@@ -67,7 +64,7 @@ export default function CustomFields({
       />
     );
   };
-  console.log(fieldTypeMenuOptions,"test")
+
 
   const usedLabels = (customFields || []).map((item) => item?.label);
 

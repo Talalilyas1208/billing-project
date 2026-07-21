@@ -1,82 +1,79 @@
-import { Form, Row, Col } from "antd";
-import { useEffect, useState } from "react";
+import { Form, Row, Col, message } from "antd";
+import { useMemo } from "react";
 
 import useFetch from "../../hooks/Usefetch";
 import Config from "../Config";
 import Button from "../Button";
-
 import CustomerBasicInfo from "./CustomerBasicInfo";
 import ProductInfo from "./ProductInfo";
 import CustomFields from "./CustomFields";
-
 import styles from "../App.module.css";
 
-export default function NewCustomers(props) {
-  const { form, onTouch, refetchCustomers, onClose } = props;
+const mapCurrencyOptions = (data = []) =>
+  data.map(({ code }) => ({
+    value: code,
+    label: code,
+  }));
 
+const mapRevenueOptions = (data = []) =>
+  data.map(({ key, code, name }) => ({
+    value: String(key || code || ""),
+    label: name || code || "Select Category",
+  }));
+
+const mapLanguageOptions = (data = []) =>
+  data.map(({ country_name }) => ({
+    value: country_name || "",
+    label: country_name || "Select Country",
+  }));
+
+const mapFieldTypeOptions = (data = []) =>
+  data.map((item) => ({
+    key: String(item.key ?? item.code ?? item.id),
+    label: item.label ?? item.name ?? item.code ?? "Field",
+    type: String(item.type ?? item.fieldType ?? "input").toLowerCase(),
+    options: Array.isArray(item.options) ? item.options : [],
+  }));
+
+export default function NewCustomers({
+  form,
+  onTouch,
+  refetchCustomers,
+  onClose,
+}) {
   const customFields = Form.useWatch("users", form) || [];
 
   const { data: currencies } = useFetch("/api/currency");
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: fieldTypeOptions } = useFetch("/api/labelforfield");
-  const { data: Language } = useFetch("/api/Language");
+  const { data: language } = useFetch("/api/Language");
 
-  const [currencyOptions, setCurrencyOptions] = useState([]);
-  const [revenueOptions, setRevenueOptions] = useState([]);
-  const [fieldTypeMenuOptions, setFieldTypeMenuOptions] = useState([]);
-  const [Languageoptions, setLanguage] = useState([]);
+  const currencyOptions = useMemo(
+    () => mapCurrencyOptions(currencies?.data),
+    [currencies?.data],
+  );
 
-  useEffect(() => {
-    if (Array.isArray(currencies?.data)) {
-      setCurrencyOptions(
-        currencies.data.map((item) => ({
-          value: item.code,
-          label: item.code,
-        })),
-      );
-    }
-  }, [currencies]);
+  const revenueOptions = useMemo(
+    () => mapRevenueOptions(revenueCategory?.data),
+    [revenueCategory?.data],
+  );
 
-  useEffect(() => {
-    if (Array.isArray(revenueCategory?.data)) {
-      setRevenueOptions(
-        revenueCategory.data.map((item) => ({
-          value: String(item.key || item.code || ""),
-          label: item.name || item.code || "Select Category",
-        })),
-      );
-    }
-  }, [revenueCategory]);
+  const languageOptions = useMemo(
+    () => mapLanguageOptions(language?.data),
+    [language?.data],
+  );
 
-  useEffect(() => {
-    if (Array.isArray(Language?.data)) {
-      setLanguage(
-        Language.data.map((item) => ({
-          value: String(item.country_name || ""),
-          label: item.country_name || "select Country",
-        })),
-      );
-    }
-  }, [Language]);
+  const fieldTypeMenuOptions = useMemo(
+    () => mapFieldTypeOptions(fieldTypeOptions?.data),
+    [fieldTypeOptions?.data],
+  );
 
-useEffect(() => {
-  if (Array.isArray(fieldTypeOptions?.data)) {
-    console.log("---tyoe", fieldTypeOptions.data); 
-    setFieldTypeMenuOptions(
-      fieldTypeOptions.data.map((item) => ({
-        key: String(item.key ?? item.code ?? item.id),
-        label: item.label ?? item.name ?? item.code ?? "Field",
-        type: String(item.type ?? item.fieldType ?? "input").toLowerCase(),
-        options: Array.isArray(item.options) ? item.options : [],
-      })),
-    );
-  }
-}, [fieldTypeOptions]);
+  const handleCustomFieldChange = () => {
+    console.log("Custom field changed");
+  };
 
-  const handleCreate = async () => {
+  const handleCreate = async (values) => {
     try {
-      const values = await form.validateFields();
-
       const response = await fetch("/api/Customer", {
         method: "POST",
         headers: {
@@ -85,13 +82,19 @@ useEffect(() => {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        refetchCustomers();
-        onClose();
-        form.resetFields();
+      if (!response.ok) {
+        throw new Error("Failed to create customer");
       }
+
+      message.success("Customer created successfully");
+
+      await refetchCustomers?.();
+
+      form.resetFields();
+      onClose?.();
     } catch (error) {
-      console.log("Validate Failed:", error);
+      console.error("Create customer failed:", error);
+      message.error("Failed to create customer");
     }
   };
 
@@ -101,7 +104,7 @@ useEffect(() => {
         form={form}
         layout="vertical"
         onFinish={handleCreate}
-        onValuesChange={() => onTouch && onTouch()}
+        onValuesChange={() => onTouch?.()}
         clearOnDestroy
       >
         <Row gutter={16}>
@@ -109,21 +112,24 @@ useEffect(() => {
             currencyOptions={currencyOptions}
             revenueOptions={revenueOptions}
           />
+
           <Col span={1} />
+
           <Col span={12}>
-            <ProductInfo Language={Languageoptions} />
+            <ProductInfo language={languageOptions} />
+
             <CustomFields
               customFields={customFields}
               fieldTypeMenuOptions={fieldTypeMenuOptions}
               currencyOptions={currencyOptions}
+              onChange={handleCustomFieldChange}
             />
           </Col>
         </Row>
 
-        {/* FOOTER */}
         <div className={styles.footerBar}>
           <Button type="primary" htmlType="submit">
-            Update
+            Create
           </Button>
         </div>
       </Form>
