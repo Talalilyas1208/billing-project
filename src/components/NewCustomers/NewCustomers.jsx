@@ -1,4 +1,4 @@
-import { Form, Row, Col, message } from "antd";
+import { App, Form, Row, Col } from "antd"
 import { useMemo } from "react";
 
 import useFetch from "../../hooks/Usefetch";
@@ -14,19 +14,16 @@ const mapCurrencyOptions = (data = []) =>
     value: code,
     label: code,
   }));
-
 const mapRevenueOptions = (data = []) =>
   data.map(({ key, code, name }) => ({
     value: String(key || code || ""),
     label: name || code || "Select Category",
   }));
-
 const mapLanguageOptions = (data = []) =>
   data.map(({ country_name }) => ({
     value: country_name || "",
     label: country_name || "Select Country",
   }));
-
 const mapFieldTypeOptions = (data = []) =>
   data.map((item) => ({
     key: String(item.key ?? item.code ?? item.id),
@@ -34,7 +31,6 @@ const mapFieldTypeOptions = (data = []) =>
     type: String(item.type ?? item.fieldType ?? "input").toLowerCase(),
     options: Array.isArray(item.options) ? item.options : [],
   }));
-
 export default function NewCustomers({
   form,
   onTouch,
@@ -42,7 +38,7 @@ export default function NewCustomers({
   onClose,
 }) {
   const customFields = Form.useWatch("users", form) || [];
-
+  const { message } = App.useApp();
   const { data: currencies } = useFetch("/api/currency");
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: fieldTypeOptions } = useFetch("/api/labelforfield");
@@ -87,12 +83,14 @@ export default function NewCustomers({
       }
 
       message.success("Customer created successfully");
-
-      await refetchCustomers?.();
-
-      form.resetFields();
-      onClose?.();
-    } catch (error) {
+ if (refetchCustomers) {
+        refetchCustomers();
+        onClose();
+        form.resetFields();
+      }
+    } 
+     
+    catch (error) {
       console.error("Create customer failed:", error);
       message.error("Failed to create customer");
     }
@@ -104,7 +102,7 @@ export default function NewCustomers({
         form={form}
         layout="vertical"
         onFinish={handleCreate}
-        onValuesChange={() => onTouch?.()}
+        onValuesChange={() => onTouch()}
         clearOnDestroy
       >
         <Row gutter={16}>
