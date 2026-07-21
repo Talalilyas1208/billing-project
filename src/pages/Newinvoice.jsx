@@ -11,17 +11,26 @@ import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import InvoiceHeader from "../components/InvoiceHeader";
 import CustomerSelect from "../components/CustomerSelect";
 import InvoiceItemsTable from "../components/InvoiceItemsTable";
-
+import usefetch from "../hooks/Usefetch";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);
   const [statetouch, settouch] = useState(false);
+  const [searchText,setSearchText] = useState()
   const [items, setItems] = useState([
     { id: 1, product: "", description: "", number: "", unitPrice: "" },
   ]);
 
   const navigate = useNavigate();
   const [form] = Form.useForm();
+   const {
+    data: Customer,
+    loading: CustomerLoading,
+    refetch: refetchCustomers,
+    page,
+    setPage,
+    limit,
+  } = usefetch(`/api/Customer?search=${searchText}`);
   const confirmNavigation = useConfirmNavigation(statetouch);
 
   const handleOpen = () => {
@@ -29,7 +38,7 @@ export default function Newinvoice() {
     setSelectOpen(false);
   };
 
-  const handleClose = () => {
+  const handleclose = () => {
     setIsOpen(false);
     settouch(false);
   };
@@ -77,20 +86,26 @@ export default function Newinvoice() {
 
       <Modals
         isOpen={isOpen}
-        form={form}
-        onCancel={() => confirmNavigation(handleClose)}
-        onclose={handleClose}
+        onClose={handleclose}
+        onCancel={() => confirmNavigation(handleclose)}
         destroyOnHidden
         rest={{
-          okText: "Done",
-          style: {
-            width: 900,
-            top: 170,
-            title: "Create New Customer ",
+          ...{
+            okText: "Done",
+            style: {
+              width: 900,
+              top: 170,
+              title: "Create New Customer ",
+            },
           },
         }}
       >
-        <NewCustomers form={form} onTouch={() => settouch(true)} />
+        <NewCustomers
+                 refetchCustomers={refetchCustomers}
+                 onClose={handleclose}
+                 onTouch={() => settouch(true)}
+                 form={form}
+               />
       </Modals>
 
       <Row gutter={[16, 16]}>
