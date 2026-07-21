@@ -1,9 +1,8 @@
 import { Form } from "antd";
-
 import Select from "../Select";
 import Numbersinput from "../Numbersinput";
 
-export default function ProductInfo({Language}) {
+export default function ProductInfo({ language }) {
   return (
     <>
       <Form.Item
@@ -13,11 +12,9 @@ export default function ProductInfo({Language}) {
           {
             required: true,
           },
-        ]}
-      >
-        <Select showSearch options={Language} />
+        ]} >
+        <Select showSearch options={language} />
       </Form.Item>
-
       <Form.Item
         name="EAN no"
         label="EAN no"
@@ -26,13 +23,11 @@ export default function ProductInfo({Language}) {
             required: true,
             message: "Required",
           },
-        ]}
-      >
+        ]}>
         <Numbersinput
           antUI={{
             size: "large",
-          }}
-        />
+          }}/>
       </Form.Item>
     </>
   );
