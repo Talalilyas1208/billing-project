@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Row, Col, Form, Input} from "antd";
+import { Row, Col, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
@@ -7,19 +7,18 @@ import Table from "../components/Table";
 import usefetch from "../hooks/Usefetch";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import NewCustomers from "../components/NewCustomers/NewCustomers";
-import styles from "../components/App.module.css"
+import styles from "../components/App.module.css";
 export default function Products() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-    const [statetouch, settouch] = useState(false);
+  const [statetouch, settouch] = useState(false);
 
   const confirmNavigation = useConfirmNavigation(statetouch);
   const {
-    data: products,
-    loading: productsLoading,
+    data: Customer,
+    loading: CustomerLoading,
     refetch: refetchCustomers,
-    request,
     page,
     setPage,
     limit,
@@ -29,24 +28,34 @@ export default function Products() {
   };
   const handleclose = () => {
     setIsOpen(false);
-      settouch(false);
+    settouch(false);
   };
-  
-
 
   const productColumns = useMemo(
     () => [
       {
-        title: "Name",
-        key: "name_group",
+        title: "Contact number ",
+        key: "Telephone",
         render: (_, record) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span
               style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
             >
-              {record?.productname}
+              {record?.Telephone}
             </span>
-            
+          </div>
+        ),
+      },
+      {
+        title: "Name ",
+        key: "Company name",
+        render: (_, record) => (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
+            >
+              {record?.Company_name}
+            </span>
           </div>
         ),
       },
@@ -59,22 +68,64 @@ export default function Products() {
         ),
       },
       {
-        title: "Price",
-        key: "price",
-        align: "right",
+        title: "Email ",
+        key: "Email",
         render: (_, record) => (
-          <span style={{ color: "#1f1f1f" }}>
-            {record?.price}
-          </span>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
+            >
+              {record?.contactEmail}
+            </span>
+          </div>
         ),
+      },
+      {
+        title: "Country",
+        key: "Country",
+        render: (_, record) => (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }}
+            >
+              {record?.Language}
+            </span>
+          </div>
+        ),
+      },
+      {
+        title: "Date",
+        key: "Date",
+        render: (_, record) => {
+          const dateObj = record?.createdDate
+            ? new Date(record.createdDate)
+            : null;
+
+          const formattedDate =
+            dateObj && !isNaN(dateObj)
+              ? dateObj.toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "—";
+          return (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span
+                style={{ fontWeight: 500, fontSize: "14px", color: "#1f1f1f" }} >
+                {formattedDate}
+              </span>
+            </div>
+          );
+        },
       },
     ],
     [],
   );
 
   const data = useMemo(() => {
-    return Array.isArray(products?.data) ? products.data : [];
-  }, [products]);
+    return Array.isArray(Customer?.data) ? Customer.data : [];
+  }, [Customer]);
 
   return (
     <div style={{ padding: "0 24px" }}>
@@ -104,7 +155,7 @@ export default function Products() {
         isOpen={isOpen}
         onClose={handleclose}
         onCancel={() => confirmNavigation(handleclose)}
-         destroyOnHidden
+        destroyOnHidden
         rest={{
           ...{
             okText: "Done",
@@ -119,7 +170,7 @@ export default function Products() {
         <NewCustomers
           refetchCustomers={refetchCustomers}
           onClose={handleclose}
-           onTouch={() => settouch(true)}
+          onTouch={() => settouch(true)}
           form={form}
         />
       </Modals>
@@ -135,20 +186,20 @@ export default function Products() {
           />
         </Col>
       </Row>
-     <Table
-            data={data}
-            columns={productColumns}
-            loading={productsLoading}
-            className={styles.table}
-            rowKey="id"
-            pagination={{
-              current: page,
-              pageSize: limit,
-              total: products?.totalItems || 0,
-              onChange: (p) => setPage(p),
-              placement: ["bottomLeft"],
-            }}
-          />
+      <Table
+        data={data}
+        columns={productColumns}
+        loading={CustomerLoading}
+        className={styles.table}
+        rowKey="id"
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: Customer?.totalItems || 0,
+          onChange: (p) => setPage(p),
+          placement: ["bottomLeft"],
+        }}
+      />
     </div>
   );
 }

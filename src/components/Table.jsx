@@ -11,7 +11,7 @@ export default function Table({ data, columns, loading, style, pagination  ,rowK
       <AntTable
         dataSource={data}
         columns={columns}
-    rowKey={rowKey}   
+        rowKey={rowKey}   
         scroll={{ y: 600 }}
         style={{ ...style }}
         tableLayout="fixed"
