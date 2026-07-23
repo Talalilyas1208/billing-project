@@ -8,9 +8,9 @@ import Config from "../components/Config";
 import NewCustomers from "../components/NewCustomers/NewCustomers";
 import Invoicecol from "../components/ui/Invoicecol";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
-import InvoiceHeader from "../components/InvoiceHeader";
-import CustomerSelect from "../components/CustomerSelect";
-import InvoiceItemsTable from "../components/InvoiceItemsTable";
+import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
+import CustomerSelect from "../components/NewCustomers/CustomerSelect";
+import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
 import usefetch from "../hooks/Usefetch";
 
 export default function Newinvoice() {
@@ -139,9 +139,7 @@ export default function Newinvoice() {
                       open={selectOpen}
                       onOpenChange={setSelectOpen}
                       onCreateNew={handleOpen}
-                      // Pass the customer data
                       customers={Customer?.data || []}
-                      // Pass loading
                       loading={CustomerLoading}
                     />
                   </Col>
