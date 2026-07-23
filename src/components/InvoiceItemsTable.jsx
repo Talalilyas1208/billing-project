@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Row, Col, Space, Typography } from "antd";
 import {
   PlusOutlined,
@@ -10,8 +11,10 @@ import Table from "./Table";
 import Select from "./Select";
 import Input from "./Input";
 import Button from "./Button";
+import usefetch from "../hooks/Usefetch";
 
 const { Title, Text } = Typography;
+
 export default function InvoiceItemsTable({
   items,
   onFieldChange,
@@ -19,6 +22,30 @@ export default function InvoiceItemsTable({
   onMoveItem,
   onAddItem,
 }) {
+  const { data: productsdata } = usefetch("/api/products");
+
+  const productList = productsdata?.data || [];
+
+  const productOptions = useMemo(
+    () =>
+      productList.map((p) => ({
+        label: p.productname,
+        value: p.id,
+      })),
+    [productList],
+  );
+
+  const handleProductChange = (recordId, productId) => {
+    const selectedProduct = productList.find((p) => p.id === productId);
+
+    onFieldChange(recordId, "product", productId);
+
+    if (selectedProduct) {
+      onFieldChange(recordId, "description", selectedProduct.description || "");
+      onFieldChange(recordId, "unitPrice", selectedProduct.price ?? "");
+    }
+  };
+
   const columns = [
     {
       title: "",
@@ -59,7 +86,8 @@ export default function InvoiceItemsTable({
           style={{ width: "100%" }}
           value={value || undefined}
           placeholder="Select product"
-          onChange={(val) => onFieldChange(record.id, "product", val)}
+          options={productOptions}
+          onChange={(val) => handleProductChange(record.id, val)}
         />
       ),
     },
@@ -74,7 +102,9 @@ export default function InvoiceItemsTable({
         <Input
           style={{ width: "100%" }}
           value={value}
-          onChange={(e) => onFieldChange(record.id, "description", e.target.value)}
+          onChange={(e) =>
+            onFieldChange(record.id, "description", e.target.value)
+          }
         />
       ),
     },
@@ -106,7 +136,9 @@ export default function InvoiceItemsTable({
         <Input
           style={{ width: "100%" }}
           value={value}
-          onChange={(e) => onFieldChange(record.id, "unitPrice", e.target.value)}
+          onChange={(e) =>
+            onFieldChange(record.id, "unitPrice", e.target.value)
+          }
         />
       ),
     },
