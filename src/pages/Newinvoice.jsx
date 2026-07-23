@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Row, Col, Form } from "antd";
+import { Row, Col, Form, DatePicker } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import dayjs from 'dayjs';
 import Modals from "../components/Modal";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
@@ -28,6 +28,9 @@ export default function Newinvoice() {
       unitPrice: "",
     },
   ]);
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
 
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -58,9 +61,7 @@ export default function Newinvoice() {
     setItems((prev) => [
       ...prev,
       {
-        id: prev.length
-          ? Math.max(...prev.map((i) => i.id)) + 1
-          : 1,
+        id: prev.length ? Math.max(...prev.map((i) => i.id)) + 1 : 1,
         product: "",
         description: "",
         number: "",
@@ -70,18 +71,12 @@ export default function Newinvoice() {
   };
 
   const handleDeleteItem = (id) => {
-    setItems((prev) =>
-      prev.filter((item) => item.id !== id),
-    );
+    setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const handleFieldChange = (id, field, value) => {
     setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, [field]: value }
-          : item,
-      ),
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     );
   };
 
@@ -95,10 +90,7 @@ export default function Newinvoice() {
 
       const updated = [...prev];
 
-      [updated[index], updated[target]] = [
-        updated[target],
-        updated[index],
-      ];
+      [updated[index], updated[target]] = [updated[target], updated[index]];
 
       return updated;
     });
@@ -139,10 +131,7 @@ export default function Newinvoice() {
               borderColor: "#b9adadff",
             }}
           >
-            <Row
-              gutter={[24, 16]}
-              justify="space-between"
-            >
+            <Row gutter={[24, 16]} justify="space-between">
               <Col xs={24} sm={12} md={10} lg={8}>
                 <Row gutter={[0, 16]}>
                   <Col span={20}>
@@ -150,10 +139,8 @@ export default function Newinvoice() {
                       open={selectOpen}
                       onOpenChange={setSelectOpen}
                       onCreateNew={handleOpen}
-
                       // Pass the customer data
                       customers={Customer?.data || []}
-
                       // Pass loading
                       loading={CustomerLoading}
                     />
@@ -164,10 +151,21 @@ export default function Newinvoice() {
                 </Row>
               </Col>
 
-              <Col>
-                <Invoicecol />
-                <Invoicecol />
-                <Invoicecol />
+              <Col xs={24} sm={12} md={10} lg={8}>
+                <Row gutter={[0, 16]}>
+                  <Col span={20}>
+                    <DatePicker
+                      onChange={onChange}
+                      format={{
+                        format: "YYYY-MM-DD ",
+                        type: "mask",
+                      }}
+                      size="large" 
+                      defaultValue={dayjs()}
+                      style={{ width: "100%" }}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
 
