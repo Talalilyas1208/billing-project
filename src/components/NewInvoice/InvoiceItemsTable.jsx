@@ -45,6 +45,7 @@ export default function InvoiceItemsTable({
       onFieldChange(recordId, "unitPrice", selectedProduct.price ?? "");
     }
   };
+
   useEffect(() => {
     items.forEach((item) => {
       const total = Number(item.number || 0) * Number(item.unitPrice || 0);
@@ -56,11 +57,10 @@ export default function InvoiceItemsTable({
 
   const grandTotal = items.reduce(
     (sum, item) =>
-      sum + Number(item.number || 0) * Number(item.unitPrice || 0),
+      sum + Number(item.number || 1) * Number(item.unitPrice || 0),
     0,
   );
 
-  // Only show grand total once at least one product has been selected
   const hasProduct = items.some((item) => item.product);
 
   const columns = [
@@ -136,8 +136,8 @@ export default function InvoiceItemsTable({
       render: (value, record) => (
         <InputNumber
           style={{ width: "100%", height: 42 }}
-          min={0}
-          value={value || 0}
+          min={1}
+          value={value || 1}
           onChange={(val) => onFieldChange(record.id, "number", val)}
         />
       ),
@@ -169,7 +169,7 @@ export default function InvoiceItemsTable({
       dataIndex: "total",
       width: 110,
       render: (_, record) => {
-        const total = Number(record.number || 0) * Number(record.unitPrice || 0);
+        const total = Number(record.number || 1) * Number(record.unitPrice || 1);
         return <Text>{total ? total.toFixed(2) : "0.00"}</Text>;
       },
     },
@@ -194,7 +194,7 @@ export default function InvoiceItemsTable({
         data={items}
         rowKey="id"
         pagination={false}
-        bordered={false}
+        bordered={true}
         scroll={{ x: "max-content" }}
         style={{ padding: "0 8px" }}
       />
