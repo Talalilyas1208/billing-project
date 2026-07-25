@@ -1,5 +1,5 @@
-import { useMemo, useEffect } from "react";
-import { Row, Col, Space, Typography, InputNumber } from "antd";
+import { useMemo, useEffect, useState } from "react";
+import { Row, Col, Space, Typography, InputNumber, Divider } from "antd";
 import {
   PlusOutlined,
   HolderOutlined,
@@ -12,6 +12,7 @@ import Select from "../Select";
 import Input from "../Input";
 import Button from "../Button";
 import usefetch from "../../hooks/Usefetch";
+import AddProductModal from "../Product/AddProductModal";
 
 const { Title, Text } = Typography;
 
@@ -22,9 +23,12 @@ export default function InvoiceItemsTable({
   onMoveItem,
   onAddItem,
 }) {
-  const { data: productsdata } = usefetch("/api/products");
+  const { data: productsdata, mutate } = usefetch("/api/products");
 
   const productList = productsdata?.data || [];
+
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [pendingRowId, setPendingRowId] = useState(null);
 
   const productOptions = useMemo(
     () =>
@@ -35,15 +39,41 @@ export default function InvoiceItemsTable({
     [productList],
   );
 
+  const applyProduct = (recordId, selectedProduct) => {
+    onFieldChange(recordId, "product", selectedProduct.id);
+    onFieldChange(recordId, "description", selectedProduct.description || "");
+    onFieldChange(recordId, "unitPrice", selectedProduct.price ?? "");
+  };
+
   const handleProductChange = (recordId, productId) => {
     const selectedProduct = productList.find((p) => p.id === productId);
-
     onFieldChange(recordId, "product", productId);
 
     if (selectedProduct) {
-      onFieldChange(recordId, "description", selectedProduct.description || "");
-      onFieldChange(recordId, "unitPrice", selectedProduct.price ?? "");
+      applyProduct(recordId, selectedProduct);
     }
+  };
+
+  const handleCreateNew = (recordId) => {
+    setPendingRowId(recordId);
+    setAddModalOpen(true);
+  };
+
+  const handleProductCreated = async (newProduct) => {
+    if (typeof mutate === "function") {
+      await mutate();
+    }
+
+    if (pendingRowId != null && newProduct) {
+      applyProduct(pendingRowId, newProduct);
+    }
+
+    setPendingRowId(null);
+  };
+
+  const handleModalClose = () => {
+    setAddModalOpen(false);
+    setPendingRowId(null);
   };
 
   useEffect(() => {
@@ -105,6 +135,26 @@ export default function InvoiceItemsTable({
           placeholder="Select product"
           options={productOptions}
           onChange={(val) => handleProductChange(record.id, val)}
+          popupRender={(menu) => (
+            <>
+              {menu}
+
+              <Divider style={{ margin: "8px" }} />
+
+              <Row justify="end" style={{ padding: "0 8px" }}>
+                <Col>
+                  <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleCreateNew(record.id)}
+                  >
+                    Create New
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
         />
       ),
     },
@@ -220,6 +270,12 @@ export default function InvoiceItemsTable({
           </Col>
         </Row>
       )}
+
+      <AddProductModal
+        open={addModalOpen}
+        onClose={handleModalClose}
+        onCreated={handleProductCreated}
+      />
     </>
   );
 }
