@@ -13,7 +13,7 @@ import Input from "../Input";
 import Button from "../Button";
 import usefetch from "../../hooks/Usefetch";
 import AddProductModal from "../Product/AddProductModal";
-
+import InvoiceSummary from "./InvoiceSummary";
 const { Title, Text } = Typography;
 
 export default function InvoiceItemsTable({
@@ -38,6 +38,14 @@ export default function InvoiceItemsTable({
       })),
     [productList],
   );
+  const totalExcludingVat = items.reduce(
+  (sum, item) => sum + Number(item.number || 1) * Number(item.unitPrice || 0),
+  0,
+);
+
+const vatRate = 0.25; // adjust to your actual VAT rate, or make it configurable
+const vat = totalExcludingVat * vatRate;
+const totalIncludingVat = totalExcludingVat + vat;
 
   const applyProduct = (recordId, selectedProduct) => {
     onFieldChange(recordId, "product", selectedProduct.id);
@@ -276,6 +284,22 @@ export default function InvoiceItemsTable({
         onClose={handleModalClose}
         onCreated={handleProductCreated}
       />
+      <InvoiceSummary
+        vatFreeAmount={0}
+        taxableAmount={0}
+        totalExcludingVat={totalExcludingVat}
+        vat={vat}
+        totalIncludingVat={totalIncludingVat}
+        // currency={currency}
+        // onCurrencyChange={setCurrency}
+        // priceMode={priceMode}
+        // onPriceModeChange={setPriceMode}
+        paymentMethods={["Bank"]}
+        // design={design}
+        // onDesignChange={setDesign}
+      />
+
+      <Divider/>
     </>
   );
 }
