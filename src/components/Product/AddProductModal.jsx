@@ -20,7 +20,7 @@ export default function AddProductModal({ open, onClose, onCreated }) {
       open={open}
       onCancel={() => confirmNavigation(handleClose)}
       footer={null}
-      destroyOnClose
+  destroyOnHidden
       width={760}
     >
       <MangeProductForm

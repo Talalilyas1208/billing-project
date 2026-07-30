@@ -22,7 +22,7 @@ export default function Products() {
     page,
     setPage,
     limit,
-  } = usefetch(`/api/Customer?search=${searchText}`);
+  } = usefetch(`/api/customer?search=${searchText}`);
   const handleopencreate = () => {
     setIsOpen(true);
   };

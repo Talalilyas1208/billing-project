@@ -39,7 +39,7 @@ export default function Newinvoice() {
     data: Customer,
     loading: CustomerLoading,
     refetch: refetchCustomers,
-  } = usefetch(`/api/Customer?search=${searchText}`);
+  } = usefetch(`/api/customer?search=${searchText}`);
 
   const confirmNavigation = useConfirmNavigation(statetouch);
 
