@@ -1,9 +1,7 @@
 import { Row, Col, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
 import Select from "../Select";
 import Button from "../Button";
-
 export default function CustomerSelect({
   open,
   onOpenChange,

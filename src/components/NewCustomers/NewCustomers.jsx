@@ -70,7 +70,7 @@ export default function NewCustomers({
 
   const handleCreate = async (values) => {
     try {
-      const response = await fetch("/api/Customer", {
+      const response = await fetch("/api/customer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

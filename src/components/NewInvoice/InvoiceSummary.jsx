@@ -1,20 +1,20 @@
 import { Row, Col, Space, Typography, Divider } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import Select from "../Select";
+import usefetch from "../../hooks/Usefetch";
+import { useEffect ,useState} from "react";
 
 const { Text } = Typography;
 
-const CURRENCY_OPTIONS = [
-  { label: "DKK", value: "DKK" },
-  { label: "EUR", value: "EUR" },
-  { label: "USD", value: "USD" },
-];
 
 const PRICE_MODE_OPTIONS = [
   { label: "Ekskl. moms", value: "excl" },
   { label: "Inkl. moms", value: "incl" },
 ];
-
+  // const currencies = currencies.map((item) => ({
+  //   value: item.id ?? item._id,
+  //   label: item. code,
+  // }));
 const DESIGN_OPTIONS = [
   { label: "Standardskabelon", value: "standard" },
   { label: "Moderne skabelon", value: "modern" },
@@ -27,15 +27,26 @@ export default function InvoiceSummary({
   totalExcludingVat = 0,
   vat = 0,
   totalIncludingVat = 0,
-  currency,
-  onCurrencyChange,
   priceMode,
-  onPriceModeChange,
+
   paymentMethods = [],
   design,
   onDesignChange,
 }) {
-  const formatAmount = (value) => `${Number(value || 0).toFixed(2)} ${currency || "DKK"}`;
+    const [currencyOptions, setCurrencyOptions] = useState([]);
+  const {data: currencies  , loading:currencyloading} = usefetch("/api/currency?limit=24")
+    useEffect(() => {
+       if (Array.isArray(currencies?.data)) {
+         setCurrencyOptions(
+           currencies.data.map((item) => ({
+             value: item.code,
+             label: item.code,
+           })),
+         );
+       }
+     }, [currencies]);
+
+  const formatAmount = (value) => `${Number(value || 0).toFixed(2)} ${currencies || "DKK"}`;
 
   return (
     <>
@@ -44,7 +55,7 @@ export default function InvoiceSummary({
       <Row justify="space-between" align="top">
         {/* Left column */}
         <Col span={12}>
-          <Space direction="vertical" size={4} style={{ marginBottom: 24 }}>
+          <Space orientation="vertical" size={4} style={{ marginBottom: 24 }}>
             <Space size={8}>
               <Text>VAT-free amount :</Text>
               <Text strong>{formatAmount(vatFreeAmount)}</Text>
@@ -124,9 +135,9 @@ export default function InvoiceSummary({
             <Col span={16}>
               <Select
                 style={{ width: "100%" }}
-                value={currency}
-                options={CURRENCY_OPTIONS}
-                onChange={onCurrencyChange}
+               
+                options={currencyOptions}
+
               />
             </Col>
           </Row>
@@ -140,7 +151,6 @@ export default function InvoiceSummary({
                 style={{ width: "100%" }}
                 value={priceMode}
                 options={PRICE_MODE_OPTIONS}
-                onChange={onPriceModeChange}
               />
             </Col>
           </Row>

@@ -43,7 +43,7 @@ export default function InvoiceItemsTable({
   0,
 );
 
-const vatRate = 0.25; // adjust to your actual VAT rate, or make it configurable
+const vatRate = 0.25; 
 const vat = totalExcludingVat * vatRate;
 const totalIncludingVat = totalExcludingVat + vat;
 
