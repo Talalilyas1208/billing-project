@@ -18,7 +18,7 @@ function Modals(props) {
     <Modal
       open={isOpen}
       title={title}
-       destroyOnHidden 
+      destroyOnHidden
       width={width}
       styles={mergedStyles}
       onCancel={onCancel}
