@@ -12,7 +12,7 @@ import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
 import CustomerSelect from "../components/NewCustomers/CustomerSelect";
 import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
 import usefetch from "../hooks/Usefetch";
-
+import Payementdeadline from "../components/NewInvoice/Paymentdeadline";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpen, setSelectOpen] = useState(false);
@@ -40,6 +40,11 @@ export default function Newinvoice() {
     loading: CustomerLoading,
     refetch: refetchCustomers,
   } = usefetch(`/api/customer?search=${searchText}`);
+  const {
+    data: payementdeadline,
+    loading: payementdeadlineLoading,
+    refetch: refetchpayementdeadline,
+  } = usefetch(`/api/payementdeadline`);
 
   const confirmNavigation = useConfirmNavigation(statetouch);
 
@@ -164,7 +169,24 @@ export default function Newinvoice() {
                     />
                   </Col>
                 </Row>
+              
+                <Row gutter={[0, 16]}>
+                 
+                   <Col span={20}>
+                    <Payementdeadline
+                      open={selectOpen}
+                      onOpenChange={setSelectOpen}
+                      onCreateNew={handleOpen}
+                      payementdeadline={Payementdeadline?.data || []}
+                      loading={CustomerLoading}
+                    />
+               
+
+                  </Col>
+                </Row>
+            
               </Col>
+              
             </Row>
 
             <InvoiceItemsTable
