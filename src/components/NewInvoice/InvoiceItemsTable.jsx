@@ -23,7 +23,7 @@ export default function InvoiceItemsTable({
   onMoveItem,
   onAddItem,
 }) {
-  const { data: productsdata, mutate } = usefetch("/api/products");
+  const { data: productsdata, mutate,refetch:refetchProducts } = usefetch("/api/products");
 
   const productList = productsdata?.data || [];
 
@@ -43,7 +43,7 @@ export default function InvoiceItemsTable({
   0,
 );
 
-const vatRate = 0.25; 
+const vatRate = 0.10; 
 const vat = totalExcludingVat * vatRate;
 const totalIncludingVat = totalExcludingVat + vat;
 
@@ -142,7 +142,9 @@ const totalIncludingVat = totalExcludingVat + vat;
           value={value || undefined}
           placeholder="Select product"
           options={productOptions}
+     
           onChange={(val) => handleProductChange(record.id, val)}
+             showSearch
           popupRender={(menu) => (
             <>
               {menu}
@@ -282,11 +284,13 @@ const totalIncludingVat = totalExcludingVat + vat;
       <AddProductModal
         open={addModalOpen}
         onClose={handleModalClose}
+refetchProducts={refetchProducts}
         onCreated={handleProductCreated}
       />
       <InvoiceSummary
         vatFreeAmount={0}
         taxableAmount={0}
+        
         totalExcludingVat={totalExcludingVat}
         vat={vat}
         totalIncludingVat={totalIncludingVat}

@@ -1,8 +1,8 @@
 import { Row, Col, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-import Select from "./Select";
-import Button from "./Button";
+import Select from "../Select"; 
+import Button from "../Button";
 
 export default function Invoiceselect({
   open,
@@ -23,6 +23,7 @@ export default function Invoiceselect({
       placeholder="Select customer"
       open={open}
       loading={loading}
+      showSearch
       options={customerOptions}
       onOpenChange={onOpenChange}
       popupRender={(menu) => (
