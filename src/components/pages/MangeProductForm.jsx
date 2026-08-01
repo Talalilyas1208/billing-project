@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Space, Form } from "antd";
+import { Row, Col, Space, Form,App } from "antd";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import Input from "../Input";
@@ -11,6 +11,7 @@ import InputTextAreas from "../InputTextAreas";
 export default function MangeProductForm(props) {
   const { form, onClose, editingProduct, refetchProducts, onTouch } = props;
   const navigate = useNavigate();
+    const { message } = App.useApp();
 
   const { data: revenueCategory } = useFetch("/api/revnue");
   const { data: currencies } = useFetch("/api/currency");
@@ -67,6 +68,8 @@ export default function MangeProductForm(props) {
         ? `/api/products/${editingProduct.id}`
         : "/api/products";
       const method = isediting ? "PUT" : "POST";
+
+      message.success("Product created successfully");
       await request(url, method, values);
       form.resetFields();
       if (refetchProducts) {
