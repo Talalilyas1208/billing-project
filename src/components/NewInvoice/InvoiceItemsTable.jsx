@@ -23,7 +23,7 @@ export default function InvoiceItemsTable({
   onMoveItem,
   onAddItem,
 }) {
-  const { data: productsdata, mutate,refetch:refetchProducts } = usefetch("/api/products");
+  const { data: productsdata, mutate,refetch:refetchProducts } = usefetch("/api/products?limit=10");
 
   const productList = productsdata?.data || [];
 
