@@ -1,76 +1,74 @@
 ## What this is
-A React + Vite single‑page billing/invoicing frontend that provides product, invoice, offers and customer screens and uses Firebase for authentication and Firestore as its data store. It’s built as a client app (SPA) intended to run locally during development behind a proxied backend API (the code talks to /api).
+A small React + Vite single-page application for managing billing/invoicing (customers, products, invoices) with Firebase used for authentication/storage; it provides UI pages and components to create and view invoices, products, and customers and is intended for developers or small teams who want a client-side billing/admin front end.
 
 ### Stack
-- **Language(s):** JavaScript (primarily)
-- **Framework / runtime:** React 19 + Vite (Vite 7.x)
-- **Notable libraries:** Firebase (auth + Firestore), Ant Design (UI), react-router-dom (routing), Tailwind (via @tailwindcss/vite), @dnd-kit (drag/drop utilities)
+- **Language(s):** JavaScript (JSX)
+- **Framework / runtime:** React (Vite-powered app)
+- **Notable libraries / tools:** Firebase (client SDK) for auth/data, React Router (route files present), Vite (dev/build), CSS Modules / plain CSS for styling, pnpm as the package manager (pnpm-workspace.yaml / pnpm-lock.yaml present)
 
 ## How it's organized
-Top-level (annotated):
 ```
-.gitattributes
-.gitignore
-README.md                 # template README for React + Vite
-eslint.config.js
-index.html                # Vite entry HTML
-package.json              # scripts & dependencies
-pnpm-lock.yaml
+README.md                 project overview, how-to, and notes
+index.html                Vite HTML entry
+vite.config.js            Vite configuration
+package.json              npm scripts & deps
 pnpm-workspace.yaml
-vite.config.js            # dev server + /api proxy to http://localhost:8080
-public/                   # static assets (vite.svg, etc.)
-src/                      # main application code (see below)
-```
-
-src/ (important entries)
-```
+pnpm-lock.yaml
+public/                   static assets (served by Vite)
 src/
-  main.jsx                 # app bootstrap, mounts <App />
-  App.jsx                  # root router + route layout (Public / Private)
-  index.css, App.css       # small global styles
-  firebase/firebase.jsx    # Firebase initialize + exported auth, db (config is in this file)
-  pages/                   # page views (Dashboard, Products, Invoice, Newinvoice, Offer, Contact, Customer, Emptyinvoicepage)
-    Dashborad.jsx
-    Products.jsx
-    Invoice.jsx
-    Newinvoice.jsx
-    ... 
-  components/              # reusable UI components (Sidebar, Table, Modal, Button, Config wrapper, etc.)
-  hooks/                   # custom hooks (usefetch, useConfirmNavigation, etc.)
-  routes/ or Routes/       # Public/Private route wrappers used by App.jsx
-  Services/                # service layer (API wrappers, likely)
-  utils/                   # utility helpers
-  assets/                  # images/static assets
+  main.jsx                React entry → mounts <App />
+  App.jsx                 top-level app + routing/layout
+  App.css, index.css      global styles
+  firebase/
+    firebase.jsx          Firebase initialization and config
+  Routes/
+    Publicroutes.jsx      public route definitions
+    Privateroutes.jsx     routes protected by auth
+  Login/
+    login.jsx             login UI & auth flows
+  Register/
+    Register.jsx          registration UI
+  pages/
+    Dashborad.jsx         dashboard page
+    Customer.jsx          customer list / management
+    Newinvoice.jsx        invoice creation flow
+    Invoice.jsx           invoice detail page
+    Products.jsx          product list / management
+    EmptyInvoicePage.jsx
+    Contact.jsx, Offer.jsx
+  components/
+    Sidebar.jsx           app navigation / layout
+    Table.jsx             reusable table component
+    Modal.jsx             modal dialogs
+    Button.jsx, Input.jsx, Select.jsx, FormField.jsx, etc.
+    (subfolders: NewCustomers, NewInvoice, Product, ui)
+  Services/               API / business-logic helpers (service wrappers)
+  utils/                  utility helpers
+  hooks/                  custom React hooks
+  assets/                 images/fonts/static files
+.eslint.config.js         linting rules
+.gitattributes/.gitignore
 ```
 
 How it fits together:
-- main.jsx mounts App, which wraps the app in a Config component and sets up react-router routes. PublicRoute and PrivateRoute control access to login/register vs dashboard pages.
-- The app uses a custom usefetch hook to call REST endpoints under /api (Products.jsx shows calls to /api/products). Vite's dev server proxies /api to http://localhost:8080 (see vite.config.js).
-- Firebase (src/firebase/firebase.jsx) provides client auth and Firestore access; many pages rely on an “activeUser” stored locally (use-local-storage) and on Firebase auth for sign-in/sign-out.
-- UI is largely Ant Design components with some Tailwind integration and custom components for tables, modals and forms.
+- Vite starts the dev server and serves index.html → main.jsx mounts the React tree. App.jsx composes layout and loads route configuration from src/Routes (Publicroutes / Privateroutes). Pages under src/pages implement the major screens (Products, Customers, Invoices, Dashboard). UI is built from reusable components in src/components (Sidebar, Table, Modal, inputs). Firebase is initialized in src/firebase/firebase.jsx and used by the login/register pages and likely by Services for reads/writes. Services and utils encapsulate data access and helpers so components remain presentational.
 
 ## How to run it
-Shortest path from a fresh clone to a running dev server:
-- This repo includes pnpm workspace files; use pnpm if available.
+Likely uses pnpm + Vite. From a fresh clone:
+1. Install dependencies:
+   ```
+   pnpm install
+   ```
+2. Add Firebase credentials (the app initializes Firebase in src/firebase/firebase.jsx). Prefer adding Vite env vars in a `.env` file (Vite uses VITE_ prefixed vars), or supply the same config the code expects:
+   - Example expected values: VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, etc. (check src/firebase/firebase.jsx for exact names).
+3. Start dev server:
+   ```
+   pnpm dev
+   ```
+4. Build for production:
+   ```
+   pnpm build
+   pnpm preview
+   ```
 
-Commands:
-```bash
-git clone https://github.com/Talalilyas1208/billing-project.git
-cd billing-project
-# using pnpm (recommended because repo includes pnpm-workspace + pnpm-lock)
-pnpm install
-pnpm dev
-
-# or with npm (works but respects package.json scripts)
-npm install
-npm run dev
-```
-
-Notes:
-- Vite dev server proxies /api to http://localhost:8080 (vite.config.js). Start the backend API at that address (or change the proxy) to make endpoints such as /api/products work.
-- Firebase config is currently initialized in src/firebase/firebase.jsx (keys are present in the file). No extra env vars are required by the code as-is, but you may want to move keys to environment variables for production.
-- Build / preview:
-```bash
-pnpm build
-pnpm preview
-```
+Notes: The repo uses Vite dev server (default port 5173). There are no visible test scripts in top-level files fetched; if tests exist, run via the script name in package.json (e.g., `pnpm test`).
