@@ -3,7 +3,12 @@ import { useState } from "react";
 import MangeProductForm from "../pages/MangeProductForm";
 import useConfirmNavigation from "../../hooks/useConfirmNavigation";
 
-export default function AddProductModal({ open, onClose, onCreated }) {
+export default function AddProductModal({
+  open,
+  onClose,
+  onCreated,
+  refetchProducts,
+}) {
   const [form] = Form.useForm();
   const [statetouch, settouch] = useState(false);
   const confirmNavigation = useConfirmNavigation(statetouch);
@@ -20,13 +25,14 @@ export default function AddProductModal({ open, onClose, onCreated }) {
       open={open}
       onCancel={() => confirmNavigation(handleClose)}
       footer={null}
-  destroyOnHidden
-      width={760}
+      destroyOnHidden
+      width={860}
     >
       <MangeProductForm
         form={form}
         onClose={handleClose}
         onSuccess={onCreated}
+        refetchProducts={refetchProducts}
         onTouch={() => settouch(true)}
       />
     </Modal>
