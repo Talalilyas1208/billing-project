@@ -1,20 +1,13 @@
 import { useMemo, useEffect, useState } from "react";
-import { Row, Col, Space, Typography, InputNumber, Divider } from "antd";
-import {
-  PlusOutlined,
-  HolderOutlined,
-  DeleteOutlined,
-  UpOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { Row, Col, Space, Typography, Divider } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import Table from "../Table";
-import Select from "../Select";
-import Input from "../Input";
 import Button from "../Button";
 import { useGetProductsQuery } from "../../store/apiSlice";
 import AddProductModal from "../Product/AddProductModal";
 import InvoiceSummary from "./InvoiceSummary";
-const { Title, Text } = Typography;
+import { getInvoiceItemsColumns } from "./InvoiceItemsTableColumns";
+const { Text } = Typography;
 
 export default function InvoiceItemsTable({
   items,
@@ -38,6 +31,7 @@ export default function InvoiceItemsTable({
       })),
     [productList],
   );
+
   const totalExcludingVat = items.reduce(
   (sum, item) => sum + Number(item.number || 1) * Number(item.unitPrice || 0),
   0,
@@ -101,151 +95,17 @@ const totalIncludingVat = totalExcludingVat + vat;
 
   const hasProduct = items.some((item) => item.product);
 
-  const columns = [
-    {
-      title: "",
-      dataIndex: "drag",
-      width: 70,
-      render: (_, __, index) => (
-        <Space size={2}>
-          <HolderOutlined style={{ color: "#8c8c8c" }} />
-          <Space orientation="vertical" size={0}>
-            <Button
-              type="text"
-              size="small"
-              icon={<UpOutlined />}
-              disabled={index === 0}
-              onClick={() => onMoveItem(index, -1)}
-            />
-            <Button
-              type="text"
-              size="small"
-              icon={<DownOutlined />}
-              disabled={index === items.length - 1}
-              onClick={() => onMoveItem(index, 1)}
-            />
-          </Space>
-        </Space>
-      ),
-    },
-    {
-      title: (
-        <Title level={5} type="secondary" style={{ margin: 0 }}>
-          Products
-        </Title>
-      ),
-      dataIndex: "product",
-      width: 200,
-      render: (value, record) => (
-        <Select
-          style={{ width: "100%" }}
-          value={value || undefined}
-          placeholder="Select product"
-          options={productOptions}
-     
-          onChange={(val) => handleProductChange(record.id, val)}
-             showSearch
-          popupRender={(menu) => (
-            <>
-              {menu}
-
-              <Divider style={{ margin: "8px" }} />
-
-              <Row justify="end" style={{ padding: "0 8px" }}>
-                <Col>
-                  <Button
-                    type="text"
-                    icon={<PlusOutlined />}
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => handleCreateNew(record.id)}
-                  >
-                    Create New
-                  </Button>
-                </Col>
-              </Row>
-            </>
-          )}
-        />
-      ),
-    },
-    {
-      title: (
-        <Title level={5} type="secondary" style={{ margin: 0 }}>
-          Description
-        </Title>
-      ),
-      dataIndex: "description",
-      render: (value, record) => (
-        <Input
-          style={{ width: "100%" }}
-          value={value}
-          onChange={(e) =>
-            onFieldChange(record.id, "description", e.target.value)
-          }
-        />
-      ),
-    },
-    {
-      title: (
-        <Title level={5} type="secondary" style={{ margin: 0 }}>
-          Number
-        </Title>
-      ),
-      dataIndex: "number",
-      width: 110,
-      render: (value, record) => (
-        <InputNumber
-          style={{ width: "100%", height: 42 }}
-          min={1}
-          value={value || 1}
-          onChange={(val) => onFieldChange(record.id, "number", val)}
-        />
-      ),
-    },
-    {
-      title: (
-        <Title level={5} type="secondary" style={{ margin: 0 }}>
-          Unit price
-        </Title>
-      ),
-      dataIndex: "unitPrice",
-      width: 130,
-      render: (value, record) => (
-        <Input
-          style={{ width: "100%" }}
-          value={value}
-          onChange={(e) =>
-            onFieldChange(record.id, "unitPrice", e.target.value)
-          }
-        />
-      ),
-    },
-    {
-      title: (
-        <Title level={5} type="secondary" style={{ margin: 0 }}>
-          Total
-        </Title>
-      ),
-      dataIndex: "total",
-      width: 110,
-      render: (_, record) => {
-        const total = Number(record.number || 1) * Number(record.unitPrice || 1);
-        return <Text>{total ? total.toFixed(2) : "0.00"}</Text>;
-      },
-    },
-    {
-      title: "",
-      dataIndex: "action",
-      width: 60,
-      render: (_, record) => (
-        <Button
-          type="text"
-          icon={<DeleteOutlined />}
-          onClick={() => onDeleteItem(record.id)}
-        />
-      ),
-    },
-  ];
+  const columns = getInvoiceItemsColumns({
+    items,
+    productOptions,
+    onMoveItem,
+    onProductChange: handleProductChange,
+    onCreateNew: handleCreateNew,
+    onDescriptionChange: (recordId, value) => onFieldChange(recordId, "description", value),
+    onNumberChange: (recordId, value) => onFieldChange(recordId, "number", value),
+    onUnitPriceChange: (recordId, value) => onFieldChange(recordId, "unitPrice", value),
+    onDeleteItem,
+  });
 
   return (
     <>
@@ -290,17 +150,13 @@ refetchProducts={refetchProducts}
       <InvoiceSummary
         vatFreeAmount={0}
         taxableAmount={0}
-        
         totalExcludingVat={totalExcludingVat}
         vat={vat}
         totalIncludingVat={totalIncludingVat}
-        // currency={currency}
-        // onCurrencyChange={setCurrency}
-        // priceMode={priceMode}
-        // onPriceModeChange={setPriceMode}
+        priceMode={"excl"}
         paymentMethods={["Bank"]}
-        // design={design}
-        // onDesignChange={setDesign}
+        design={"standard"}
+        onDesignChange={() => {}}
       />
 
       <Divider/>
