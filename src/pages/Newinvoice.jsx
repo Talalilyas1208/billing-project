@@ -11,7 +11,7 @@ import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
 import CustomerSelect from "../components/NewCustomers/CustomerSelect";
 import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
-import usefetch from "../hooks/Usefetch";
+import { useGetCustomersQuery, useGetPaymentDeadlinesQuery } from "../store/apiSlice";
 import Payementdeadline from "../components/NewInvoice/Paymentdeadline";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,14 +37,14 @@ export default function Newinvoice() {
 
   const {
     data: Customer,
-    loading: CustomerLoading,
+    isLoading: CustomerLoading,
     refetch: refetchCustomers,
-  } = usefetch(`/api/customer?search=${searchText}`);
+  } = useGetCustomersQuery({ search: searchText });
   const {
     data: payementdeadline,
-    loading: payementdeadlineLoading,
+    isLoading: payementdeadlineLoading,
     refetch: refetchpayementdeadline,
-  } = usefetch(`/api/payementdeadline`);
+  } = useGetPaymentDeadlinesQuery();
 
   const confirmNavigation = useConfirmNavigation(statetouch);
 
@@ -177,8 +177,8 @@ export default function Newinvoice() {
                       open={selectOpen}
                       onOpenChange={setSelectOpen}
                       onCreateNew={handleOpen}
-                      payementdeadline={Payementdeadline?.data || []}
-                      loading={CustomerLoading}
+                      payementdeadline={payementdeadline?.data || []}
+                      loading={payementdeadlineLoading}
                     />
                
 
