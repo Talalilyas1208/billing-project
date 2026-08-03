@@ -1,8 +1,8 @@
 import { Row, Col, Space, Typography, Divider } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import Select from "../Select";
-import usefetch from "../../hooks/Usefetch";
 import { useEffect, useState } from "react";
+import { useGetCurrenciesQuery } from "../../store/apiSlice";
 
 const { Text } = Typography;
 
@@ -33,9 +33,7 @@ export default function InvoiceSummary({
   onDesignChange,
 }) {
   const [currencyOptions, setCurrencyOptions] = useState([]);
-  const { data: currencies, loading: currencyloading } = usefetch(
-    "/api/currency?limit=24",
-  );
+  const { data: currencies, isLoading: currencyloading } = useGetCurrenciesQuery({ limit: 24 });
   useEffect(() => {
     if (Array.isArray(currencies?.data)) {
       setCurrencyOptions(

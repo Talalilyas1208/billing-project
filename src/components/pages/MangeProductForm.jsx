@@ -5,18 +5,25 @@ import Button from "../Button";
 import Input from "../Input";
 import Select from "../Select";
 import NumbersInput from "../Numbersinput";
-import useFetch from "../../hooks/Usefetch";
 import InputTextAreas from "../InputTextAreas";
+import {
+  useGetRevenueCategoriesQuery,
+  useGetCurrenciesQuery,
+  useGetVatQuery,
+  useAddProductMutation,
+  useUpdateProductMutation,
+} from "../../store/apiSlice";
 
 export default function MangeProductForm(props) {
   const { form, onClose, editingProduct, refetchProducts, onTouch } = props;
   const navigate = useNavigate();
     const { message } = App.useApp();
 
-  const { data: revenueCategory } = useFetch("/api/revnue");
-  const { data: currencies } = useFetch("/api/currency");
-  const { data: vat } = useFetch("/api/vat");
-  const { request, loading: loadingSubmit } = useFetch();
+  const { data: revenueCategory } = useGetRevenueCategoriesQuery();
+  const { data: currencies } = useGetCurrenciesQuery();
+  const { data: vat } = useGetVatQuery();
+  const [addProduct, { isLoading: addingProduct }] = useAddProductMutation();
+  const [updateProduct, { isLoading: updatingProduct }] = useUpdateProductMutation();
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [revenueOptions, setRevenueOptions] = useState([]);
   const [vatoptions, setVatoptions] = useState([]);
@@ -64,13 +71,12 @@ export default function MangeProductForm(props) {
   }, [vat]);
   const onFinish = async (values) => {
     try {
-      const url = isediting
-        ? `/api/products/${editingProduct.id}`
-        : "/api/products";
-      const method = isediting ? "PUT" : "POST";
-
-      message.success("Product created successfully");
-      await request(url, method, values);
+      if (isediting) {
+        await updateProduct({ id: editingProduct.id, ...values }).unwrap();
+      } else {
+        await addProduct(values).unwrap();
+      }
+      message.success("Product saved successfully");
       form.resetFields();
       if (refetchProducts) {
         refetchProducts();
@@ -82,6 +88,7 @@ export default function MangeProductForm(props) {
       }
     } catch (err) {
       console.error("Save failed:", err);
+      message.error("Failed to save product");
     }
   };
   return (
@@ -199,8 +206,8 @@ export default function MangeProductForm(props) {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={loadingSubmit}
-            loading={loadingSubmit}
+            disabled={addingProduct || updatingProduct}
+            loading={addingProduct || updatingProduct}
             style={{
               backgroundColor: "#000",
               color: "#fff",

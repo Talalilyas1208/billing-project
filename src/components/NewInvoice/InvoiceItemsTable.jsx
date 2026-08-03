@@ -11,7 +11,7 @@ import Table from "../Table";
 import Select from "../Select";
 import Input from "../Input";
 import Button from "../Button";
-import usefetch from "../../hooks/Usefetch";
+import { useGetProductsQuery } from "../../store/apiSlice";
 import AddProductModal from "../Product/AddProductModal";
 import InvoiceSummary from "./InvoiceSummary";
 const { Title, Text } = Typography;
@@ -23,7 +23,7 @@ export default function InvoiceItemsTable({
   onMoveItem,
   onAddItem,
 }) {
-  const { data: productsdata, mutate,refetch:refetchProducts } = usefetch("/api/products?limit=10");
+  const { data: productsdata, refetch: refetchProducts } = useGetProductsQuery({ limit: 10 });
 
   const productList = productsdata?.data || [];
 

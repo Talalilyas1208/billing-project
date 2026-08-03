@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout, Menu, Dropdown, Avatar,Spin } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import usefetch from "../hooks/Usefetch";
+import { useGetSidebarQuery } from "../store/apiSlice";
 import DropDowns from "./DrropDowns";
 import Config from "./Config";
 
@@ -13,7 +13,7 @@ export default function Sidebar({ activeUser, onLogout }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  const { loading, error, data } = usefetch("/api/sidebar");
+  const { isLoading: loading, error, data } = useGetSidebarQuery();
 
   const menuItems = Array.isArray(data?.data)
     ? data.data.map((section) => {

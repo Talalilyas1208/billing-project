@@ -1,7 +1,13 @@
 import { App, Form, Row, Col } from "antd"
 import { useMemo } from "react";
 
-import useFetch from "../../hooks/Usefetch";
+import {
+  useGetCurrenciesQuery,
+  useGetRevenueCategoriesQuery,
+  useGetFieldTypeOptionsQuery,
+  useGetLanguagesQuery,
+  useAddCustomerMutation,
+} from "../../store/apiSlice";
 import Config from "../Config";
 import Button from "../Button";
 import CustomerBasicInfo from "./CustomerBasicInfo";
@@ -39,10 +45,11 @@ export default function NewCustomers({
 }) {
   const customFields = Form.useWatch("users", form) || [];
   const { message } = App.useApp();
-  const { data: currencies } = useFetch("/api/currency");
-  const { data: revenueCategory } = useFetch("/api/revnue");
-  const { data: fieldTypeOptions } = useFetch("/api/labelforfield");
-  const { data: language } = useFetch("/api/Language");
+  const { data: currencies } = useGetCurrenciesQuery();
+  const { data: revenueCategory } = useGetRevenueCategoriesQuery();
+  const { data: fieldTypeOptions } = useGetFieldTypeOptionsQuery();
+  const { data: language } = useGetLanguagesQuery();
+  const [addCustomer, { isLoading: creatingCustomer }] = useAddCustomerMutation();
 
   const currencyOptions = useMemo(
     () => mapCurrencyOptions(currencies?.data),
@@ -70,27 +77,14 @@ export default function NewCustomers({
 
   const handleCreate = async (values) => {
     try {
-      const response = await fetch("/api/customer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create customer");
-      }
-
+      await addCustomer(values).unwrap();
       message.success("Customer created successfully");
- if (refetchCustomers) {
+      if (refetchCustomers) {
         refetchCustomers();
-        onClose();
-        form.resetFields();
       }
-    } 
-     
-    catch (error) {
+      onClose();
+      form.resetFields();
+    } catch (error) {
       console.error("Create customer failed:", error);
       message.error("Failed to create customer");
     }
