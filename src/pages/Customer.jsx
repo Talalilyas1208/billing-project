@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
-import usefetch from "../hooks/Usefetch";
+import { useGetCustomersQuery } from "../store/apiSlice";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import NewCustomers from "../components/NewCustomers/NewCustomers";
 import styles from "../components/App.module.css";
@@ -15,14 +15,13 @@ export default function Products() {
   const [statetouch, settouch] = useState(false);
 
   const confirmNavigation = useConfirmNavigation(statetouch);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
   const {
     data: Customer,
-    loading: CustomerLoading,
+    isLoading: CustomerLoading,
     refetch: refetchCustomers,
-    page,
-    setPage,
-    limit,
-  } = usefetch(`/api/customer?search=${searchText}`);
+  } = useGetCustomersQuery({ search: searchText, page, limit });
   const handleopencreate = () => {
     setIsOpen(true);
   };

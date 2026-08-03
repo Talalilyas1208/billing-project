@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
-import usefetch from "../hooks/Usefetch";
+import { useGetProductsQuery, useDeleteProductMutation } from "../store/apiSlice";
 import MangeProductForm from "../components/pages/MangeProductForm";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import styles from "../components/App.module.css";
@@ -18,15 +18,14 @@ export default function Products() {
   const [form] = Form.useForm();
   const [statetouch, settouch] = useState(false);
   const { modal } = App.useApp();
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
   const {
     data: products,
-    loading: productsLoading,
+    isLoading: productsLoading,
     refetch: refetchProducts,
-    request,
-    page,
-    setPage,
-    limit,
-  } = usefetch(`/api/products?search=${searchText}`);
+  } = useGetProductsQuery({ search: searchText, page, limit });
+  const [deleteProduct] = useDeleteProductMutation();
   const handleopencreate = () => {
     seteditingproduct(null);
     // form.resetFields();
