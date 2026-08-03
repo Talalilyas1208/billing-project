@@ -1,74 +1,61 @@
 ## What this is
-A small React + Vite single-page application for managing billing/invoicing (customers, products, invoices) with Firebase used for authentication/storage; it provides UI pages and components to create and view invoices, products, and customers and is intended for developers or small teams who want a client-side billing/admin front end.
+A React + Vite single-page app for managing billing/invoicing (customers, products, invoices) with Firebase used for authentication and Firestore storage — intended as a small billing dashboard UI.
 
 ### Stack
 - **Language(s):** JavaScript (JSX)
 - **Framework / runtime:** React (Vite-powered app)
-- **Notable libraries / tools:** Firebase (client SDK) for auth/data, React Router (route files present), Vite (dev/build), CSS Modules / plain CSS for styling, pnpm as the package manager (pnpm-workspace.yaml / pnpm-lock.yaml present)
+- **Notable libraries:** Firebase (client SDK), react-router-dom (routing), Redux Toolkit / react-redux (state), Ant Design (UI), Vite (build/dev)
 
 ## How it's organized
 ```
-README.md                 project overview, how-to, and notes
+README.md                 project overview and run instructions
 index.html                Vite HTML entry
 vite.config.js            Vite configuration
-package.json              npm scripts & deps
+package.json              scripts & dependencies
 pnpm-workspace.yaml
 pnpm-lock.yaml
-public/                   static assets (served by Vite)
+public/                   static assets (vite-served)
 src/
-  main.jsx                React entry → mounts <App />
-  App.jsx                 top-level app + routing/layout
+  main.jsx                app entry → mounts <App /> and Provider(store)
+  App.jsx                 top-level app, routing and layout (uses Config)
   App.css, index.css      global styles
   firebase/
-    firebase.jsx          Firebase initialization and config
-  Routes/
-    Publicroutes.jsx      public route definitions
-    Privateroutes.jsx     routes protected by auth
-  Login/
-    login.jsx             login UI & auth flows
-  Register/
-    Register.jsx          registration UI
-  pages/
-    Dashborad.jsx         dashboard page
-    Customer.jsx          customer list / management
-    Newinvoice.jsx        invoice creation flow
-    Invoice.jsx           invoice detail page
-    Products.jsx          product list / management
-    EmptyInvoicePage.jsx
-    Contact.jsx, Offer.jsx
-  components/
-    Sidebar.jsx           app navigation / layout
-    Table.jsx             reusable table component
-    Modal.jsx             modal dialogs
-    Button.jsx, Input.jsx, Select.jsx, FormField.jsx, etc.
-    (subfolders: NewCustomers, NewInvoice, Product, ui)
+    firebase.jsx          Firebase initialization (auth + Firestore)
+  routes/ or Routes/      public / private route definitions (Publicroutes, Privateroutes)
+  login/                  login UI & flows
+  register/               registration UI
+  pages/                  Dashboard, Customer, Products, Invoice, Newinvoice, Offer, Contact, EmptyInvoicePage, etc.
+  components/             Sidebar, Table, Modal, Button, Input, Select, FormField, subfolders (NewCustomers, NewInvoice, Product, ui)
+  store/                  Redux store (store/store.js referenced by main.jsx)
   Services/               API / business-logic helpers (service wrappers)
-  utils/                  utility helpers
   hooks/                  custom React hooks
+  utils/                  utility helpers
   assets/                 images/fonts/static files
-.eslint.config.js         linting rules
-.gitattributes/.gitignore
 ```
 
-How it fits together:
-- Vite starts the dev server and serves index.html → main.jsx mounts the React tree. App.jsx composes layout and loads route configuration from src/Routes (Publicroutes / Privateroutes). Pages under src/pages implement the major screens (Products, Customers, Invoices, Dashboard). UI is built from reusable components in src/components (Sidebar, Table, Modal, inputs). Firebase is initialized in src/firebase/firebase.jsx and used by the login/register pages and likely by Services for reads/writes. Services and utils encapsulate data access and helpers so components remain presentational.
+How it fits together: Vite serves index.html; src/main.jsx mounts the React tree and provides the Redux store. App.jsx (wrapped by Config) composes routing using the project's Public/Private route components and maps nested pages (products, invoices, offers, customers). Firebase is initialized in src/firebase/firebase.jsx and is used for auth and Firestore reads/writes; Services/ contains wrappers/business logic that talk to Firebase. UI components (components/) are reused across pages.
 
 ## How to run it
-Likely uses pnpm + Vite. From a fresh clone:
+Short path from a fresh clone:
 1. Install dependencies:
    ```
    pnpm install
    ```
-2. Add Firebase credentials (the app initializes Firebase in src/firebase/firebase.jsx). Prefer adding Vite env vars in a `.env` file (Vite uses VITE_ prefixed vars), or supply the same config the code expects:
-   - Example expected values: VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, etc. (check src/firebase/firebase.jsx for exact names).
+2. Provide Firebase configuration (the app initializes Firebase in src/firebase/firebase.jsx). Prefer using Vite env vars (VITE_ prefixed) or replace the config in that file. Expected variables (used conventionally):
+   - VITE_FIREBASE_API_KEY
+   - VITE_FIREBASE_AUTH_DOMAIN
+   - VITE_FIREBASE_PROJECT_ID
+   - VITE_FIREBASE_STORAGE_BUCKET
+   - VITE_FIREBASE_MESSAGING_SENDER_ID
+   - VITE_FIREBASE_APP_ID
 3. Start dev server:
    ```
    pnpm dev
    ```
-4. Build for production:
+4. Build / preview:
    ```
    pnpm build
    pnpm preview
    ```
 
-Notes: The repo uses Vite dev server (default port 5173). There are no visible test scripts in top-level files fetched; if tests exist, run via the script name in package.json (e.g., `pnpm test`).
+Note: package.json provides scripts (dev/build/preview) and the repo currently contains a firebase config object inside src/firebase/firebase.jsx.
