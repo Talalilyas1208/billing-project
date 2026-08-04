@@ -28,10 +28,8 @@ export default function Products() {
   const [deleteProduct] = useDeleteProductMutation();
   const handleopencreate = () => {
     seteditingproduct(null);
-    // form.resetFields();
     setIsOpen(true);
   };
-
   const handleOpenEdit = (record) => {
     seteditingproduct(record);
     form.setFieldsValue({
@@ -73,7 +71,6 @@ export default function Products() {
       },
     });
   };
-
   const productColumns = useMemo(
     () => [
       {
@@ -105,8 +102,7 @@ export default function Products() {
               onClick={(e) => {
                 e.stopPropagation();
                 handleOpenEdit(record);
-              }}
-            >
+              }}>
               Edit
             </Button>
             <Button
@@ -117,8 +113,7 @@ export default function Products() {
               onClick={(e) => {
                 e.stopPropagation();
                 handledelete(record);
-              }}
-            >
+              }}>
               Delete
             </Button>
           </span>
@@ -152,7 +147,6 @@ export default function Products() {
           </Button>
         </Col>
       </Row>
-
       <Modals
         isOpen={isOpen}
         onCancel={() => confirmNavigation(handleclose)}
@@ -166,8 +160,7 @@ export default function Products() {
               title: "Create New Product ",
             },
           },
-        }}
-      >
+        }}>
         <MangeProductForm
           refetchProducts={refetchProducts}
           onClose={handleclose}
@@ -176,7 +169,6 @@ export default function Products() {
           editingProduct={editingproduct}
         />
       </Modals>
-
       <Row justify="end">
         <Col span={4}>
           <Input.Search
@@ -188,7 +180,6 @@ export default function Products() {
           />
         </Col>
       </Row>
-
       <Table
         data={data}
         columns={productColumns}

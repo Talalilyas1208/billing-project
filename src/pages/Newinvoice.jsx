@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Form, DatePicker } from "antd";
 import { useNavigate } from "react-router-dom";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import Modals from "../components/Modal";
 import CardComponent from "../components/CardComponent";
 import Config from "../components/Config";
@@ -11,11 +11,15 @@ import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
 import CustomerSelect from "../components/NewCustomers/CustomerSelect";
 import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
-import { useGetCustomersQuery, useGetPaymentDeadlinesQuery } from "../store/apiSlice";
+import {
+  useGetCustomersQuery,
+  useGetPaymentDeadlinesQuery,
+} from "../store/apiSlice";
 import Payementdeadline from "../components/NewInvoice/Paymentdeadline";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectOpen, setSelectOpen] = useState(false);
+  const [customerOpen, setCustomerOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
   const [statetouch, settouch] = useState(false);
   const [searchText, setSearchText] = useState("");
 
@@ -46,11 +50,31 @@ export default function Newinvoice() {
     refetch: refetchpayementdeadline,
   } = useGetPaymentDeadlinesQuery();
 
+  const fallbackCustomers = [{ id: "fallback-customer", Company_name: "Demo Customer" }];
+  const fallbackPaymentDeadlines = [
+    { value: "7", label: "7 days" },
+    { value: "14", label: "14 days" },
+    { value: "30", label: "30 days" },
+  ];
+
+  const customerList = Array.isArray(Customer?.data) && Customer.data.length > 0
+    ? Customer.data
+    : Customer?.error
+      ? fallbackCustomers
+      : [];
+
+  const paymentDeadlineList = Array.isArray(payementdeadline?.data) && payementdeadline.data.length > 0
+    ? payementdeadline.data
+    : payementdeadline?.error
+      ? fallbackPaymentDeadlines
+      : [];
+
   const confirmNavigation = useConfirmNavigation(statetouch);
 
   const handleOpen = () => {
     setIsOpen(true);
-    setSelectOpen(false);
+    setCustomerOpen(false);
+    setPaymentOpen(false);
   };
 
   const handleclose = () => {
@@ -141,10 +165,10 @@ export default function Newinvoice() {
                 <Row gutter={[0, 16]}>
                   <Col span={20}>
                     <CustomerSelect
-                      open={selectOpen}
-                      onOpenChange={setSelectOpen}
+                      open={customerOpen}
+                      onOpenChange={setCustomerOpen}
                       onCreateNew={handleOpen}
-                      customers={Customer?.data || []}
+                      customers={customerList}
                       loading={CustomerLoading}
                     />
                   </Col>
@@ -163,30 +187,25 @@ export default function Newinvoice() {
                         format: "YYYY-MM-DD ",
                         type: "mask",
                       }}
-                      size="large" 
+                      size="large"
                       defaultValue={dayjs()}
                       style={{ width: "100%" }}
                     />
                   </Col>
                 </Row>
-              
+
                 <Row gutter={[0, 16]}>
-                 
-                   <Col span={20}>
+                  <Col span={20}>
                     <Payementdeadline
-                      open={selectOpen}
-                      onOpenChange={setSelectOpen}
+                      open={paymentOpen}
+                      onOpenChange={setPaymentOpen}
                       onCreateNew={handleOpen}
-                      payementdeadline={payementdeadline?.data || []}
+                      customers={paymentDeadlineList}
                       loading={payementdeadlineLoading}
                     />
-               
-
                   </Col>
                 </Row>
-            
               </Col>
-              
             </Row>
 
             <InvoiceItemsTable
