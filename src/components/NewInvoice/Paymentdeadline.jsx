@@ -1,48 +1,44 @@
-import { Row, Col, Divider } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import Select from "../Select";
-import Button from "../Button";
+
 export default function Payementdeadline({
   open,
   onOpenChange,
-  onCreateNew,
   customers = [],
   loading,
 }) {
-  const payementOptions = customers.map((item) => ({
-    value: item.id ?? item._id,
-    label: item.label,
-  }));
+  const fallbackCustomers = [
+    { value: "7", label: "7 days" },
+    { value: "14", label: "14 days" },
+    { value: "30", label: "30 days" },
+  ];
+
+  const normalizedCustomers = customers?.length ? customers : fallbackCustomers;
+
+  const payementOptions = normalizedCustomers.map((item) => {
+    const value = item.value ?? item.id ?? item._id ?? item.days ?? item.day ?? item.code;
+    const label =
+      item.label ??
+      item.name ??
+      item.title ??
+      item.text ??
+      (item.days != null ? `${item.days} days` : item.paymentDeadline ?? item.payment_deadline);
+
+    return {
+      value: value ?? "",
+      label: label ?? "",
+    };
+  });
 
   return (
     <Select
       style={{ width: "100%" }}
       antUI={{ size: "large" }}
-      placeholder="Select customer"
+      placeholder="Select payment deadline"
       open={open}
       loading={loading}
-      options={payementOptions}
+      options={payementOptions.filter((option) => option.value !== "" && option.label !== "")}
       onOpenChange={onOpenChange}
-      popupRender={(menu) => (
-        <>
-          {menu}
-
-          <Divider style={{ margin: "8px" }} />
-
-          <Row justify="end" style={{ padding: "0 8px" }}>
-            <Col>
-              <Button
-                type="text"
-                icon={<PlusOutlined />}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={onCreateNew}
-              >
-                Create New
-              </Button>
-            </Col>
-          </Row>
-        </>
-      )}
+      showSearch
     />
   );
 }

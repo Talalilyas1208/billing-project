@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { Row, Col, Space, Form,App } from "antd";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
@@ -15,7 +15,7 @@ import {
 } from "../../store/apiSlice";
 
 export default function MangeProductForm(props) {
-  const { form, onClose, editingProduct, refetchProducts, onTouch } = props;
+  const { form, onClose, editingProduct, refetchProducts, onTouch, onSuccess } = props;
   const navigate = useNavigate();
     const { message } = App.useApp();
 
@@ -24,51 +24,50 @@ export default function MangeProductForm(props) {
   const { data: vat } = useGetVatQuery();
   const [addProduct, { isLoading: addingProduct }] = useAddProductMutation();
   const [updateProduct, { isLoading: updatingProduct }] = useUpdateProductMutation();
-  const [currencyOptions, setCurrencyOptions] = useState([]);
-  const [revenueOptions, setRevenueOptions] = useState([]);
-  const [vatoptions, setVatoptions] = useState([]);
+
+  const currencyOptions = useMemo(
+    () =>
+      Array.isArray(currencies?.data)
+        ? currencies.data.map((item) => ({
+            value: item.code,
+            label: item.code,
+          }))
+        : [],
+    [currencies],
+  );
+
+  const revenueOptions = useMemo(
+    () =>
+      Array.isArray(revenueCategory?.data)
+        ? revenueCategory.data.map((item) => ({
+            value: String(item.key || item.code || ""),
+            label: item.name || item.code || "Select Category",
+          }))
+        : [],
+    [revenueCategory],
+  );
+
+  const vatoptions = useMemo(
+    () =>
+      Array.isArray(vat?.data)
+        ? vat.data.map((item) => ({
+            value: item.code,
+            label: (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span>{item.code}</span>
+                {item.description && (
+                  <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
+                    {item.description}
+                  </span>
+                )}
+              </div>
+            ),
+          }))
+        : [],
+    [vat],
+  );
 
   const isediting = Boolean(editingProduct);
-
-  useEffect(() => {
-    if (Array.isArray(currencies?.data)) {
-      setCurrencyOptions(
-        currencies.data.map((item) => ({
-          value: item.code,
-          label: item.code,
-        })),
-      );
-    }
-  }, [currencies]);
-  useEffect(() => {
-    if (Array.isArray(revenueCategory?.data)) {
-      setRevenueOptions(
-        revenueCategory.data.map((item) => ({
-          value: String(item.key || item.code || ""),
-          label: item.name || item.code || "Select Category",
-        })),
-      );
-    }
-  }, [revenueCategory]);
-  useEffect(() => {
-    if (Array.isArray(vat?.data)) {
-      setVatoptions(
-        vat.data.map((item) => ({
-          value: item.code,
-          label: (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span>{item.code}</span>
-              {item.description && (
-                <span style={{ fontSize: "12px", color: "#8c8c8c" }}>
-                  {item.description}
-                </span>
-              )}
-            </div>
-          ),
-        })),
-      );
-    }
-  }, [vat]);
   const onFinish = async (values) => {
     try {
       if (isediting) {
@@ -80,6 +79,9 @@ export default function MangeProductForm(props) {
       form.resetFields();
       if (refetchProducts) {
         refetchProducts();
+      }
+      if (typeof onSuccess === "function") {
+        onSuccess(values);
       }
       if (onClose) {
         onClose();
