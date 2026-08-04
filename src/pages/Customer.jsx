@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
-import { useGetCustomersQuery } from "../store/apiSlice";
+import { useGetCustomersQuery } from "../store/blackListApi";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import NewCustomers from "../components/NewCustomers/NewCustomers";
 import styles from "../components/App.module.css";

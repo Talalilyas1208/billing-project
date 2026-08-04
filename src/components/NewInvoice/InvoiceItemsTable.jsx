@@ -3,7 +3,7 @@ import { Row, Col, Space, Typography, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Table from "../Table";
 import Button from "../Button";
-import { useGetProductsQuery } from "../../store/apiSlice";
+import { useGetProductsQuery } from "../../store/blackListApi";
 import AddProductModal from "../Product/AddProductModal";
 import InvoiceSummary from "./InvoiceSummary";
 import { getInvoiceItemsColumns } from "./InvoiceItemsTableColumns";

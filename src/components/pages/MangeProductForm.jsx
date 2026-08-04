@@ -10,9 +10,9 @@ import {
   useGetRevenueCategoriesQuery,
   useGetCurrenciesQuery,
   useGetVatQuery,
-  useAddProductMutation,
-  useUpdateProductMutation,
+
 } from "../../store/apiSlice";
+import { useAddProductMutation ,useUpdateProductMutation } from "../../store/blackListApi";
 
 export default function MangeProductForm(props) {
   const { form, onClose, editingProduct, refetchProducts, onTouch, onSuccess } = props;

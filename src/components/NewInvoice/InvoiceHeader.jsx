@@ -1,9 +1,38 @@
 import { Row, Col, Space, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import Button from "../Button";
+import { useGetapprovebuttonQuery } from "../../store/apiSlice";
 
 const { Title } = Typography;
+
+const buttonStyles = [
+  {
+    style: {
+      backgroundColor: "#f8f8f8ff",
+      color: "#080808ff",
+      borderColor: "#d0ceceff",
+    },
+  },
+  {
+    type: "outlined",
+    style: {
+      backgroundColor: "#f8f8f8ff",
+      color: "#000000ff",
+      borderColor: "#d0ceceff",
+    },
+  },
+  {
+    type: "primary",
+    style: { backgroundColor: "#000", color: "#fff" },
+  },
+];
+
 export default function InvoiceHeader({ onBack, onApproveAndSend }) {
+  const { data: approveButtons } = useGetapprovebuttonQuery();
+  const buttons = Array.isArray(approveButtons)
+    ? approveButtons
+    : approveButtons?.data || [];
+
   return (
     <Row
       gutter={[12, 16]}
@@ -28,46 +57,37 @@ export default function InvoiceHeader({ onBack, onApproveAndSend }) {
 
       <Col>
         <Row gutter={[8, 8]} justify="end">
-          <Col>
-            <Button
-              size="large"
-              shape="round"
-              style={{
-                backgroundColor: "#f8f8f8ff",
-                color: "#080808ff",
-                borderColor: "#d0ceceff",
-              }}
-              onClick={onApproveAndSend}
-            >
-              Approve and send
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              type="outlined"
-              size="large"
-              shape="round"
-              style={{
-                backgroundColor: "#f8f8f8ff",
-                color: "#000000ff",
-                borderColor: "#d0ceceff",
-              }}
-              onClick={onApproveAndSend}
-            >
-              Approve and send
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              type="primary"
-              size="large"
-              shape="round"
-              style={{ backgroundColor: "#000", color: "#fff" }}
-              onClick={onApproveAndSend}
-            >
-              Approve and send
-            </Button>
-          </Col>
+          {buttons.length > 0 ? (
+            buttons.map((button, index) => {
+              const config = buttonStyles[index % buttonStyles.length] || buttonStyles[0];
+
+              return (
+                <Col key={button.id ?? `${button.label}-${index}`}>
+                  <Button
+                    type={config.type}
+                    size="large"
+                    shape="round"
+                    style={config.style}
+                    onClick={onApproveAndSend}
+                  >
+                    {button.label}
+                  </Button>
+                </Col>
+              );
+            })
+          ) : (
+            <Col>
+              <Button
+                type="primary"
+                size="large"
+                shape="round"
+                style={{ backgroundColor: "#000", color: "#fff" }}
+                onClick={onApproveAndSend}
+              >
+                Approve
+              </Button>
+            </Col>
+          )}
         </Row>
       </Col>
     </Row>
