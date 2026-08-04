@@ -9,31 +9,19 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import createWebStorage from 'redux-persist/es/storage/createWebStorage';
+import storage from 'redux-persist/lib/storage';
 import { api } from './apiSlice';
-
-const createNoopStorage = () => ({
-  getItem: async () => null,
-  setItem: async (_key, value) => value,
-  removeItem: async () => undefined,
-});
-
-const storage = typeof window !== 'undefined'
-  ? createWebStorage('local')
-  : createNoopStorage();
-
+import { blackListApi} from './blackListApi';
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
+  [blackListApi.reducerPath]: blackListApi.reducer,
 });
-
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['api'],
+  whitelist: [api.reducerPath], 
 };
-
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -41,8 +29,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(api.middleware),
+    }).concat(api.middleware, blackListApi.middleware),
   devTools: true,
 });
-
 export const persistor = persistStore(store);
