@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 import { loginWithSocial, registerWithEmail } from "../services/auth";
 import useLocalStorage from "use-local-storage";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { setUser } from "../store/userSlice";
 
 export default function Register() {
   const [form] = Form.useForm();
@@ -16,6 +18,7 @@ export default function Register() {
     phonenumber: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
@@ -42,6 +45,14 @@ export default function Register() {
         formData.phonenumber,
       );
       setActiveUser(newuser);
+      dispatch(
+        setUser({
+          name: newuser?.displayName || formData.displayName || "",
+          email: newuser?.email || formData.email || "",
+          isLoggedIn: true,
+          authToken: newuser?.token || "",
+        }),
+      );
       setVerificationSent(true);
     } catch (err) {
       setError(err.message);
@@ -60,6 +71,14 @@ export default function Register() {
         setTime(user.metadata.lastSignInTime);
       }
       setActiveUser(user);
+      dispatch(
+        setUser({
+          name: user?.displayName || user?.email || "",
+          email: user?.email || "",
+          isLoggedIn: true,
+          authToken: user?.token || "",
+        }),
+      );
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "An unexpected error occurred");

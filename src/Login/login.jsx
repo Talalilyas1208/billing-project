@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Form } from "antd";
+import { useDispatch } from "react-redux";
 import useLocalStorage from "use-local-storage";
 import { loginWithEmail, loginWithSocial } from "../services/auth";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { getAuth } from "firebase/auth";
+import { setUser } from "../store/userSlice";
 
 export default function Login() {
   const auth = getAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [, setActiveUser] = useLocalStorage("activeUser", null);
   const [, setTime] = useLocalStorage("settime", null);
@@ -40,6 +43,14 @@ export default function Login() {
         }
 
         setActiveUser(user);
+        dispatch(
+          setUser({
+            name: user?.displayName || user?.email || "",
+            email: user?.email || "",
+            isLoggedIn: true,
+            authToken: user?.token || "",
+          }),
+        );
         navigate("/dashboard");
       }
     } catch (err) {
