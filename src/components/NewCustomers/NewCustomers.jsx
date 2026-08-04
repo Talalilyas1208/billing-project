@@ -6,7 +6,6 @@ import {
   useGetRevenueCategoriesQuery,
   useGetFieldTypeOptionsQuery,
   useGetLanguagesQuery,
-  useAddCustomerMutation,
 } from "../../store/apiSlice";
 import Config from "../Config";
 import Button from "../Button";
@@ -14,6 +13,7 @@ import CustomerBasicInfo from "./CustomerBasicInfo";
 import ProductInfo from "./ProductInfo";
 import CustomFields from "./CustomFields";
 import styles from "../App.module.css";
+import { useAddCustomerMutation } from "../../store/blackListApi";
 
 const mapCurrencyOptions = (data = []) =>
   data.map(({ code }) => ({
