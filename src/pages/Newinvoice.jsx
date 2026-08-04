@@ -12,9 +12,10 @@ import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
 import CustomerSelect from "../components/NewCustomers/CustomerSelect";
 import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
 import {
-  useGetCustomersQuery,
+
   useGetPaymentDeadlinesQuery,
 } from "../store/apiSlice";
+import {useGetCustomersQuery } from "../store/blackListApi"
 import Payementdeadline from "../components/NewInvoice/Paymentdeadline";
 export default function Newinvoice() {
   const [isOpen, setIsOpen] = useState(false);

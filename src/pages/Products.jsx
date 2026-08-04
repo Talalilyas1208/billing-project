@@ -4,10 +4,14 @@ import { PlusOutlined } from "@ant-design/icons";
 import Button from "../components/Button";
 import Modals from "../components/Modal";
 import Table from "../components/Table";
-import { useGetProductsQuery, useDeleteProductMutation } from "../store/apiSlice";
+
 import MangeProductForm from "../components/pages/MangeProductForm";
 import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import styles from "../components/App.module.css";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "../store/blackListApi";
 
 const { Title } = Typography;
 export default function Products() {
@@ -28,6 +32,7 @@ export default function Products() {
   const [deleteProduct] = useDeleteProductMutation();
   const handleopencreate = () => {
     seteditingproduct(null);
+    form.resetFields();
     setIsOpen(true);
   };
   const handleOpenEdit = (record) => {
@@ -54,14 +59,14 @@ export default function Products() {
   const handledelete = (record) => {
     modal.confirm({
       title: "Delete product",
-      content: `Are you sure you want to delete "${record.productname}"?`,
+      content: `Are you sure you want to delete ${record.productname}?`,
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
       onOk: async () => {
         try {
           setDeletingId(record.id);
-          await request(`/api/products/${record.id}`, "DELETE");
+          await deleteProduct(record.id).unwrap();
           refetchProducts();
         } catch (err) {
           console.error("Delete failed:", err);
@@ -79,7 +84,9 @@ export default function Products() {
         render: (_, record) => (
           <Flex vertical>
             <span className={styles.productName}>{record?.productname}</span>
-            <span className={styles.productNumber}>{record?.productNumber}</span>
+            <span className={styles.productNumber}>
+              {record?.productNumber}
+            </span>
           </Flex>
         ),
       },
@@ -87,7 +94,9 @@ export default function Products() {
         title: "Account",
         dataIndex: "revenueCategory",
         key: "revenueCategory",
-        render: (text) => <span className={styles.priceCell}>{text || "Sales"}</span>,
+        render: (text) => (
+          <span className={styles.priceCell}>{text || "Sales"}</span>
+        ),
       },
       {
         title: "Price",
@@ -95,14 +104,17 @@ export default function Products() {
         align: "right",
         render: (_, record) => (
           <span className={styles.priceCell}>
-            {record.price ? `${Number(record.price).toFixed(2)} ${record.currency}` : ""}
+            {record.price
+              ? `${Number(record.price).toFixed(2)} ${record.currency}`
+              : ""}
             <Button
               type="link"
               size="small"
               onClick={(e) => {
                 e.stopPropagation();
                 handleOpenEdit(record);
-              }}>
+              }}
+            >
               Edit
             </Button>
             <Button
@@ -113,7 +125,8 @@ export default function Products() {
               onClick={(e) => {
                 e.stopPropagation();
                 handledelete(record);
-              }}>
+              }}
+            >
               Delete
             </Button>
           </span>
@@ -151,7 +164,7 @@ export default function Products() {
         isOpen={isOpen}
         onCancel={() => confirmNavigation(handleclose)}
         onClose={handleclose}
-       rest={{
+        rest={{
           ...{
             okText: "Done",
             style: {
@@ -160,7 +173,8 @@ export default function Products() {
               title: "Create New Product ",
             },
           },
-        }}>
+        }}
+      >
         <MangeProductForm
           refetchProducts={refetchProducts}
           onClose={handleclose}
