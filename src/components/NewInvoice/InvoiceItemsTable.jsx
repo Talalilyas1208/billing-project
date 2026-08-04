@@ -62,8 +62,8 @@ const totalIncludingVat = totalExcludingVat + vat;
   };
 
   const handleProductCreated = async (newProduct) => {
-    if (typeof mutate === "function") {
-      await mutate();
+    if (typeof refetchProducts === "function") {
+      await refetchProducts();
     }
 
     if (pendingRowId != null && newProduct) {
@@ -79,13 +79,19 @@ const totalIncludingVat = totalExcludingVat + vat;
   };
 
   useEffect(() => {
+    if (!Array.isArray(items) || items.length === 0) {
+      return;
+    }
+
     items.forEach((item) => {
       const total = Number(item.number || 0) * Number(item.unitPrice || 0);
-      if (item.total !== total) {
-        onFieldChange(item.id, "total", total);
+      const normalizedTotal = Number.isFinite(total) ? total : 0;
+
+      if (Number(item.total || 0) !== normalizedTotal) {
+        onFieldChange(item.id, "total", normalizedTotal);
       }
     });
-  }, [items]);
+  }, [items, onFieldChange]);
 
   const grandTotal = items.reduce(
     (sum, item) =>
