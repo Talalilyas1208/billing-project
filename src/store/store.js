@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { setupListeners } from "@reduxjs/toolkit/query";
 import {
   persistStore,
   persistReducer,
@@ -33,3 +34,4 @@ export const store = configureStore({
   devTools: true,
 });
 export const persistor = persistStore(store);
+setupListeners(store.dispatch);
