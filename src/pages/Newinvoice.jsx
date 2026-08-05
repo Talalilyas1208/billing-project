@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Form, DatePicker } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"; // Imported for cache invalidation
 import dayjs from "dayjs";
 import Modals from "../components/Modal";
 import CardComponent from "../components/CardComponent";
@@ -11,19 +12,18 @@ import useConfirmNavigation from "../hooks/useConfirmNavigation";
 import InvoiceHeader from "../components/NewInvoice/InvoiceHeader";
 import CustomerSelect from "../components/NewCustomers/CustomerSelect";
 import InvoiceItemsTable from "../components/NewInvoice/InvoiceItemsTable";
-import {
-
-  useGetPaymentDeadlinesQuery,
-} from "../store/apiSlice";
-import {useGetCustomersQuery } from "../store/blackListApi"
+import { useGetPaymentDeadlinesQuery, api } from "../store/apiSlice"; // Imported api alongside the query hook
+import { useGetCustomersQuery } from "../store/blackListApi";
 import Payementdeadline from "../components/NewInvoice/Paymentdeadline";
+
 export default function Newinvoice() {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [customerOpen, setCustomerOpen] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [statetouch, settouch] = useState(false);
   const [searchText, setSearchText] = useState("");
-
+  
   const [items, setItems] = useState([
     {
       id: 1,
@@ -33,6 +33,7 @@ export default function Newinvoice() {
       unitPrice: "",
     },
   ]);
+
   const onChange = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -45,11 +46,11 @@ export default function Newinvoice() {
     isLoading: CustomerLoading,
     refetch: refetchCustomers,
   } = useGetCustomersQuery({ search: searchText });
+
   const {
     data: payementdeadline,
     isLoading: payementdeadlineLoading,
-    refetch: refetchpayementdeadline,
-  } = useGetPaymentDeadlinesQuery();
+  } = useGetPaymentDeadlinesQuery(undefined);
 
   const fallbackCustomers = [{ id: "fallback-customer", Company_name: "Demo Customer" }];
   const fallbackPaymentDeadlines = [
@@ -72,6 +73,13 @@ export default function Newinvoice() {
 
   const confirmNavigation = useConfirmNavigation(statetouch);
 
+  // Function to invalidate the tag and force a network pull
+  const purgeAndPullDeadlines = () => {
+    dispatch(
+      api.util.invalidateTags([{ type: "PaymentDeadline", id: "LIST" }])
+    );
+  };
+
   const handleOpen = () => {
     setIsOpen(true);
     setCustomerOpen(false);
@@ -81,6 +89,7 @@ export default function Newinvoice() {
   const handleclose = () => {
     setIsOpen(false);
     settouch(false);
+    purgeAndPullDeadlines(); // Wipes old local cache data and pulls a new dataset
   };
 
   const handleBack = () => {
