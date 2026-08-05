@@ -1,8 +1,17 @@
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { REHYDRATE } from "redux-persist";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "" }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === REHYDRATE) {
+      return action.payload?.[reducerPath];
+    }
+  },
+   fetchFn: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+  refetchOnReconnect: true,
   tagTypes: [
     "Sidebar",
     "Currency",
@@ -13,7 +22,7 @@ export const api = createApi({
     "PaymentDeadline",
     "PriceModeOptions",
     "DesignOptions",
-      "Approvebutton"
+    "Approvebutton"
   ],
   endpoints: (builder) => ({
     getSidebar: builder.query({
@@ -53,13 +62,10 @@ export const api = createApi({
       query: () => "/api/designOptions",
       providesTags: [{ type: "DesignOptions", id: "LIST" }],
     }),
-    getapprovebutton : builder.query({
+    getapprovebutton: builder.query({
       query: () => "/api/approvebutton",
-      providesTags:   [{
-        type:"Approvebutton",
-        id:"List"
-      }]
-    })
+      providesTags: [{ type: "Approvebutton", id: "List" }],
+    }),
   }),
 });
 
@@ -73,5 +79,5 @@ export const {
   useGetPaymentDeadlinesQuery,
   useGetPriceModeOptionsQuery,
   useGetDesignOptionsQuery,
-  useGetapprovebuttonQuery
+  useGetapprovebuttonQuery,
 } = api;
