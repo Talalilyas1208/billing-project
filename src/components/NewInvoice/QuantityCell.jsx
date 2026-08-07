@@ -6,7 +6,7 @@ function QuantityCell({ value, onChange }) {
     <InputNumber
       style={{ width: "100%", height: 42 }}
       min={1}
-      value={value || 1}
+      value={value ?? 1}
       onChange={onChange}
     />
   );

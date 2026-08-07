@@ -7,6 +7,7 @@ import { useGetProductsQuery } from "../../store/blackListApi";
 import AddProductModal from "../Product/AddProductModal";
 import InvoiceSummary from "./InvoiceSummary";
 import { getInvoiceItemsColumns } from "./InvoiceItemsTableColumns";
+import { rowTotal } from "../hooks/useInvoiceTotals";
 const { Text } = Typography;
 
 export default function InvoiceItemsTable({
@@ -33,9 +34,9 @@ export default function InvoiceItemsTable({
   );
 
   const totalExcludingVat = items.reduce(
-  (sum, item) => sum + Number(item.number || 1) * Number(item.unitPrice || 0),
-  0,
-);
+    (sum, item) => sum + rowTotal({ number: item.number, unitPrice: item.unitPrice }),
+    0,
+  );
 
 const vatRate = 0.10; 
 const vat = totalExcludingVat * vatRate;
@@ -84,8 +85,7 @@ const totalIncludingVat = totalExcludingVat + vat;
     }
 
     items.forEach((item) => {
-      const total = Number(item.number || 0) * Number(item.unitPrice || 0);
-      const normalizedTotal = Number.isFinite(total) ? total : 0;
+      const normalizedTotal = rowTotal({ number: item.number, unitPrice: item.unitPrice });
 
       if (Number(item.total || 0) !== normalizedTotal) {
         onFieldChange(item.id, "total", normalizedTotal);
@@ -94,8 +94,7 @@ const totalIncludingVat = totalExcludingVat + vat;
   }, [items, onFieldChange]);
 
   const grandTotal = items.reduce(
-    (sum, item) =>
-      sum + Number(item.number || 1) * Number(item.unitPrice || 0),
+    (sum, item) => sum + rowTotal({ number: item.number, unitPrice: item.unitPrice }),
     0,
   );
 

@@ -1,3 +1,6 @@
-export function rowTotal({ number = 0, unitPrice = 0 }) {
-  return Number(number || 0) * Number(unitPrice || 0);
+export function rowTotal({ number = 1, unitPrice = 0 }) {
+  const quantity = Number(number || 1);
+  const price = Number(unitPrice || 0);
+  const total = quantity * price;
+  return Number.isFinite(total) ? total : 0;
 }

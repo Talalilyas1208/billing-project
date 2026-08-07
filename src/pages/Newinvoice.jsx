@@ -29,7 +29,7 @@ export default function Newinvoice() {
       id: 1,
       product: "",
       description: "",
-      number: "",
+      number: 1,
       unitPrice: "",
     },
   ]);
@@ -112,7 +112,7 @@ export default function Newinvoice() {
         id: prev.length ? Math.max(...prev.map((i) => i.id)) + 1 : 1,
         product: "",
         description: "",
-        number: "",
+        number: 1,
         unitPrice: "",
       },
     ]);
