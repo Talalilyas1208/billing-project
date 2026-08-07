@@ -47,10 +47,19 @@ export default function Newinvoice() {
     refetch: refetchCustomers,
   } = useGetCustomersQuery({ search: searchText });
 
-  const {
-    data: payementdeadline,
+  const { 
+   data: payementdeadline,
     isLoading: payementdeadlineLoading,
-  } = useGetPaymentDeadlinesQuery(undefined);
+  
+  
+    isFetching   
+  } = useGetPaymentDeadlinesQuery(undefined, {
+    
+    refetchOnFocus: true, 
+    refetchOnReconnect: true, 
+    keepUnusedDataFor: 300, 
+  });
+ 
 
   const fallbackCustomers = [{ id: "fallback-customer", Company_name: "Demo Customer" }];
   const fallbackPaymentDeadlines = [
@@ -205,6 +214,7 @@ export default function Newinvoice() {
                 </Row>
 
                 <Row gutter={[0, 16]}>
+                 {isFetching && <p>Updating data in background...</p>}
                   <Col span={20}>
                     <Payementdeadline
                       open={paymentOpen}
