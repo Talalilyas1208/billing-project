@@ -1,4 +1,3 @@
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 
@@ -10,7 +9,7 @@ export const api = createApi({
       return action.payload?.[reducerPath];
     }
   },
-   fetchFn: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+  fetchFn: (input, init) => fetch(input, { ...init, cache: "no-store" }),
   refetchOnReconnect: true,
   tagTypes: [
     "Sidebar",
@@ -22,7 +21,7 @@ export const api = createApi({
     "PaymentDeadline",
     "PriceModeOptions",
     "DesignOptions",
-    "Approvebutton"
+    "Approvebutton",
   ],
   endpoints: (builder) => ({
     getSidebar: builder.query({
