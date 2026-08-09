@@ -35,13 +35,16 @@ export const blackListApi = createApi({
               { type: "Products", id: "LIST" },
               ...result.data.map((item) => ({ type: "Products", id: item.id })),
             ]
-          : [{ type: "Products", id: "LIST" }],}),
+          : [{ type: "Products", id: "LIST" }],
+    }),
     addProduct: builder.mutation({
       query: (product) => ({
         url: "/api/products",
         method: "POST",
-        body: product, }),
-      invalidatesTags: [{ type: "Products", id: "LIST" }],}),
+        body: product,
+      }),
+      invalidatesTags: [{ type: "Products", id: "LIST" }],
+    }),
     updateProduct: builder.mutation({
       query: ({ id, ...product }) => ({
         url: `/api/products/${id}`,
@@ -64,7 +67,6 @@ export const blackListApi = createApi({
       }),
       invalidatesTags: [{ type: "Columns", id: "LIST" }],
     }),
-    
   }),
 });
 export const {

@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import {
   persistStore,
@@ -9,18 +9,18 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { api } from './apiSlice';
-import { blackListApi} from './blackListApi';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { api } from "./apiSlice";
+import { blackListApi } from "./blackListApi";
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   [blackListApi.reducerPath]: blackListApi.reducer,
 });
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: [api.reducerPath], 
+  whitelist: [api.reducerPath],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
